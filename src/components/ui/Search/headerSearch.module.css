@@ -1,167 +1,286 @@
-.headerSearch__button {
+.headerSearchWrapper {
+    position: relative;
+    width: 100%;
+}
+
+/* Десктопная строка поиска */
+.headerSearch__desktopBar {
+    width: 100%;
+    display: block;
+}
+
+.headerSearch__inputContainer {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 48px;
+    background-color: #FFFFFF;
+    border: 1px solid #E5E5E5;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.headerSearch__inputContainer:focus-within {
+    border-color: #B19448;
+    box-shadow: 0 0 0 2px #B19448;
+}
+
+.headerSearch__input {
+    width: 100%;
+    height: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    padding: 0 16px;
+    font-size: 15px;
+    color: #1A1A1A;
+}
+
+.headerSearch__input::placeholder {
+    color: #8E8E93;
+}
+
+.headerSearch__clearBtn {
+    background: none;
+    border: none;
+    color: #8E8E93;
+    font-size: 16px;
+    padding: 0 10px;
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.headerSearch__submitBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 100%;
     border: none;
-    /* padding: 0 calc(27.5vw/14.4); */
+    background: linear-gradient(180deg, #D8BC53 0%, #B89833 100%);
+    color: #111111;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+    flex-shrink: 0;
+}
+
+.headerSearch__submitBtn:hover {
+    opacity: 0.9;
+}
+
+/* Мобильная кнопка вызова (по умолчанию скрыта) */
+.headerSearch__mobileTrigger {
+    display: none;
+    align-items: center;
     border: none;
     background: transparent;
     cursor: pointer;
-    gap: calc(15vw/14.4);
-    margin-left: calc(114vw/14.4);
-    margin-right: auto;
+    gap: 10px;
+    padding: 0;
 }
 
 .headerSearch__iconContainer {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: calc(45vw/14.4);
-    height: calc(45vw/14.4);
-    border-radius: calc(10vw/14.4);
-    background-color: #FFFFFF14;
-    padding: calc(10vw/14.4);
-}
-
-.headerSearch__buttonText {
-    font-size: calc(18vw/14.4);
-    line-height: 120%;
-    letter-spacing: -2%;
-    color: #FFFFFF;
-    font-weight: 400;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.08);
 }
 
 .headerSearch__icon {
-    width: calc(25vw/14.4);
-    height: calc(25vw/14.4);
-    color: #C9AC37;
-}   
+    color: #B19448;
+}
 
-/* Overlay с результатами: высота от нижней границы header__top до низа экрана */
-.headerSearchDialog {
+/* ----------------------------------------------------
+   ПОЛНОЭКРАННОЕ МОДАЛЬНОЕ ОКНО РЕЗУЛЬТАТОВ ПОИСКА
+---------------------------------------------------- */
+.headerSearchModal {
     position: fixed;
-    z-index: 10;
-    top: calc(88vw/14.4); /* нижняя граница header__top */
+    top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    height: calc(100vh - (88vw/14.4));
-    margin: 0;
-    max-width: 100%;
-    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    z-index: 99999;
+    background-color: #FFFFFF;
     display: flex;
     flex-direction: column;
-    background-color: #FFFFFF;
+    animation: fullScreenFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Контейнер со скроллом */
-.headerSearchDialog__inner {
-    flex: 1;
-    min-height: 0;
-    overflow: auto;
+@keyframes fullScreenFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
-
-.headerSearch__bar {
-    display: flex;
-    align-items: center;
-    gap: 0;
-    /* flex-shrink: 0; */
-    justify-content: space-between;
-    width: 100%;
-}
-
-.headerSearch__close {
+/* Кнопка-крестик в правом верхнем углу */
+.headerSearchModal__closeIconButton {
+    position: absolute;
+    top: 20px;
+    right: 24px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: none;
+    background-color: #F0F0F2;
+    color: #19191B;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: none;
-    font-size: calc(16vw/14.4);
     cursor: pointer;
-    color: #ffffff;
-    background: transparent;
-    gap: calc(15vw/14.4);
+    z-index: 10;
+    transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
-.headerSearch__close svg {
-    height: calc(18vw/14.4);
-    width: calc(18vw/14.4);
+.headerSearchModal__closeIconButton:hover {
+    background-color: #E2E2E5;
+    transform: scale(1.05);
 }
 
-.headerSearch__results {
+.headerSearchModal__header {
+    display: flex;
+    padding: 24px 80px 16px 32px;
+    background-color: #F8F9FA;
+    border-bottom: 1px solid #EAEAEA;
+}
+
+.headerSearchModal__header .headerSearch__inputContainer {
+    max-width: 600px;
+}
+
+.headerSearchModal__body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 32px;
+    max-width: 1380px;
     width: 100%;
-    padding: calc(100vw/14.4) calc(150vw/14.4) calc(120vw/14.4);
+    margin: 0 auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Состояния загрузки и результатов */
+.headerSearch__status {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 0;
+    gap: 12px;
+    color: #666;
+}
+
+.spinner {
+    width: 36px;
+    height: 36px;
+    border: 3px solid rgba(177, 148, 72, 0.2);
+    border-top-color: #B19448;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.headerSearch__hint {
+    text-align: center;
+    color: #8E8E93;
+    font-size: 16px;
+    margin-top: 40px;
+}
+
+.headerSearch__count {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1A1A1A;
+    margin-bottom: 24px;
+}
+
+.headerSearch__count span {
+    color: #B19448;
 }
 
 .headerSearch__products {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: calc(10vw/14.4);
     width: 100%;
 }
 
-.headerSearch__loading,
-.headerSearch__count,
 .headerSearch__empty {
-    margin: 0 0 calc(60vw/14.4);
-    font-size: calc(44vw/14.4);
+    text-align: center;
+    padding: 80px 16px;
 }
 
-.headerSearch__list {
-    margin: 0;
-    padding: 0;
-    list-style: none;
+.headerSearch__emptyTitle {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1A1A1A;
+    margin-bottom: 8px;
 }
 
-.headerSearch__item {
-    margin-bottom: calc(8vw/14.4);
+.headerSearch__emptyDesc {
+    font-size: 14px;
+    color: #8E8E93;
 }
 
-.headerSearch__link {
-    font-size: calc(16vw/14.4);
-    color: inherit;
-    text-decoration: none;
-}
-
-.headerSearch__link:hover {
-    text-decoration: underline;
-}
-
+/* АДАПТИВНОСТЬ ДЛЯ МОБИЛЬНЫХ */
 @media screen and (max-width: 767px) {
-    .headerSearchDialog {
-        top: calc(44vw/3.9);
-        height: calc(100vh - 44vw/3.9);
+    .headerSearch__desktopBar {
+        display: block;
+        width: 100%;
     }
 
-    .headerSearch__close {
-        padding: 0 calc(16.5vw/3.9);
-        border-width: calc(1vw/3.9) calc(1vw/3.9) calc(1vw/3.9) 0;
-        border-radius: 0 calc(10vw/3.9) calc(10vw/3.9) 0;
-        height: calc(44vw/3.9);
-        font-size: calc(14vw/3.9);
+    .headerSearch__inputContainer {
+        border: 2px solid #2B7FFF;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     }
 
-    .headerSearch__results {
-        padding: calc(16vw/3.9);
+    .headerSearch__inputContainer:focus-within {
+        border-color: #1A68E5;
+        box-shadow: 0 0 0 3px rgba(43, 127, 255, 0.2);
     }
 
-    .headerSearch__products {
-        gap: calc(20vw/3.9);
+    .headerSearch__submitBtn {
+        background: #2B7FFF;
+        color: #FFFFFF;
     }
 
-    .headerSearch__loading,
-    .headerSearch__count,
-    .headerSearch__empty {
-        margin-bottom: calc(10vw/3.9);
-        font-size: calc(14vw/3.9);
+    .headerSearch__mobileTrigger {
+        display: none;
     }
 
-    .headerSearch__item {
-        margin-bottom: calc(6vw/3.9);
+    .headerSearchModal__closeIconButton {
+        top: 12px;
+        right: 12px;
+        width: 38px;
+        height: 38px;
     }
 
-    .headerSearch__link {
-        font-size: calc(14vw/3.9);
+    .headerSearchModal__header {
+        padding: 12px 60px 12px 16px;
     }
+
+    .headerSearchModal__body {
+        padding: 16px;
+    }
+}
+
+/* Блокировка скролла страницы при открытой модалке */
+html.stop-scrolling,
+body.stop-scrolling {
+  overflow: hidden !important;
+  height: 100% !important;
+  touch-action: none;
 }

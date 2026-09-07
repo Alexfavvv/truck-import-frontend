@@ -40,3 +40,13 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .env*.local
+
+# Production/local artifacts
+archive_*.zip
+src.zip
+public/images.zip
+
+# Production/local artifacts
+archive_*.zip
+src.zip
+public/images.zip

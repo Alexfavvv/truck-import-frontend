@@ -11,7 +11,7 @@ export async function generateMetadata() {
 }
 
 const phoneNumbers = [
-    { number: "+7 (900) 604-46-14", href: "tel:+79006044614" },
+    { number: "+7 (495) 740-33-06", href: "tel:+74957403306" },
     { number: "+7 (909) 913-11-86", href: "tel:+79099131186" },
 ];
 

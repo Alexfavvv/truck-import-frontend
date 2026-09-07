@@ -3,12 +3,9 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    width: calc(367vw/14.4);
-    height: calc(138vw/14.4);
+    width: 100%;
     gap: calc(10vw/14.4);
-    border-radius: calc(10vw/14.4);
-    padding: calc(30vw/14.4);
-    background: #F4F4F3;
+    border-radius: 14px;
     margin-top: calc(5vw/14.4);
     /* cursor: pointer; */
 }
@@ -19,8 +16,9 @@
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: calc(54vw/14.4);
-    background: #C9AC37;
+    height: 61px;
+    background: #191919;
+    color: #FBFBFB;
     border: none;
     border-radius: calc(10vw/14.4);
     font-family: var(--font-gilroy);
@@ -43,7 +41,8 @@
     align-items: center;
     width: 100%;
     height: calc(54vw/14.4);
-    background: #C9AC37;
+    background: #191919;
+    color: #FBFBFB;
     border: none;
     border-radius: calc(10vw/14.4);
     font-family: var(--font-gilroy);
@@ -113,7 +112,8 @@
         align-items: center;
         width: 100%;
         height: calc(54vw/3.9);
-        background: #C9AC37;
+        background: #191919;
+        color: #FBFBFB;
         border: none;
         border-radius: calc(10vw/3.9);
         font-family: var(--font-gilroy);
@@ -136,7 +136,8 @@
         align-items: center;
         width: 100%;
         height: calc(54vw/3.9);
-        background: #C9AC37;
+        background: #191919;
+        color: #FBFBFB;
         border: none;
         border-radius: calc(10vw/3.9);
         font-family: var(--font-gilroy);

@@ -1,0 +1,71 @@
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(80vh - 100px);
+  width: 100%;
+  padding: 4rem 2rem;
+  background-color: #F4F4F3;
+}
+
+.loadingCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  background: #FFFFFF;
+  padding: 3.5rem 5rem;
+  border-radius: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  border: 1px solid #E5E5E5;
+}
+
+.spinnerWrapper {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.spinnerRing {
+  width: 100%;
+  height: 100%;
+  border: 4px solid #EBEBEB;
+  border-top: 4px solid #191919;
+  border-right: 4px solid #B459BB;
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+
+.spinnerText {
+  font-family: var(--font-gilroy), sans-serif;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #191919;
+  margin: 0;
+  letter-spacing: -0.01em;
+  animation: pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+@media screen and (max-width: 767px) {
+  .loadingCard {
+    padding: 2.5rem 3rem;
+  }
+  .spinnerText {
+    font-size: 1.6rem;
+  }
+}

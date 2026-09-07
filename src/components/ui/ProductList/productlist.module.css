@@ -151,7 +151,8 @@
     align-items: center;
     width: 100%;
     height: calc(40vw/14.4);
-    background: #C9AC37;
+    background: #191919;
+    color: #FBFBFB;
     border: none;
     border-radius: calc(10vw/14.4);
     font-family: var(--font-gilroy);
@@ -174,7 +175,8 @@
     align-items: center;
     width: 100%;
     height: calc(54vw/14.4);
-    background: #C9AC37;
+    background: #191919;
+    color: #FBFBFB;
     border: none;
     border-radius: calc(10vw/14.4);
     font-family: var(--font-gilroy);
@@ -305,7 +307,8 @@
         align-items: center;
         width: 100%;
         height: calc(40vw/3.9);
-        background: #C9AC37;
+        background: #191919;
+        color: #FBFBFB;
         border: none;
         border-radius: calc(10vw/3.9);
         font-family: var(--font-gilroy);
@@ -328,7 +331,8 @@
         align-items: center;
         width: 100%;
         height: calc(54vw/3.9);
-        background: #C9AC37;
+        background: #191919;
+        color: #FBFBFB;
         border: none;
         border-radius: calc(10vw/3.9);
         font-family: var(--font-gilroy);

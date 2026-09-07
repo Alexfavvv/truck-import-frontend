@@ -34,14 +34,6 @@ export default function GuestAddToCartTrigger({ props_count = 0, productSku }) {
             aria-label={`Добавить ${productSku} в корзину`}
             onClick={() => void handleClick()}
           >
-            <Image
-              src="/cart.svg"
-              alt="Корзина"
-              className={styles.cart__icon}
-              width={20}
-              height={20}
-              priority
-            />
             Добавить в корзину
           </button>
         ) : (

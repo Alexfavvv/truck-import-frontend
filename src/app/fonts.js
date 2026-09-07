@@ -1,33 +1,15 @@
-import localFont from 'next/font/local'
+import { Montserrat } from 'next/font/google'
 
-export const gilroy = localFont({
-  src: [
-    {
-      path: '../../public/fonts/gilroy/regular/gilroy-regular.woff2',
-      weight: '400',
-      style: 'normal',
-    },
-    {
-      path: '../../public/fonts/gilroy/medium/gilroy-medium.woff2',
-      weight: '500',
-      style: 'normal',
-    },
-    {
-      path: '../../public/fonts/gilroy/bold/gilroy-bold.woff2',
-      weight: '700',
-      style: 'normal',
-    },
-  ],
+export const gilroy = Montserrat({
+  subsets: ['latin', 'cyrillic'],
+  weight: ['400', '500', '600', '700'],
   variable: '--font-gilroy',
+  display: 'swap',
 })
 
-export const heronew = localFont({
-  src: [
-    {
-      path: '../../public/fonts/heronew/regular/heronew-regular.woff2',
-      weight: '400',
-      style: 'normal',
-    }
-  ],
+export const heronew = Montserrat({
+  subsets: ['latin', 'cyrillic'],
+  weight: ['400', '500', '600', '700'],
   variable: '--font-heronew',
+  display: 'swap',
 })

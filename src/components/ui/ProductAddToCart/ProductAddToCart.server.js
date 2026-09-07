@@ -18,14 +18,6 @@ export default function ProductAddToCartServer({
           type="button"
           aria-label={`Добавить ${productSku} в корзину`}
         >
-          <Image
-            src="/cart.svg"
-            alt="Корзина"
-            className={styles.cart__icon}
-            width={20}
-            height={20}
-            priority
-          />
           Добавить в корзину
         </button>
       ) : (

@@ -52,7 +52,7 @@ export async function generateMetadata({ params }) {
   if (product) {
     return {
       title: `${product.name} ${product.sku} — купить оптом с доставкой по России` || 'Default Title',
-      description: `Приобрести ${product.name} ${product.sku} | Оптовые поставки запчастей из Европы для грузовых автомобилей. Узнать наличие и стоимость вы можете по телефону +7 (900) 604-46-14, звоните!` || 'Default Description',
+      description: `Приобрести ${product.name} ${product.sku} | Оптовые поставки запчастей из Европы для грузовых автомобилей. Узнать наличие и стоимость вы можете по телефону +7 (495) 740-33-06, звоните!` || 'Default Description',
     };
   }
 

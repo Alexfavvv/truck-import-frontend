@@ -91,14 +91,6 @@ export default function ProductAddToCartClient({
               aria-label={`Добавить ${productSku} в корзину`}
               onClick={() => void handleCountChange(1)}
             >
-              <Image
-                src="/cart.svg"
-                alt="Корзина"
-                className={styles.cart__icon}
-                width={20}
-                height={20}
-                priority
-              />
               Добавить в корзину
             </button>
           ) : (

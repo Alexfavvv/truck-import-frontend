@@ -24,7 +24,7 @@ export default function Footer() {
         <div className={`${styles.footer__item} ${styles.footer__item_top}`}>
             <div className={styles.phones}>
                 <Link className={styles.phones__item} href="tel:+79099131186">+7 (909) 913-11-86</Link>
-                <Link className={styles.phones__item} href="tel:+79006044614">+7 (900) 604-46-14</Link>
+                <Link className={styles.phones__item} href="tel:+74957403306">+7 (495) 740-33-06</Link>
             </div>
             <div className={styles.footer__nav}>
                 <ul className={styles.footer__menu}>
@@ -64,15 +64,15 @@ export default function Footer() {
                             О проекте
                         </Link>
                     </li> */}
-                    {/* <li className={styles.footer__menu_item}>
+                    <li className={styles.footer__menu_item}>
                         <Link
                             className={styles.footer__menu_link}
-                            href="#"
+                            href="/blog"
                             aria-current="page"
                         >
-                            Блог
+                            Новости
                         </Link>
-                    </li> */}
+                    </li>
                     <li className={styles.footer__menu_item}>
                         <Link
                             className={styles.footer__menu_link}
@@ -152,7 +152,7 @@ export default function Footer() {
                 </div>
             </div>
             {/* {process.env.SITE_URL === 'https://truck-import.ru' && ( */}
-              <MadeBy/>
+              {/* <MadeBy/> */}
             {/* )} */}
             <Link className={styles.footer__privacy} href="/privacy">Политика<br/>конфиденциальности</Link>
 

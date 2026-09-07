@@ -164,7 +164,7 @@ function ProductItem({ product, innerWidth, cart, onNeedAuth, fetchCart }) {
                 type="button"
                 onClick={() => void handleCountChange(1)}
               >
-                Купить
+                Добавить в корзину
               </button>
             )
           ) : (
