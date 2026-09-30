@@ -48,8 +48,7 @@ function coerceProductIdFromRaw(raw) {
 export function normalizeProduct(rawInput, fallback = {}) {
   const raw = unwrapLkEntityJson(rawInput);
   const skuRaw = String(raw?.sku || '').trim();
-  const keys = isLkProductsSource() ? catalogProductLookupKeys(skuRaw) : [skuRaw];
-  const sku = isLkProductsSource() && keys.length > 0 ? keys[keys.length - 1] : skuRaw;
+  const sku = skuRaw;
   const brandSlug = raw?.brand_slug ?? raw?.brand?.slug ?? raw?.brand ?? '';
   const brandName = raw?.brand_name ?? raw?.brand?.name ?? raw?.brand ?? '';
   const modelSlug = raw?.model_slug ?? raw?.model?.slug ?? raw?.model ?? '';
@@ -64,6 +63,11 @@ export function normalizeProduct(rawInput, fallback = {}) {
     name: raw?.name ?? raw?.title ?? '',
     title: raw?.title ?? raw?.name ?? '',
     price: raw?.price ?? '0',
+    weight: raw?.weight ?? null,
+    width: raw?.width ?? null,
+    height: raw?.height ?? null,
+    length: raw?.length ?? null,
+    replacement: raw?.replacement ?? null,
     delivery: raw?.delivery ?? null,
     count: raw?.count ?? raw?.quantity ?? 0,
     quantity: raw?.quantity ?? raw?.count ?? 0,
@@ -235,8 +239,7 @@ export async function fetchProductByIdOrSku(idOrSku) {
     const aliases = new Set(
       catalogProductLookupKeys(s).map((k) => k.toLowerCase()),
     );
-    const found =
-      matches.find((p) => aliases.has(String(p.sku).toLowerCase())) || matches[0];
+    const found = matches.find((p) => aliases.has(String(p.sku).toLowerCase()));
     if (!found?.sku) continue;
 
     const fromDetail = await fetchLkProductDetail(found.sku);

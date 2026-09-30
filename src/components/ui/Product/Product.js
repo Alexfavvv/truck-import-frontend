@@ -12,11 +12,16 @@ import styles from "./product.module.css";
 const BRAND_SLUGS = new Set(brandsData.map((item) => item.slug));
 
 const DEFAULT_RELATED = [
-    { id: 101, sku: 'QEV111AJC39M', name: 'Carrier', brand: 'Kolbenschmidt', price: '143 523', count: 999 },
-    { id: 102, sku: 'A9414706842', name: 'Carrier', brand: 'Mercedes Trucks', price: '128 400', count: 999 },
-    { id: 103, sku: 'HENGST-7712', name: 'Масляный фильтр', brand: 'Hengst', price: '14 200', count: 999 },
-    { id: 104, sku: 'MAN-998123', name: 'Ремкомплект', brand: 'MAN', price: '89 100', count: 999 }
+    { id: 101, sku: 'QEV111AJC39M', name: 'Carrier', brand: 'Kolbenschmidt', count: 999 },
+    { id: 102, sku: 'A9414706842', name: 'Carrier', brand: 'Mercedes Trucks', count: 999 },
+    { id: 103, sku: 'HENGST-7712', name: 'Масляный фильтр', brand: 'Hengst', count: 999 },
+    { id: 104, sku: 'MAN-998123', name: 'Ремкомплект', brand: 'MAN', count: 999 }
 ];
+
+function displayPrice(price) {
+    const numericPrice = Number(String(price ?? '').replace(/\s/g, '').replace(',', '.'));
+    return Number.isFinite(numericPrice) && numericPrice > 0 ? `${price} ₽` : 'Цена по запросу';
+}
 
 export default function Product({ product = {}, cartAuthenticated = false, relatedProducts = DEFAULT_RELATED }) {
     const dialogRef = useRef(null);
@@ -48,10 +53,16 @@ export default function Product({ product = {}, cartAuthenticated = false, relat
     const brandLabel = product.brand_name || product.brand || product.truck_manufacturers?.[0]?.name || 'Kolbenschmidt';
     const hasBrandLink = Boolean(product.brand) && BRAND_SLUGS.has(product.brand);
     const deliveryLabel = product.delivery || 'от 15 дней';
-    const priceDisplay = product.price ? `${product.price} ₽` : '143 523 ₽';
+    const priceDisplay = displayPrice(product.price);
     const productSku = product.sku || 'QEV111AJC39M';
     const productName = product.name || 'Mercedes-Benz Evobus';
-    const isAvailable = (product.count ?? 999) > 0;
+    const physicalSpecs = [
+        ['Вес', product.weight],
+        ['Ширина', product.width],
+        ['Высота', product.height],
+        ['Длина', product.length],
+        ['Замена', product.replacement],
+    ].filter(([, value]) => value !== null && value !== undefined && String(value).trim() !== '');
 
     return (
         <main className={styles.productMainContainer}>
@@ -115,10 +126,12 @@ export default function Product({ product = {}, cartAuthenticated = false, relat
                                         </span>
                                     </div>
 
-                                    <div className={styles.specRow}>
-                                        <span className={styles.specName}>Вес</span>
-                                        <span className={styles.specValue}>1.8кг</span>
-                                    </div>
+                                    {physicalSpecs.map(([label, value]) => (
+                                        <div key={label} className={styles.specRow}>
+                                            <span className={styles.specName}>{label}</span>
+                                            <span className={styles.specValue}>{value}</span>
+                                        </div>
+                                    ))}
 
                                     {specifications.map((item, index) => (
                                         <div key={index} className={styles.specRow}>
@@ -134,19 +147,6 @@ export default function Product({ product = {}, cartAuthenticated = false, relat
                     {/* ПРАВАЯ КАРТОЧКА (Наличие, цена, способы получения, кнопки) */}
                     <div className={styles.productBuyCard}>
                         
-                        {/* Статус наличия */}
-                        <div className={styles.availabilityRow}>
-                            {isAvailable ? (
-                                <span className={styles.inStockBadge}>
-                                    Доступно для заказа
-                                </span>
-                            ) : (
-                                <span className={styles.outOfStockBadge}>
-                                    Нет в наличии
-                                </span>
-                            )}
-                        </div>
-
                         {/* Сроки доставки */}
                         <div className={styles.infoRow}>
                             <span className={styles.infoLabel}>Сроки доставки:</span>
@@ -195,7 +195,7 @@ export default function Product({ product = {}, cartAuthenticated = false, relat
                             {/* Кнопка "Добавить в корзину" */}
                             <div className={styles.cartBtnWrapper}>
                                 <ProductAddToCart
-                                    props_count={product.count ?? 999}
+                                    props_count={999}
                                     productId={product.id || 1}
                                     productSku={productSku}
                                     cartAuthenticated={cartAuthenticated}
@@ -230,7 +230,7 @@ export default function Product({ product = {}, cartAuthenticated = false, relat
                                     </div>
                                     <div className={styles.relatedDetailRow}>
                                         <span className={styles.relatedLabel}>Цена:</span>
-                                        <span className={styles.relatedPriceValue}>{item.price} ₽</span>
+                                            <span className={styles.relatedPriceValue}>{displayPrice(item.price)}</span>
                                     </div>
                                 </div>
                                 <div className={styles.relatedCartWrapper}>
