@@ -10,6 +10,7 @@ import { fetchPageSettings } from "@/services/pageService";
 
 const topNavLinks = [
   { title: "Каталог запчастей", href: "/catalog" },
+  { title: "Двигатели и блоки", href: "/engines" },
   { title: "Оплата и доставка", href: "/oplata-i-dostavka" },
   { title: "О компании", href: "/about" },
   { title: "Гарантия и оплата", href: "/garantii-i-vozvrat" },

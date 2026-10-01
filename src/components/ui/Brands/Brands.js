@@ -16,16 +16,20 @@ export default function Brands({
 }) {
     return (
         <div className={styles.brands}>
-            {brands.map((item, index) => (
-                <Link href={`/brands/${item}`} key={index} className={styles.brands__link}>
-                    <img
-                        className={`${styles.brands__item} ${theme === 'gray' ? styles.brands__item_gray : ''}`}
-                        src={`/brands/${item}.svg`}
-                        alt={`${item} logo`}
-                        loading="lazy"
-                    />
-                </Link>
-            ))}
+            {brands.map((item, index) => {
+                const brand = typeof item === 'string' ? { slug: item } : item;
+                return (
+                    <Link href={brand.href || `/brands/${brand.slug}`} key={brand.slug || index} className={styles.brands__link}>
+                        <img
+                            className={`${styles.brands__item} ${theme === 'gray' ? styles.brands__item_gray : ''}`}
+                            src={`/brands/${brand.image || brand.slug}.svg`}
+                            alt={`${brand.label || brand.slug} logo`}
+                            loading="lazy"
+                        />
+                        {brand.label && <span className={styles.brands__label}>{brand.label}</span>}
+                    </Link>
+                );
+            })}
         </div>
     );
 }
