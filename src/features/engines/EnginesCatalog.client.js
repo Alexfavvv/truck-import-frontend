@@ -19,31 +19,31 @@ function EngineCard({ engine }) {
     : 'По запросу';
 
   return (
-    <article className={cardStyles.product__card}>
+    <article className={`${cardStyles.product__card} ${styles.productCard}`}>
       <Link href={href} className={styles.cardLink}>
-        <div className={cardStyles.product__image_container}>
-          <div className={cardStyles.product__image}>
+        <div className={`${cardStyles.product__image_container} ${styles.productImageContainer}`}>
+          <div className={`${cardStyles.product__image} ${styles.productImage}`}>
             <img src={engine.image || '/images/product-image.jpg'} alt={engine.title} loading="lazy" />
           </div>
         </div>
         <span className={cardStyles.product__code}>{engine.sku}</span>
         <div className={cardStyles.product__data}>
-          <span className={cardStyles.product__name}>
+          <span className={`${cardStyles.product__name} ${styles.productTitle}`}>
             <span className={cardStyles.product__name_value}>{engine.title}</span>
           </span>
-          <span className={cardStyles.product__brand}>
+          <span className={`${cardStyles.product__brand} ${styles.productCharacteristic}`}>
             <span className={cardStyles.product__brand_name}>Производитель: </span>
             <span className={cardStyles.product__brand_value}>{engine.manufacturer}</span>
           </span>
-          {engine.model && <span className={cardStyles.product__brand}>
+          {engine.model && <span className={`${cardStyles.product__brand} ${styles.productCharacteristic}`}>
             <span className={cardStyles.product__brand_name}>Модель: </span>
             <span className={cardStyles.product__brand_value}>{engine.model}</span>
           </span>}
-          <span className={cardStyles.product__brand}>
+          <span className={`${cardStyles.product__brand} ${styles.productCharacteristic}`}>
             <span className={cardStyles.product__brand_name}>Тип: </span>
             <span className={cardStyles.product__brand_value}>{ENGINE_TYPE_LABELS[engine.type] || engine.type}</span>
           </span>
-          <span className={cardStyles.product__price}>
+          <span className={`${cardStyles.product__price} ${styles.productPrice}`}>
             <span className={cardStyles.product__price_name}>Цена: </span>
             <span className={`${cardStyles.product__price_value} ${styles.priceValue}`}>{price}</span>
           </span>
@@ -102,8 +102,19 @@ export default function EnginesCatalog({ engines, meta }) {
 
   return (
     <>
-      <section className={catalogStyles.catalog__hero}>
-        <h1 className={catalogStyles.catalog__title}>Двигатели и блоки</h1>
+      <section className={`${catalogStyles.catalog__hero} ${styles.enginesHero}`}>
+        <h1 className={`${catalogStyles.catalog__title} ${styles.heroTitle}`}>Двигатели и блоки</h1>
+        <div className={`${searchStyles.headerSearch__inputContainer} ${styles.search}`}>
+          <input
+            type="search"
+            className={searchStyles.headerSearch__input}
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder="Поиск по двигателям и блокам"
+            aria-label="Поиск по двигателям и блокам"
+          />
+          {query && <button type="button" className={searchStyles.headerSearch__clearBtn} onClick={() => setQuery('')} aria-label="Очистить поиск">✕</button>}
+        </div>
       </section>
       <section className={`${catalogStyles.catalog__content} ${styles.catalogContent}`}>
         <div className={styles.layout}>
@@ -116,17 +127,6 @@ export default function EnginesCatalog({ engines, meta }) {
             />
           </aside>
           <div className={`${catalogStyles.container} ${styles.container}`}>
-            <div className={`${searchStyles.headerSearch__inputContainer} ${styles.search}`}>
-              <input
-                type="search"
-                className={searchStyles.headerSearch__input}
-                value={query}
-                onChange={(event) => setQuery(event.target.value)}
-                placeholder="Поиск по двигателям и блокам"
-                aria-label="Поиск по двигателям и блокам"
-              />
-              {query && <button type="button" className={searchStyles.headerSearch__clearBtn} onClick={() => setQuery('')} aria-label="Очистить поиск">✕</button>}
-            </div>
             {engines.length ? (
               <div className={`${catalogStyles.products} ${styles.products}`}>
                 {engines.map((engine) => <EngineCard key={engine.id} engine={engine} />)}
