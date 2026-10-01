@@ -58,6 +58,7 @@ export default function EnginesCatalog({ engines, meta }) {
   const searchParams = useSearchParams();
   const manufacturerParam = searchParams.get('manufacturer');
   const searchParam = searchParams.get('search') || '';
+  const [filterDrawerOpen, setFilterDrawerOpen] = useState(false);
   const [selectedManufacturers, setSelectedManufacturers] = useState(
     manufacturerParam ? manufacturerParam.split(',') : [],
   );
@@ -103,7 +104,23 @@ export default function EnginesCatalog({ engines, meta }) {
   return (
     <>
       <section className={`${catalogStyles.catalog__hero} ${styles.enginesHero}`}>
-        <h1 className={`${catalogStyles.catalog__title} ${styles.heroTitle}`}>Двигатели и блоки</h1>
+        <div className={styles.heroTitleRow}>
+          <h1 className={`${catalogStyles.catalog__title} ${styles.heroTitle}`}>Двигатели и блоки</h1>
+          <button
+            type="button"
+            className={styles.mobileFilterButton}
+            onClick={() => setFilterDrawerOpen(true)}
+            aria-label="Открыть фильтры производителей"
+            aria-expanded={filterDrawerOpen}
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+              <path d="M4 6h16M7 12h10M10 18h4" />
+              <circle cx="8" cy="6" r="2" fill="currentColor" stroke="none" />
+              <circle cx="15" cy="12" r="2" fill="currentColor" stroke="none" />
+              <circle cx="12" cy="18" r="2" fill="currentColor" stroke="none" />
+            </svg>
+          </button>
+        </div>
         <div className={`${searchStyles.headerSearch__inputContainer} ${styles.search}`}>
           <input
             type="search"
@@ -144,6 +161,24 @@ export default function EnginesCatalog({ engines, meta }) {
           </div>
         </div>
       </section>
+      <div
+        className={`${styles.filterDrawerBackdrop} ${filterDrawerOpen ? styles.filterDrawerOpen : ''}`}
+        onClick={() => setFilterDrawerOpen(false)}
+        aria-hidden={!filterDrawerOpen}
+      >
+        <aside className={styles.filterDrawer} onClick={(event) => event.stopPropagation()} role="dialog" aria-modal="true" aria-label="Производитель">
+          <div className={styles.filterDrawerHeader}>
+            <h2>Производитель</h2>
+            <button type="button" onClick={() => setFilterDrawerOpen(false)} aria-label="Закрыть фильтры">×</button>
+          </div>
+          <BrandFilter
+            title=""
+            allBrands={manufacturerOptions}
+            selectedBrands={selectedManufacturers}
+            onChange={updateManufacturers}
+          />
+        </aside>
+      </div>
     </>
   );
 }

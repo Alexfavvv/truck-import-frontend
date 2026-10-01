@@ -14,6 +14,15 @@
   flex: 0 0 auto;
 }
 
+.heroTitleRow {
+  display: contents;
+}
+
+.mobileFilterButton,
+.filterDrawerBackdrop {
+  display: none;
+}
+
 .layout {
   display: flex;
   justify-content: space-between;
@@ -95,13 +104,38 @@
     gap: 1rem;
   }
 
+  .heroTitleRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+
   .heroTitle {
-    align-self: center;
+    align-self: flex-start;
+    margin: 0;
+    font-size: calc(20vw / 3.9);
+    font-weight: 500;
+    text-align: left;
+  }
+
+  .mobileFilterButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: 1px solid #D6D6D6;
+    border-radius: 8px;
+    background: #FFFFFF;
+    color: #1A1A1A;
+    cursor: pointer;
+    flex: 0 0 auto;
   }
 
   .search {
-    flex-basis: auto;
-    max-width: none;
+    display: none;
   }
 
   .layout {
@@ -111,9 +145,7 @@
   }
 
   .filters {
-    width: 100%;
-    flex-basis: auto;
-    margin-bottom: 2rem;
+    display: none;
   }
 
   .container {
@@ -132,6 +164,101 @@
 
   .cardLink .priceValue {
     font-size: calc(20vw / 3.9);
+  }
+
+  .productCard .productTitle,
+  .productCard .priceValue {
+    font-weight: 500;
+  }
+
+  .productCard .productCharacteristic {
+    font-size: calc(14vw / 3.9);
+  }
+
+  .filterDrawerBackdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 1200;
+    background: rgba(0, 0, 0, 0.45);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.25s ease, visibility 0.25s ease;
+  }
+
+  .filterDrawerOpen {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .filterDrawer {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: min(360px, 88vw);
+    height: 100%;
+    overflow-y: auto;
+    padding: 24px 20px;
+    background: #FFFFFF;
+    box-shadow: -8px 0 24px rgba(0, 0, 0, 0.16);
+    transform: translateX(100%);
+    transition: transform 0.25s ease;
+  }
+
+  .filterDrawerOpen .filterDrawer {
+    transform: translateX(0);
+  }
+
+  .filterDrawerHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+
+  .filterDrawerHeader h2 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 500;
+  }
+
+  .filterDrawerHeader button {
+    border: 0;
+    padding: 0 4px;
+    background: transparent;
+    color: #1A1A1A;
+    font-size: 30px;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  .filterDrawer :global(p:empty) {
+    display: none;
+  }
+
+  .filterDrawer :global(label) {
+    gap: 12px;
+  }
+
+  .filterDrawer :global(label span:first-of-type) {
+    width: 20px;
+    height: 20px;
+    flex: 0 0 20px;
+    border-width: 1px;
+  }
+
+  .filterDrawer :global(label span:first-of-type::after) {
+    left: 6px;
+    top: 2px;
+    width: 5px;
+    height: 10px;
+  }
+
+  .filterDrawer :global(label span:last-child) {
+    font-size: 16px;
+    line-height: 1.3;
   }
 }
 
