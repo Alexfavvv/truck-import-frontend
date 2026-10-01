@@ -7,6 +7,8 @@ import ProductInformationSections from '@/components/ui/Product/ProductInformati
 import { getEngineBySlug } from '@/features/engines/services/enginesCatalog';
 import { ENGINE_TYPE_LABELS } from '@/features/engines/data/manufacturers';
 
+const ENGINE_DESCRIPTION_FALLBACK = 'Двигатель или блок предназначен для профессионального использования и поставляется под заказ. Подходит для ремонта и замены силового агрегата соответствующей серии. Поставка осуществляется со склада партнёров в Европе с доставкой по России.';
+
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   const engine = await getEngineBySlug(slug);
@@ -22,6 +24,7 @@ export default async function EnginePage({ params }) {
   const price = hasPrice
     ? `${engine.price} ${engine.currency === 'RUB' ? '₽' : engine.currency}`
     : 'По запросу';
+  const aboutText = engine.description?.trim() || ENGINE_DESCRIPTION_FALLBACK;
 
   return (
     <main className={styles.productMainContainer}>
@@ -83,12 +86,10 @@ export default async function EnginePage({ params }) {
             </div>
           </aside>
         </section>
-        {engine.description && (
-          <section className={styles.aboutSection}>
-            <h2 className={styles.aboutTitle}>Описание товара</h2>
-            <p className={styles.aboutText}>{engine.description}</p>
-          </section>
-        )}
+        <section className={styles.aboutSection}>
+          <h2 className={styles.aboutTitle}>О товаре:</h2>
+          <p className={styles.aboutText}>{aboutText}</p>
+        </section>
         <ProductInformationSections />
       </div>
     </main>

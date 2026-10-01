@@ -74,7 +74,11 @@
 
 .productCard .productCharacteristic,
 .productCard .productCharacteristic * {
-  color: #4D4D4D;
+  color: #808080;
+}
+
+.productCard .productCharacteristic {
+  font-size: calc(14vw / 14.4);
 }
 
 .productCard .productPrice {
