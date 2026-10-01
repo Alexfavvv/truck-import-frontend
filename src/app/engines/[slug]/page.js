@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import styles from '@/components/ui/Product/product.module.css';
+import ProductInformationSections from '@/components/ui/Product/ProductInformationSections';
 import { getEngineBySlug } from '@/features/engines/services/enginesCatalog';
 import { ENGINE_TYPE_LABELS } from '@/features/engines/data/manufacturers';
 
@@ -50,6 +51,9 @@ export default async function EnginePage({ params }) {
             </div>
           </div>
           <aside className={styles.productBuyCard}>
+            <div className={styles.availabilityRow}>
+              <span className={styles.inStockBadge}>Доступно для заказа</span>
+            </div>
             <div className={styles.infoRow}><span className={styles.priceLabel}>Цена:</span><span className={styles.priceValue}>{price}</span></div>
             {engine.availability && <p>{engine.availability}</p>}
             <a className={styles.helpButton} href="tel:+74957403306">Уточнить цену</a>
@@ -61,6 +65,7 @@ export default async function EnginePage({ params }) {
             <p className={styles.aboutText}>{engine.description}</p>
           </section>
         )}
+        <ProductInformationSections />
       </div>
     </main>
   );
