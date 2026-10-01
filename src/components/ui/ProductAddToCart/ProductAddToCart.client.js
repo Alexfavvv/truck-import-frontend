@@ -14,7 +14,6 @@ function applyCartPayload(data, productId, productSku, setCount, setInputValue) 
 }
 
 export default function ProductAddToCartClient({
-  props_count = 0,
   productId,
   productSku,
 }) {
@@ -44,7 +43,7 @@ export default function ProductAddToCartClient({
   }, [fetchCart]);
 
   const handleCountChange = useCallback(async (newCount) => {
-    const validatedCount = Math.max(0, Math.min(newCount, props_count));
+    const validatedCount = Math.max(0, Math.min(newCount, 999));
 
     if (validatedCount > 0) {
       const ok = await ensureAuthenticatedForCart();
@@ -66,7 +65,7 @@ export default function ProductAddToCartClient({
       }
       console.error('Ошибка обновления корзины:', error);
     }
-  }, [count, productId, productSku, props_count, fetchCart]);
+  }, [count, productId, productSku, fetchCart]);
 
   const handleInputBlur = async () => {
     const numValue = parseInt(inputValue, 10) || 0;
@@ -84,25 +83,14 @@ export default function ProductAddToCartClient({
       <CartAuthChoiceModal open={authChoiceOpen} onClose={() => setAuthChoiceOpen(false)} />
       {count === 0 ? (
         <div className={`${styles.cart__button} ${styles.cart__button_add}`}>
-          {props_count > 0 ? (
-            <button
-              type="button"
-              className={styles.cart__button_enabled}
-              aria-label={`Добавить ${productSku} в корзину`}
-              onClick={() => void handleCountChange(1)}
-            >
-              Добавить в корзину
-            </button>
-          ) : (
-            <button
-              type="button"
-              className={styles.cart__button_disabled}
-              disabled
-              aria-label="Товара нет в наличии"
-            >
-              Нет в наличии
-            </button>
-          )}
+          <button
+            type="button"
+            className={styles.cart__button_enabled}
+            aria-label={`Добавить ${productSku} в корзину`}
+            onClick={() => void handleCountChange(1)}
+          >
+            Добавить в корзину
+          </button>
         </div>
       ) : (
         <div className={styles.cart__button}>
@@ -121,8 +109,8 @@ export default function ProductAddToCartClient({
             onChange={(e) => setInputValue(e.target.value)}
             onBlur={() => void handleInputBlur()}
             onKeyDown={(e) => void handleInputKeyDown(e)}
-            max={props_count}
-            min="0"
+            max={999}
+            min={1}
             className={styles.counter__input}
             aria-label={`Количество товара ${productSku}`}
           />
@@ -131,7 +119,7 @@ export default function ProductAddToCartClient({
             type="button"
             className={styles.cart__button_enabled}
             onClick={() => void handleCountChange(count + 1)}
-            disabled={count >= props_count}
+            disabled={count >= 999}
             aria-label="Увеличить количество"
           >
             +

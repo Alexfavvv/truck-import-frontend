@@ -209,10 +209,7 @@ export default function CartClient() {
 
   // Изменение количества с сохранением в куки
   const handleQtyChange = async (productId, newQty) => {
-    const quantity = Math.max(1, Math.min(
-      products[productId]?.count || 999,
-      Number(newQty) || 1
-    ));
+    const quantity = Math.max(1, Math.min(999, Number(newQty) || 1));
 
     // 1. Оптимистичное обновление UI
     setProducts(prev => ({
@@ -466,7 +463,7 @@ export default function CartClient() {
                           <input
                             type="number"
                             min={1}
-                            max={product.count || 999}
+                            max={999}
                             value={quantity}
                             onChange={e => {
                               const value = e.target.value;
@@ -484,13 +481,12 @@ export default function CartClient() {
                           <button
                             type="button"
                             onClick={() => {
-                              const maxQty = product.count || 999;
-                              const newQty = Math.min(maxQty, quantity + 1);
+                              const newQty = Math.min(999, quantity + 1);
                               handleQtyChange(productId, newQty);
                             }}
                             className={styles.quantityButton}
                             aria-label="Увеличить количество"
-                            disabled={quantity == product.count}
+                            disabled={quantity >= 999}
                           >
                             +
                           </button>
