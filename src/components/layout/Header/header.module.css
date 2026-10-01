@@ -39,7 +39,10 @@
     color: #B19448;
 }
 
-.enginesNavLink {
+.topNavLink.enginesNavLink,
+.topNavLink.enginesNavLink:hover,
+.topNavLink.enginesNavLink:focus,
+.topNavLink.enginesNavLink:active {
     color: #EFBF04;
 }
 
