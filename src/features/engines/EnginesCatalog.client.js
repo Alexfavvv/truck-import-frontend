@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import Brands from '@/components/ui/Brands/Brands';
 import BrandFilter from '@/components/ui/BrandFilter/BrandFilter';
 import { ENGINE_MANUFACTURERS, ENGINE_TYPE_LABELS } from './data/manufacturers';
 import catalogStyles from '@/app/catalog/page.module.css';
@@ -12,18 +11,12 @@ import searchStyles from '@/components/ui/Search/headerSearch.module.css';
 import styles from './engines.module.css';
 
 const manufacturerOptions = ENGINE_MANUFACTURERS.map(({ name }) => ({ value: name, label: name }));
-const manufacturerLinks = ENGINE_MANUFACTURERS.map((manufacturer) => ({
-  ...manufacturer,
-  label: manufacturer.name,
-  href: `/engines?manufacturer=${encodeURIComponent(manufacturer.name)}`,
-}));
-
 function EngineCard({ engine }) {
   const href = `/engines/${engine.slug}`;
   const numericPrice = Number(engine.price);
   const price = Number.isFinite(numericPrice) && numericPrice > 0
     ? `${engine.price} ${engine.currency === 'RUB' ? '₽' : engine.currency}`
-    : 'Цена по запросу';
+    : 'По запросу';
 
   return (
     <article className={cardStyles.product__card}>
@@ -52,7 +45,7 @@ function EngineCard({ engine }) {
           </span>
           <span className={cardStyles.product__price}>
             <span className={cardStyles.product__price_name}>Цена: </span>
-            <span className={cardStyles.product__price_value}>{price}</span>
+            <span className={`${cardStyles.product__price_value} ${styles.priceValue}`}>{price}</span>
           </span>
         </div>
       </Link>
@@ -113,7 +106,6 @@ export default function EnginesCatalog({ engines, meta }) {
         <h1 className={catalogStyles.catalog__title}>Двигатели и блоки</h1>
       </section>
       <section className={`${catalogStyles.catalog__content} ${styles.catalogContent}`}>
-        <Brands brands={manufacturerLinks} theme="gray" />
         <div className={styles.layout}>
           <aside className={styles.filters}>
             <BrandFilter

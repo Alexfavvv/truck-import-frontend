@@ -7,7 +7,7 @@
   display: flex;
   justify-content: space-between;
   width: 100%;
-  margin-top: 4rem;
+  margin-top: 0;
 }
 
 .filters {
@@ -36,15 +36,19 @@
 .cardLink img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  padding: 1.5rem;
+  object-fit: cover;
+  padding: 0;
+}
+
+.cardLink .priceValue {
+  font-size: calc(20vw / 14.4);
 }
 
 @media screen and (max-width: 767px) {
   .layout {
     flex-direction: column;
     gap: 2rem;
-    margin-top: 2rem;
+    margin-top: 0;
   }
 
   .filters {
@@ -61,5 +65,9 @@
   .products {
     width: 100%;
     justify-content: center;
+  }
+
+  .cardLink .priceValue {
+    font-size: calc(20vw / 3.9);
   }
 }
