@@ -39,6 +39,10 @@
     color: #B19448;
 }
 
+.enginesNavLink {
+    color: #EFBF04;
+}
+
 .topRight {
     display: flex;
     align-items: center;

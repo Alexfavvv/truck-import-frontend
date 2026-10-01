@@ -90,7 +90,11 @@ export default function Header() {
         <div className={styles.topBar}>
           <nav className={styles.topNav}>
             {topNavLinks.map((link, idx) => (
-              <Link key={idx} href={link.href} className={styles.topNavLink}>
+              <Link
+                key={idx}
+                href={link.href}
+                className={`${styles.topNavLink} ${link.href === "/engines" ? styles.enginesNavLink : ""}`}
+              >
                 {link.title}
               </Link>
             ))}

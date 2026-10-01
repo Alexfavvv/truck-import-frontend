@@ -58,6 +58,14 @@
 
 .productCard .productTitle {
   margin-bottom: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.productCard .productCharacteristic,
+.productCard .productCharacteristic * {
+  color: #4D4D4D;
 }
 
 .productCard .productPrice {
