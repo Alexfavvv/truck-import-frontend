@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import styles from '@/components/ui/Product/product.module.css';
+import cartStyles from '@/components/ui/ProductAddToCart/productaddtocart.module.css';
+import { ProductHelpButton } from '@/components/ui/Product/Product';
 import ProductInformationSections from '@/components/ui/Product/ProductInformationSections';
 import { getEngineBySlug } from '@/features/engines/services/enginesCatalog';
 import { ENGINE_TYPE_LABELS } from '@/features/engines/data/manufacturers';
@@ -15,8 +17,9 @@ export default async function EnginePage({ params }) {
   const { slug } = await params;
   const engine = await getEngineBySlug(slug);
   if (!engine) notFound();
-  const numericPrice = Number(engine.price);
-  const price = Number.isFinite(numericPrice) && numericPrice > 0
+  const numericPrice = Number(String(engine.price ?? '').trim().replace(',', '.'));
+  const hasPrice = Number.isFinite(numericPrice) && numericPrice > 0;
+  const price = hasPrice
     ? `${engine.price} ${engine.currency === 'RUB' ? '₽' : engine.currency}`
     : 'По запросу';
 
@@ -54,9 +57,30 @@ export default async function EnginePage({ params }) {
             <div className={styles.availabilityRow}>
               <span className={styles.inStockBadge}>Доступно для заказа</span>
             </div>
+            <div className={styles.infoRow}><span className={styles.infoLabel}>Сроки доставки:</span><span className={styles.infoValue}>от 15 дней</span></div>
             <div className={styles.infoRow}><span className={styles.priceLabel}>Цена:</span><span className={styles.priceValue}>{price}</span></div>
-            {engine.availability && <p>{engine.availability}</p>}
-            <a className={styles.helpButton} href="tel:+74957403306">Уточнить цену</a>
+            <div className={styles.deliveryMethodsSection}>
+              <p className={styles.deliveryMethodsTitle}>Способы получения:</p>
+              <ul className={styles.deliveryMethodsList}>
+                <li><span>• Самовывоз </span><a href="#map" className={styles.addressLink}>г.Люберцы, ул. Каскадная 20к2, пом.1.</a></li>
+                <li><span>• Доставка ТК по всей России</span></li>
+              </ul>
+            </div>
+            <div className={styles.actionsContainer}>
+              <ProductHelpButton />
+              {hasPrice ? (
+                <button
+                  type="button"
+                  className={cartStyles.cart__button_enabled}
+                  disabled
+                  title="Добавление двигателей в корзину пока не подключено"
+                >
+                  Добавить в корзину
+                </button>
+              ) : (
+                <a className={cartStyles.cart__button_enabled} href="tel:+74957403306">Уточнить цену</a>
+              )}
+            </div>
           </aside>
         </section>
         {engine.description && (

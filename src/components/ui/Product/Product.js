@@ -1,9 +1,9 @@
 'use client'
 
-import { useRef } from 'react';
 import Link from 'next/link';
 import SafeImage from "@/components/ui/SafeImage/SafeImage";
 import ProductAddToCart from "@/components/ui/ProductAddToCart/ProductAddToCart";
+import { useRef } from 'react';
 import Feedback from "@/components/ui/Feedback/Feedback";
 import ProductInformationSections from "@/components/ui/Product/ProductInformationSections";
 import brandsData from "@/json/brands.json";
@@ -18,37 +18,47 @@ const DEFAULT_RELATED = [
     { id: 104, sku: 'MAN-998123', name: 'Ремкомплект', brand: 'MAN', count: 999 }
 ];
 
+export function ProductHelpButton() {
+    const dialogRef = useRef(null);
+
+    const handleDialogClick = (e) => {
+        const dialog = dialogRef.current;
+        if (!dialog) return;
+        const rect = dialog.getBoundingClientRect();
+        if (
+            e.clientX < rect.left || e.clientX > rect.right ||
+            e.clientY < rect.top || e.clientY > rect.bottom
+        ) {
+            dialog.close();
+        }
+    };
+
+    return (
+        <>
+            <button type="button" className={styles.helpButton} onClick={() => dialogRef.current?.showModal()}>
+                <span>Помощь в подборе</span>
+                <img src="/images/btn-avatar.png" alt="Менеджер" className={styles.managerAvatar} />
+            </button>
+            <dialog ref={dialogRef} className={styles.modalDialog} onClick={handleDialogClick}>
+                <div className={styles.modalWrapper}>
+                    <Feedback />
+                    <button className={styles.modalClose} onClick={() => dialogRef.current?.close()} aria-label="Закрыть">
+                        <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#FFFFFF" strokeWidth="2">
+                            <path d="M1 1L19 19M19 1L1 19" />
+                        </svg>
+                    </button>
+                </div>
+            </dialog>
+        </>
+    );
+}
+
 function displayPrice(price) {
     const numericPrice = Number(String(price ?? '').replace(/\s/g, '').replace(',', '.'));
     return Number.isFinite(numericPrice) && numericPrice > 0 ? `${price} ₽` : 'Цена по запросу';
 }
 
 export default function Product({ product = {}, cartAuthenticated = false, relatedProducts = DEFAULT_RELATED }) {
-    const dialogRef = useRef(null);
-
-    const closeModal = () => {
-        dialogRef.current?.close();
-    };
-
-    const openModal = () => {
-        dialogRef.current?.showModal();
-    };
-
-    const handleDialogClick = (e) => {
-        const dialog = dialogRef.current;
-        if (!dialog) return;
-        const rect = dialog.getBoundingClientRect();
-        const isClickOutside = (
-            e.clientX < rect.left ||
-            e.clientX > rect.right ||
-            e.clientY < rect.top ||
-            e.clientY > rect.bottom
-        );
-        if (isClickOutside) {
-            dialog.close();
-        }
-    };
-
     const specifications = product.specifications || [];
     const brandLabel = product.brand_name || product.brand || product.truck_manufacturers?.[0]?.name || 'Kolbenschmidt';
     const hasBrandLink = Boolean(product.brand) && BRAND_SLUGS.has(product.brand);
@@ -183,18 +193,7 @@ export default function Product({ product = {}, cartAuthenticated = false, relat
                         <div className={styles.actionsContainer}>
                             
                             {/* Кнопка "Помощь в подборе" с аватаркой менеджера */}
-                            <button
-                                type="button"
-                                className={styles.helpButton}
-                                onClick={openModal}
-                            >
-                                <span>Помощь в подборе</span>
-                                <img
-                                    src="/images/btn-avatar.png"
-                                    alt="Менеджер"
-                                    className={styles.managerAvatar}
-                                />
-                            </button>
+                            <ProductHelpButton />
 
                             {/* Кнопка "Добавить в корзину" */}
                             <div className={styles.cartBtnWrapper}>
@@ -254,21 +253,6 @@ export default function Product({ product = {}, cartAuthenticated = false, relat
 
             </div>
 
-            {/* Модальное окно обратной связи */}
-            <dialog
-                ref={dialogRef}
-                className={styles.modalDialog}
-                onClick={handleDialogClick}
-            >
-                <div className={styles.modalWrapper}>
-                    <Feedback />
-                    <button className={styles.modalClose} onClick={closeModal} aria-label="Закрыть">
-                        <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#FFFFFF" strokeWidth="2">
-                            <path d="M1 1L19 19M19 1L1 19" />
-                        </svg>
-                    </button>
-                </div>
-            </dialog>
         </main>
     );
 }
