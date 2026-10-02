@@ -1,7 +1,45 @@
 .headerSearchWrapper {
     position: relative;
     width: 100%;
+    z-index: 20;
 }
+
+.preview {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    width: 100%;
+    display: flex;
+    gap: 14px;
+    padding: 12px;
+    border: 1px solid #E5E5E5;
+    border-radius: 12px;
+    background: #FFFFFF;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+    color: #111111;
+    text-decoration: none;
+    box-sizing: border-box;
+}
+
+.previewImage {
+    flex: 0 0 76px;
+    height: 76px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 8px;
+    background: #F4F4F3;
+    color: #888888;
+    font-size: 12px;
+}
+
+.previewImage img { width: 100%; height: 100%; object-fit: contain; }
+.previewDetails { display: flex; flex-direction: column; min-width: 0; gap: 3px; }
+.previewSku { color: #777777; font-size: 12px; }
+.previewTitle { font-size: 14px; font-weight: 600; line-height: 1.25; }
+.previewBrand { color: #777777; font-size: 12px; }
+.previewPrice { font-size: 15px; font-weight: 600; }
 
 /* Десктопная строка поиска */
 .headerSearch__desktopBar {
@@ -237,6 +275,8 @@
 
 /* АДАПТИВНОСТЬ ДЛЯ МОБИЛЬНЫХ */
 @media screen and (max-width: 767px) {
+    .preview { gap: 10px; padding: 10px; }
+    .previewImage { flex-basis: 64px; height: 64px; }
     .headerSearch__desktopBar {
         display: block;
         width: 100%;

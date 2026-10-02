@@ -34,6 +34,18 @@
     cursor: default;
 }
 
+.cart__button_added,
+.cart__button_added:disabled {
+    background: #2F6940;
+    color: #FFFFFF;
+}
+
+.cart__check {
+    font-size: 1.45em;
+    font-weight: 700;
+    line-height: 1;
+}
+
 .cart__button_disabled {
     display: flex;
     flex-direction: row;

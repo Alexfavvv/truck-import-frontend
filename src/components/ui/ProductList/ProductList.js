@@ -24,8 +24,16 @@ export default function ProductList({ products }) {
     const onRefresh = () => {
       void fetchCart();
     };
+    const onCartUpdated = (event) => {
+      if (Array.isArray(event.detail?.i)) setCart({ i: event.detail.i });
+      else void fetchCart();
+    };
     window.addEventListener('catalog-auth-refresh', onRefresh);
-    return () => window.removeEventListener('catalog-auth-refresh', onRefresh);
+    window.addEventListener('cart-updated', onCartUpdated);
+    return () => {
+      window.removeEventListener('catalog-auth-refresh', onRefresh);
+      window.removeEventListener('cart-updated', onCartUpdated);
+    };
   }, [fetchCart]);
 
   if (!innerWidth) return null;
@@ -37,7 +45,6 @@ export default function ProductList({ products }) {
         <Suspense key={product.id} fallback={<p>Loading...</p>}>
           <ProductItem
             product={product}
-            innerWidth={innerWidth}
             cart={cart}
             onNeedAuth={() => setAuthChoiceOpen(true)}
             fetchCart={fetchCart}
@@ -48,50 +55,37 @@ export default function ProductList({ products }) {
   );
 }
 
-function ProductItem({ product, innerWidth, cart, onNeedAuth, fetchCart }) {
+function ProductItem({ product, cart, onNeedAuth, fetchCart }) {
   // количество товара берется **из актуального состояния cart**
   const currentCount =
     cart.i.find((x) => cartRowKeyMatchesProduct(x[0], product.id, product.sku))?.[1] || 0;
 
-  const [count, setCount] = useState(currentCount);
-  const [inputValue, setInputValue] = useState(String(currentCount));
+  const [adding, setAdding] = useState(false);
   const numericPrice = Number(String(product.price ?? '').replace(/\s/g, '').replace(',', '.'));
   const priceDisplay = Number.isFinite(numericPrice) && numericPrice > 0 ? `${product.price} ₽` : 'Цена по запросу';
 
-  // обновляем состояние, когда меняется cart
-  useEffect(() => {
-    setCount(currentCount);
-    setInputValue(String(currentCount));
-  }, [currentCount]);
-
-  const handleCountChange = async newCount => {
-    const validatedCount = Math.max(0, Math.min(newCount, 999));
-
-    if (validatedCount > 0) {
-      const ok = await ensureAuthenticatedForCart();
-      if (!ok) {
+  const handleAdd = async () => {
+    if (adding || currentCount > 0) return;
+    const ok = await ensureAuthenticatedForCart();
+    if (!ok) {
+      onNeedAuth?.();
+      await fetchCart();
+      return;
+    }
+    setAdding(true);
+    try {
+      await apiPostCart({ action: 'set', productId: product.id, quantity: 1 });
+      await fetchCart();
+    } catch (e) {
+      if (e?.status === 401) {
         onNeedAuth?.();
         await fetchCart();
         return;
       }
-    }
-
-    try {
-      await apiPostCart({ action: 'set', productId: product.id, quantity: validatedCount });
-      await fetchCart();
-    } catch (e) {
-      if (e?.status === 401) {
-        if (validatedCount > count) onNeedAuth?.();
-        await fetchCart();
-        return;
-      }
       console.error(e);
+    } finally {
+      setAdding(false);
     }
-  };
-
-  const handleInputBlur = async () => {
-    const numValue = parseInt(inputValue) || 1;
-    await handleCountChange(numValue);
   };
 
   return (
@@ -132,45 +126,20 @@ function ProductItem({ product, innerWidth, cart, onNeedAuth, fetchCart }) {
         </span>
 
         <div className={styles.cart__button}>
-          {count > 0 ? (
-            <>
-              <button
-                className={styles.cart__button_enabled}
-                onClick={() => handleCountChange(count - 1)}
-              >
-                -
-              </button>
-
-              <input
-                type="number"
-                value={inputValue}
-                onChange={e => setInputValue(e.target.value)}
-                onBlur={handleInputBlur}
-                onKeyDown={e => e.key === 'Enter' && handleInputBlur()}
-                max={999}
-                className={styles.counter__input}
-              />
-
-              <button
-                className={styles.cart__button_enabled}
-                onClick={() => handleCountChange(count + 1)}
-                disabled={count >= 999}
-              >
-                +
-              </button>
+          {currentCount > 0 ? (
+            <button className={`${styles.cart__button_enabled} ${styles.cart__button_added}`} type="button" disabled>
+              Товар в корзине <span className={styles.cart__check} aria-hidden="true">✓</span>
+            </button>
           ) : (
             <button
               className={styles.cart__button_enabled}
               type="button"
-              onClick={() => void handleCountChange(1)}
+              onClick={() => void handleAdd()}
+              disabled={adding}
             >
               Добавить в корзину
             </button>
           )}
-
-          {/* {count > 0 && (
-            <span style={{ marginLeft: 8 }}>В корзине: {count}</span>
-          )} */}
         </div>
       </div>
     </div>

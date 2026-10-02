@@ -1,12 +1,14 @@
 'use client';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import Link from 'next/link';
 import ProductList from '@/components/ui/ProductList/ProductList';
 import headerSearchStyles from './headerSearch.module.css';
 
 export default function HeaderSearch({ style, onOpenChange, isOpenFromParent }) {
   const pathname = usePathname();
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
@@ -14,6 +16,9 @@ export default function HeaderSearch({ style, onOpenChange, isOpenFromParent }) 
   const [loading, setLoading] = useState(false);
   
   const inputRef = useRef(null);
+  const wrapperRef = useRef(null);
+  const [preview, setPreview] = useState(null);
+  const [previewVisible, setPreviewVisible] = useState(false);
 
   const fetchResults = useCallback(async (q) => {
     if (!q.trim()) {
@@ -44,9 +49,46 @@ export default function HeaderSearch({ style, onOpenChange, isOpenFromParent }) 
   const handleSearchSubmit = (e) => {
     e?.preventDefault();
     if (!query.trim()) return;
-    openSearch();
-    fetchResults(query);
+    setPreviewVisible(false);
+    closeSearch();
+    router.push(`/catalog?q=${encodeURIComponent(query.trim())}`);
   };
+
+  useEffect(() => {
+    const q = query.trim();
+    if (isOpen || q.length < 3) {
+      setPreview(null);
+      return;
+    }
+    const controller = new AbortController();
+    const timer = setTimeout(async () => {
+      try {
+        const res = await fetch(`/api/search?q=${encodeURIComponent(q)}&limit=5`, { signal: controller.signal });
+        const data = await res.json();
+        if (!res.ok) throw new Error('Search failed');
+        const products = Array.isArray(data.products) ? data.products : [];
+        const normalized = q.toLowerCase();
+        const best = products.find((item) => String(item.sku || '').toLowerCase() === normalized)
+          || products.find((item) => String(item.sku || '').toLowerCase().startsWith(normalized))
+          || products[0] || null;
+        setPreview(best);
+      } catch (error) {
+        if (error.name !== 'AbortError') setPreview(null);
+      }
+    }, 300);
+    return () => {
+      clearTimeout(timer);
+      controller.abort();
+    };
+  }, [query, isOpen]);
+
+  useEffect(() => {
+    const onPointerDown = (event) => {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) setPreviewVisible(false);
+    };
+    document.addEventListener('pointerdown', onPointerDown);
+    return () => document.removeEventListener('pointerdown', onPointerDown);
+  }, []);
 
   // Debounce search input при открытом окне
   useEffect(() => {
@@ -87,6 +129,7 @@ export default function HeaderSearch({ style, onOpenChange, isOpenFromParent }) 
 
   useEffect(() => {
     closeSearch();
+    setPreviewVisible(false);
   }, [pathname]);
 
   useEffect(() => {
@@ -106,7 +149,7 @@ export default function HeaderSearch({ style, onOpenChange, isOpenFromParent }) 
   };
 
   return (
-    <div className={headerSearchStyles.headerSearchWrapper} style={style}>
+    <div ref={wrapperRef} className={headerSearchStyles.headerSearchWrapper} style={style}>
       {/* Кнопка открытия поиска для мобильных версий */}
       <button
         type="button"
@@ -139,7 +182,8 @@ export default function HeaderSearch({ style, onOpenChange, isOpenFromParent }) 
             type="text"
             className={headerSearchStyles.headerSearch__input}
             value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            onChange={(e) => { setQuery(e.target.value); setPreview(null); setPreviewVisible(true); }}
+            onFocus={() => setPreviewVisible(true)}
             placeholder="Введите номер запчасти"
           />
           {query && (
@@ -149,6 +193,8 @@ export default function HeaderSearch({ style, onOpenChange, isOpenFromParent }) 
               onClick={() => {
                 setQuery('');
                 setResults([]);
+                setPreview(null);
+                setPreviewVisible(false);
               }}
               aria-label="Очистить"
             >
@@ -163,6 +209,27 @@ export default function HeaderSearch({ style, onOpenChange, isOpenFromParent }) 
           </button>
         </div>
       </form>
+
+      {previewVisible && preview && !isOpen && (
+        <Link
+          href={`/catalog/${encodeURIComponent(preview.sku)}`}
+          className={headerSearchStyles.preview}
+          onClick={() => setPreviewVisible(false)}
+        >
+          <span className={headerSearchStyles.previewImage}>
+            {preview.image_url ? <img src={preview.image_url} alt="" /> : <span>{preview.sku}</span>}
+          </span>
+          <span className={headerSearchStyles.previewDetails}>
+            <span className={headerSearchStyles.previewSku}>{preview.sku}</span>
+            <span className={headerSearchStyles.previewTitle}>{preview.title || preview.name}</span>
+            <span className={headerSearchStyles.previewBrand}>{preview.brand_name || preview.brand || '—'}</span>
+            <span className={headerSearchStyles.previewPrice}>
+              {Number(String(preview.price ?? '').replace(/\s/g, '').replace(',', '.')) > 0
+                ? `${preview.price} ₽` : 'Цена по запросу'}
+            </span>
+          </span>
+        </Link>
+      )}
 
       {/* Полноэкранное окно с результатами поиска */}
       {isOpen && (
@@ -194,6 +261,7 @@ export default function HeaderSearch({ style, onOpenChange, isOpenFromParent }) 
                 className={headerSearchStyles.headerSearch__input}
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
+                onKeyDown={(e) => { if (e.key === 'Enter') handleSearchSubmit(e); }}
                 placeholder="Введите номер запчасти"
               />
               {query && (

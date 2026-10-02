@@ -18,6 +18,7 @@ export const ProductsContainer = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const page = parseInt(searchParams.get("page") || "1");
+  const query = searchParams.get("q")?.trim() || "";
   const brandsParam = searchParams.get("brand");
   const modelsParam = searchParams.get("model");
 
@@ -32,7 +33,7 @@ export const ProductsContainer = () => {
   }, [brandsParam, modelsParam]);
 
   const { data, error, isLoading } = useSWR(
-    `products?page=${page}${
+    query ? `search?q=${encodeURIComponent(query)}&page=${page}` : `products?page=${page}${
       selectedBrands.length > 0 ? `&brand=${selectedBrands.join(",")}` : ''
     }${
       selectedModels.length > 0 ? `&model=${selectedModels.join(",")}` : ''
@@ -81,7 +82,7 @@ export const ProductsContainer = () => {
   };
 
   // Получаем данные
-  const products = data?.paginatedProducts || [];
+  const products = (query ? data?.products : data?.paginatedProducts) || [];
   const totalCount = data?.totalCount || 0;
   const totalPages = Math.ceil(totalCount / LIMIT);
   const allModels = data?.allModels || [];
