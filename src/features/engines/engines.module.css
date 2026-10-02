@@ -242,6 +242,11 @@
     display: none;
   }
 
+  .filterDrawer :global(p:not(:empty)) {
+    font-size: 18px;
+    line-height: 1.3;
+  }
+
   .filterDrawer :global(label) {
     gap: 12px;
   }

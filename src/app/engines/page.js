@@ -10,9 +10,10 @@ export const metadata = {
 export default async function EnginesPage({ searchParams }) {
   const params = await searchParams;
   const manufacturer = typeof params.manufacturer === 'string' ? params.manufacturer : '';
+  const part_type = typeof params.part_type === 'string' ? params.part_type : '';
   const search = typeof params.search === 'string' ? params.search : '';
   const page = typeof params.page === 'string' ? params.page : '1';
-  const { data: engines, meta } = await getEnginesPage({ manufacturer, search, page });
+  const { data: engines, meta } = await getEnginesPage({ manufacturer, part_type, search, page });
   return (
     <main>
       <Suspense fallback={null}>

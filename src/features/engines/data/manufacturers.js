@@ -9,6 +9,14 @@ export const ENGINE_MANUFACTURERS = [
 
 export const ENGINE_TYPE_LABELS = {
   engine: 'Двигатель в сборе',
-  long_block: 'Long Block',
-  short_block: 'Short Block',
+  Engine: 'Двигатель в сборе',
+  long_block: 'Блок двигателя',
+  short_block: 'Блок двигателя',
+  'Long Block': 'Блок двигателя',
+  'Short Block': 'Блок двигателя',
 };
+
+export const ENGINE_PART_TYPE_OPTIONS = [
+  { value: 'engine', label: 'Двигатели' },
+  { value: 'block', label: 'Блоки двигателя' },
+];

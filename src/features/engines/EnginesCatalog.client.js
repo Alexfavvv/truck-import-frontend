@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import BrandFilter from '@/components/ui/BrandFilter/BrandFilter';
-import { ENGINE_MANUFACTURERS, ENGINE_TYPE_LABELS } from './data/manufacturers';
+import { ENGINE_MANUFACTURERS, ENGINE_PART_TYPE_OPTIONS, ENGINE_TYPE_LABELS } from './data/manufacturers';
 import catalogStyles from '@/app/catalog/page.module.css';
 import cardStyles from '@/components/ui/ProductList/productlist.module.css';
 import searchStyles from '@/components/ui/Search/headerSearch.module.css';
@@ -57,16 +57,24 @@ export default function EnginesCatalog({ engines, meta }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const manufacturerParam = searchParams.get('manufacturer');
+  const partTypeParam = searchParams.get('part_type');
   const searchParam = searchParams.get('search') || '';
   const [filterDrawerOpen, setFilterDrawerOpen] = useState(false);
   const [selectedManufacturers, setSelectedManufacturers] = useState(
     manufacturerParam ? manufacturerParam.split(',') : [],
+  );
+  const [selectedPartTypes, setSelectedPartTypes] = useState(
+    partTypeParam ? partTypeParam.split(',') : [],
   );
   const [query, setQuery] = useState(searchParam);
 
   useEffect(() => {
     setSelectedManufacturers(manufacturerParam ? manufacturerParam.split(',') : []);
   }, [manufacturerParam]);
+
+  useEffect(() => {
+    setSelectedPartTypes(partTypeParam ? partTypeParam.split(',') : []);
+  }, [partTypeParam]);
 
   useEffect(() => {
     setQuery(searchParam);
@@ -85,14 +93,25 @@ export default function EnginesCatalog({ engines, meta }) {
     return () => clearTimeout(timer);
   }, [query, searchParam, searchParams, router]);
 
-  const updateManufacturers = (next) => {
-    setSelectedManufacturers(next);
+  const updateFilters = (manufacturers, partTypes) => {
     const params = new URLSearchParams(searchParams.toString());
-    if (next.length) params.set('manufacturer', next.join(','));
+    if (manufacturers.length) params.set('manufacturer', manufacturers.join(','));
     else params.delete('manufacturer');
+    if (partTypes.length) params.set('part_type', partTypes.join(','));
+    else params.delete('part_type');
     params.delete('page');
     const search = params.toString();
     router.replace(search ? `/engines?${search}` : '/engines', { scroll: false });
+  };
+
+  const updateManufacturers = (next) => {
+    setSelectedManufacturers(next);
+    updateFilters(next, selectedPartTypes);
+  };
+
+  const updatePartTypes = (next) => {
+    setSelectedPartTypes(next);
+    updateFilters(selectedManufacturers, next);
   };
 
   const updatePage = (page) => {
@@ -110,7 +129,7 @@ export default function EnginesCatalog({ engines, meta }) {
             type="button"
             className={styles.mobileFilterButton}
             onClick={() => setFilterDrawerOpen(true)}
-            aria-label="Открыть фильтры производителей"
+            aria-label="Открыть фильтры"
             aria-expanded={filterDrawerOpen}
           >
             <svg viewBox="0 0 24 24" aria-hidden="true" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
@@ -136,6 +155,12 @@ export default function EnginesCatalog({ engines, meta }) {
       <section className={`${catalogStyles.catalog__content} ${styles.catalogContent}`}>
         <div className={styles.layout}>
           <aside className={styles.filters}>
+            <BrandFilter
+              title="Тип запчасти"
+              allBrands={ENGINE_PART_TYPE_OPTIONS}
+              selectedBrands={selectedPartTypes}
+              onChange={updatePartTypes}
+            />
             <BrandFilter
               title="Производитель"
               allBrands={manufacturerOptions}
@@ -166,13 +191,19 @@ export default function EnginesCatalog({ engines, meta }) {
         onClick={() => setFilterDrawerOpen(false)}
         aria-hidden={!filterDrawerOpen}
       >
-        <aside className={styles.filterDrawer} onClick={(event) => event.stopPropagation()} role="dialog" aria-modal="true" aria-label="Производитель">
+        <aside className={styles.filterDrawer} onClick={(event) => event.stopPropagation()} role="dialog" aria-modal="true" aria-label="Фильтры">
           <div className={styles.filterDrawerHeader}>
-            <h2>Производитель</h2>
+            <h2>Фильтры</h2>
             <button type="button" onClick={() => setFilterDrawerOpen(false)} aria-label="Закрыть фильтры">×</button>
           </div>
           <BrandFilter
-            title=""
+            title="Тип запчасти"
+            allBrands={ENGINE_PART_TYPE_OPTIONS}
+            selectedBrands={selectedPartTypes}
+            onChange={updatePartTypes}
+          />
+          <BrandFilter
+            title="Производитель"
             allBrands={manufacturerOptions}
             selectedBrands={selectedManufacturers}
             onChange={updateManufacturers}
