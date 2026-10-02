@@ -71,5 +71,8 @@ export async function apiPostCart(body) {
     err.code = data.code;
     throw err;
   }
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('cart-updated', { detail: data }));
+  }
   return data;
 }

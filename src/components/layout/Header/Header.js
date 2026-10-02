@@ -7,6 +7,7 @@ import Link from 'next/link';
 import HeaderSearch from "../../ui/Search/HeaderSearch";
 import Feedback from "@/components/ui/Feedback/Feedback";
 import { fetchPageSettings } from "@/services/pageService";
+import { apiGetCart } from "@/lib/cart-api";
 
 const topNavLinks = [
   { title: "Каталог запчастей", href: "/catalog" },
@@ -26,6 +27,7 @@ const DEFAULT_MESSENGERS = {
 export default function Header() {
   const pathname = usePathname();
   const [burgerActive, setBurgerActive] = useState(false);
+  const [cartCount, setCartCount] = useState(0);
   const dialogRef = useRef(null);
   const [messengers, setMessengers] = useState(DEFAULT_MESSENGERS);
 
@@ -75,6 +77,28 @@ export default function Header() {
       }
     }
     loadSettings();
+  }, []);
+
+  useEffect(() => {
+    let active = true;
+    const updateCartCount = async (event) => {
+      try {
+        const data = event?.detail || await apiGetCart();
+        if (!active) return;
+        const items = Array.isArray(data?.i) ? data.i : [];
+        setCartCount(items.reduce((total, item) => total + (Number(item?.[1]) || 0), 0));
+      } catch {
+        if (active) setCartCount(0);
+      }
+    };
+    void updateCartCount();
+    window.addEventListener('cart-updated', updateCartCount);
+    window.addEventListener('catalog-auth-refresh', updateCartCount);
+    return () => {
+      active = false;
+      window.removeEventListener('cart-updated', updateCartCount);
+      window.removeEventListener('catalog-auth-refresh', updateCartCount);
+    };
   }, []);
 
   useEffect(() => {
@@ -167,12 +191,8 @@ export default function Header() {
             </Link>
 
             <Link href="/cart" className={styles.cartBtn}>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="9" cy="21" r="1" />
-                <circle cx="20" cy="21" r="1" />
-                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
-              </svg>
               <span>Корзина</span>
+              {cartCount > 0 && <span className={styles.cartBadge}>{cartCount}</span>}
             </Link>
           </div>
         </div>
@@ -246,11 +266,8 @@ export default function Header() {
             </Link>
 
             <Link href="/cart" className={styles.mobileCartBtn} aria-label="Корзина">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="9" cy="21" r="1" />
-                <circle cx="20" cy="21" r="1" />
-                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
-              </svg>
+              <span>Корзина</span>
+              {cartCount > 0 && <span className={styles.cartBadge}>{cartCount}</span>}
             </Link>
           </div>
         </div>
