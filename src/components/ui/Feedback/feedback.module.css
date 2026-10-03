@@ -190,7 +190,7 @@
 .errorText { color: #B42318; }
 
 @media (max-width: 480px) {
-    .feedback { gap: 1rem; border-radius: 16px; padding: 1.5rem 1.25rem; }
+    .feedback { gap: 1rem; border-radius: 16px; padding: 1.5rem 2rem; }
     .feedback__subtitle { margin-bottom: 0.3rem; }
     .methodSelect__trigger, .contactInput, .submitButton { min-height: 46px; }
 }
