@@ -1,171 +1,88 @@
 import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 
+const CONTACT_METHODS = {
+  phone: 'Звонок по телефону',
+  telegram: 'Telegram',
+  max: 'MAX',
+};
+const FORM_TYPES = {
+  price: 'Уточнить цену',
+  selection: 'Помощь в подборе',
+};
+
+function escapeHtml(value) {
+  return String(value ?? '').replace(/[&<>"']/g, (character) => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;',
+  })[character]);
+}
+
 export async function POST(request) {
-  let responseData;
-  let statusCode = 200;
-  
+  let data;
   try {
-    // Пробуем прочитать тело запроса
-    let formData;
-    try {
-      formData = await request.json();
-      console.log('Получена форма обратной связи:', {
-        name: formData.name,
-        phone: formData.phone,
-        timestamp: new Date().toISOString()
-      });
-    } catch (jsonError) {
-      console.error('Ошибка парсинга JSON:', jsonError);
-      responseData = {
-        success: false,
-        message: 'Неверный формат данных'
-      };
-      statusCode = 400;
-      throw new Error('Invalid JSON');
+    data = await request.json();
+  } catch {
+    return NextResponse.json({ success: false, message: 'Неверный формат данных' }, { status: 400 });
+  }
+
+  try {
+    const method = String(data.contact_method || '');
+    const contact = String(data.contact_value || '').trim();
+    const formType = String(data.form_type || '');
+
+    if (!CONTACT_METHODS[method] || !FORM_TYPES[formType] || !contact || !data.agreeToPrivacy) {
+      return NextResponse.json({ success: false, message: 'Проверьте контактные данные и согласие на обработку.' }, { status: 400 });
     }
 
-    // Валидация полей
-    if (!formData.name || !formData.phone) {
-      responseData = {
-        success: false,
-        message: 'Заполните имя и телефон'
-      };
-      statusCode = 400;
-      throw new Error('Missing required fields');
-    }
+    const submittedAt = new Date().toLocaleString('ru-RU');
+    const pageUrl = String(data.pageUrl || 'не указано');
+    const clientIp = request.headers.get('x-forwarded-for') || 'не доступно';
 
-    // Если нет SMTP настроек, просто логируем
     if (!process.env.SMTP_HOST || !process.env.SMTP_USER) {
-      console.log('SMTP не настроен, логируем заявку:', formData);
-      
-      responseData = {
+      console.log('SMTP не настроен, логируем заявку:', { method, contact, formType, pageUrl, submittedAt });
+      return NextResponse.json({
         success: true,
         message: 'Заявка принята (SMTP не настроен)',
-        note: 'Заявка записана в лог'
-      };
-      
-      return NextResponse.json(responseData, { status: statusCode });
+        note: 'Заявка записана в лог',
+        timestamp: new Date().toISOString(),
+      });
     }
 
-    // Создаем транспортер для отправки почты
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
-      port: parseInt(process.env.SMTP_PORT) || 465,
+      port: parseInt(process.env.SMTP_PORT, 10) || 465,
       secure: true,
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-      },
+      auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
     });
 
-    // Текст письма
-    const mailText = `
-НОВАЯ ЗАЯВКА С САЙТА TRUCK-IMPORT
+    const safeContact = escapeHtml(contact);
+    const safePageUrl = escapeHtml(pageUrl);
+    const safeIp = escapeHtml(clientIp);
+    const formLabel = FORM_TYPES[formType];
+    const methodLabel = CONTACT_METHODS[method];
+    const mailText = `НОВАЯ ЗАЯВКА С САЙТА TRUCK-IMPORT\n\nТип заявки: ${formLabel}\nСпособ связи: ${methodLabel}\nКонтакт: ${contact}\nСогласие с политикой: ДА\nДата: ${submittedAt}\nСтраница: ${pageUrl}\nIP: ${clientIp}`;
+    const mailHTML = `<!DOCTYPE html><html><head><meta charset="utf-8"></head><body style="font-family:Arial,sans-serif;color:#333"><h2>Новая заявка с сайта Truck Import</h2><p><b>Тип заявки:</b> ${escapeHtml(formLabel)}</p><p><b>Способ связи:</b> ${escapeHtml(methodLabel)}</p><p><b>Контакт:</b> ${safeContact}</p><p><b>Согласие с политикой:</b> Да</p><p><b>Дата:</b> ${escapeHtml(submittedAt)}</p><p><b>Страница:</b> ${safePageUrl}</p><p><b>IP:</b> ${safeIp}</p></body></html>`;
 
-════════════════════════════════════════
-КОНТАКТНАЯ ИНФОРМАЦИЯ:
-════════════════════════════════════════
-• Имя: ${formData.name}
-• Телефон: ${formData.phone}
-• Согласие с политикой: ${formData.agreeToPrivacy ? 'ДА' : 'НЕТ'}
-
-════════════════════════════════════════
-ДЕТАЛИ:
-════════════════════════════════════════
-Тип: Обратная связь
-Дата: ${new Date().toLocaleString('ru-RU')}
-URL: ${formData.pageUrl || 'не указано'}
-IP: ${request.headers.get('x-forwarded-for') || 'не доступно'}
-    `;
-    // HTML версия письма
-    const mailHTML = `
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <style>
-    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-    .header { background: #f5f5f5; padding: 20px; border-radius: 5px; margin-bottom: 20px; }
-    .info-item { margin: 10px 0; padding: 10px; background: #f9f9f9; border-radius: 3px; }
-    .label { font-weight: bold; color: #2c3e50; }
-  </style>
-</head>
-<body>
-  <div class="header">
-    <h2>НОВАЯ ЗАЯВКА С САЙТА TRUCK-IMPORT</h2>
-    <p><strong>Тип:</strong> Обратная связь</p>
-    <p><strong>Дата:</strong> ${new Date().toLocaleString('ru-RU')}</p>
-  </div>
-
-  <h3>КОНТАКТНАЯ ИНФОРМАЦИЯ:</h3>
-  
-  <div class="info-item">
-    <span class="label">Имя:</span> ${formData.name}
-  </div>
-  
-  <div class="info-item">
-    <span class="label">Телефон:</span> ${formData.phone}
-  </div>
-
-  <div class="info-item">
-    <span class="label">Согласие с политикой:</span> ${formData.agreeToPrivacy ? 'ДА' : 'НЕТ'}
-  </div>
-
-  <div style="margin-top: 30px; padding: 15px; background: #e8f4fc; border-radius: 5px;">
-    <p><strong>Дополнительная информация:</strong></p>
-    <p><strong>URL страницы:</strong> ${formData.pageUrl || 'не указано'}</p>
-    <p><strong>Время отправки:</strong> ${new Date().toLocaleString('ru-RU')}</p>
-  </div>
-
-  <p style="margin-top: 30px; font-size: 12px; color: #777;">
-    Это письмо отправлено автоматически с сайта truck-import.ru
-  </p>
-</body>
-</html>`;
-
-    // Отправляем письмо
-    // console.log('Отправляем письмо с заявкой...');
-    
-    const mailOptions = {
+    await transporter.sendMail({
       from: `"Truck Import - Заявка" <${process.env.SMTP_USER}>`,
       to: process.env.ORDER_EMAIL || process.env.SMTP_USER,
-      subject: `Новая заявка от ${formData.name}`,
+      subject: `Новая заявка: ${formLabel}`,
       text: mailText,
       html: mailHTML,
-    };
+    });
 
-    const info = await transporter.sendMail(mailOptions);
-    // console.log('Письмо с заявкой отправлено:', info.messageId);
-
-    responseData = {
+    return NextResponse.json({
       success: true,
       message: 'Заявка успешно отправлена! Мы свяжемся с вами в ближайшее время.',
-      timestamp: new Date().toISOString()
-    };
-
+      timestamp: new Date().toISOString(),
+    });
   } catch (error) {
-    // console.error('Ошибка при отправке заявки:', error);
-    
-    // Подробная информация об ошибке
-    let errorMessage = 'Ошибка при отправке заявки';
-    
-    if (error.code === 'EAUTH') {
-      errorMessage = 'Ошибка авторизации почтового сервера';
-    } else if (error.code === 'ECONNECTION') {
-      errorMessage = 'Ошибка подключения к почтовому серверу';
-    }
-    
-    responseData = {
-      success: false,
-      message: errorMessage,
-      error: error.message
-    };
-    statusCode = 500;
-    
-  } finally {
-    // ГАРАНТИРУЕМ что всегда возвращаем валидный JSON
-    console.log('Возвращаем ответ на заявку:', responseData);
-    return NextResponse.json(responseData, { status: statusCode });
+    console.error('Ошибка отправки заявки:', error);
+    const message = error.code === 'EAUTH'
+      ? 'Ошибка авторизации почтового сервера'
+      : error.code === 'ECONNECTION'
+        ? 'Ошибка подключения к почтовому серверу'
+        : 'Ошибка при отправке заявки';
+    return NextResponse.json({ success: false, message, error: error.message }, { status: 500 });
   }
 }

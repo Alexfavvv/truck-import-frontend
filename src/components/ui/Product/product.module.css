@@ -558,7 +558,8 @@
     background: transparent;
     padding: 0;
     max-width: 500px;
-    width: 90vw;
+    width: min(500px, calc(100vw - 32px));
+    max-height: calc(100dvh - 32px);
     overflow: visible;
 
     /* Позиционирование ровно по центру экрана */
@@ -583,10 +584,13 @@
 
 .modalClose {
     position: absolute;
-    top: 15px;
-    right: 15px;
-    background: transparent;
-    border: none;
+    top: -14px;
+    right: -14px;
+    width: 36px;
+    height: 36px;
+    background: #1F1F1F;
+    border: 2px solid #FFFFFF;
+    border-radius: 50%;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -664,8 +668,8 @@
         gap: 1.5rem;
     }
     .modalDialog {
-        width: 94vw;
-        max-width: 100%;
+        width: calc(100vw - 32px);
+        max-width: 500px;
     }
     .productDataCard {
         flex-direction: column;

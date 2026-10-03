@@ -81,7 +81,14 @@ export default async function EnginePage({ params }) {
                   Добавить в корзину
                 </button>
               ) : (
-                <a className={cartStyles.cart__button_enabled} href="tel:+74957403306">Уточнить цену</a>
+                <ProductHelpButton
+                  title="Уточнить цену"
+                  subtitle="Оставьте заявку, и мы свяжемся с Вами в течение 10 минут"
+                  formType="price"
+                  triggerLabel="Уточнить цену"
+                  className={cartStyles.cart__button_enabled}
+                  showAvatar={false}
+                />
               )}
             </div>
           </aside>

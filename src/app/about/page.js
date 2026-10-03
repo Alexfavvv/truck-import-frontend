@@ -193,7 +193,12 @@ export default function AboutPage() {
                 onClick={handleDialogClick}
             >
                 <div className={styles.modalWrapper}>
-                    <Feedback />
+                    <Feedback
+                        title="Рассчитать стоимость доставки"
+                        subtitle="Оставьте контакт, и мы поможем рассчитать стоимость доставки"
+                        formType="selection"
+                        modal
+                    />
                     <button className={styles.modalClose} onClick={closeModal} aria-label="Закрыть">
                         <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#FFFFFF" strokeWidth="2">
                             <path d="M1 1L19 19M19 1L1 19" />

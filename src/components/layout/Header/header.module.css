@@ -230,9 +230,8 @@
     padding: 0;
     max-width: 500px;
     width: calc(100% - 32px);
-    max-height: 90vh;
-    overflow-y: auto;
-    overflow-x: hidden;
+    max-height: calc(100dvh - 32px);
+    overflow: visible;
     z-index: 10000;
     outline: none;
 }
@@ -250,10 +249,10 @@
 
 .modalClose {
     position: absolute;
-    top: 1.5rem;
-    right: 1.5rem;
-    background: rgba(255, 255, 255, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    top: -14px;
+    right: -14px;
+    background: #1F1F1F;
+    border: 2px solid #FFFFFF;
     border-radius: 50%;
     width: 36px;
     height: 36px;

@@ -259,7 +259,12 @@ export default function HomeBanners({ initialData }) {
         onClick={handleDialogClick}
       >
         <div className={headerStyles.modalWrapper}>
-          <Feedback />
+          <Feedback
+            title="Заказать звонок"
+            subtitle="Оставьте заявку, и мы свяжемся с Вами в течение 10 минут"
+            formType="selection"
+            modal
+          />
           <button className={headerStyles.modalClose} onClick={closeModal} aria-label="Закрыть">
             <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#FFFFFF" strokeWidth="2">
               <path d="M1 1L19 19M19 1L1 19" />

@@ -18,7 +18,14 @@ const DEFAULT_RELATED = [
     { id: 104, sku: 'MAN-998123', name: 'Ремкомплект', brand: 'MAN', count: 999 }
 ];
 
-export function ProductHelpButton() {
+export function ProductHelpButton({
+    title = 'Помощь в подборе',
+    subtitle = 'Оставьте заявку, и мы поможем подобрать нужную запчасть',
+    formType = 'selection',
+    triggerLabel = 'Помощь в подборе',
+    className,
+    showAvatar = true,
+}) {
     const dialogRef = useRef(null);
 
     const handleDialogClick = (e) => {
@@ -35,13 +42,13 @@ export function ProductHelpButton() {
 
     return (
         <>
-            <button type="button" className={styles.helpButton} onClick={() => dialogRef.current?.showModal()}>
-                <span>Помощь в подборе</span>
-                <img src="/images/btn-avatar.png" alt="Менеджер" className={styles.managerAvatar} />
+            <button type="button" className={className || styles.helpButton} onClick={() => dialogRef.current?.showModal()}>
+                <span>{triggerLabel}</span>
+                {showAvatar && <img src="/images/btn-avatar.png" alt="Менеджер" className={styles.managerAvatar} />}
             </button>
             <dialog ref={dialogRef} className={styles.modalDialog} onClick={handleDialogClick}>
                 <div className={styles.modalWrapper}>
-                    <Feedback />
+                    <Feedback title={title} subtitle={subtitle} formType={formType} modal />
                     <button className={styles.modalClose} onClick={() => dialogRef.current?.close()} aria-label="Закрыть">
                         <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#FFFFFF" strokeWidth="2">
                             <path d="M1 1L19 19M19 1L1 19" />
