@@ -30,13 +30,19 @@ export default function Feedback({
 }) {
   const [contactMethod, setContactMethod] = useState('phone');
   const [contactValue, setContactValue] = useState('');
-  const [agreeToPrivacy, setAgreeToPrivacy] = useState(false);
+  const [agreeToPrivacy, setAgreeToPrivacy] = useState(true);
   const [methodOpen, setMethodOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [status, setStatus] = useState('');
   const methodRef = useRef(null);
   const fieldId = useId();
   const activeMethod = CONTACT_METHODS.find((method) => method.value === contactMethod) || CONTACT_METHODS[0];
+  const splitAt = formType === 'price' || subtitle === 'Оставьте заявку, и мы свяжемся с Вами в течение 10 минут'
+    ? 'с Вами'
+    : title === 'Помощь в подборе'
+      ? 'подобрать'
+      : null;
+  const splitIndex = splitAt ? subtitle.indexOf(splitAt) : -1;
 
   useEffect(() => {
     const onPointerDown = (event) => {
@@ -74,7 +80,7 @@ export default function Feedback({
       if (!response.ok || !result.success) throw new Error(result.message || 'Не удалось отправить заявку');
       setStatus('success');
       setContactValue('');
-      setAgreeToPrivacy(false);
+      setAgreeToPrivacy(true);
     } catch (error) {
       console.error('Ошибка отправки заявки:', error);
       setStatus('error');
@@ -86,7 +92,9 @@ export default function Feedback({
   return (
     <section className={`${styles.feedback} ${modal ? styles.feedback_modal : ''}`} aria-label={title}>
       <h2 className={styles.feedback__title}>{title}</h2>
-      <p className={styles.feedback__subtitle}>{subtitle}</p>
+      <p className={styles.feedback__subtitle}>
+        {splitIndex > 0 ? <>{subtitle.slice(0, splitIndex).trim()}<br />{subtitle.slice(splitIndex).trim()}</> : subtitle}
+      </p>
 
       {status ? (
         <p className={status === 'success' ? styles.successText : styles.errorText} role="status">
@@ -127,10 +135,10 @@ export default function Feedback({
             )}
           </div>
 
-          <label className={styles.fieldLabel} htmlFor={`contact-value-${fieldId}`}>Контакт</label>
           <input
             id={`contact-value-${fieldId}`}
             className={styles.contactInput}
+            aria-label="Контакт"
             type={activeMethod.type}
             name="contact_value"
             placeholder={activeMethod.placeholder}
