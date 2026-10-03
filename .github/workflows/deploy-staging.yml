@@ -1,0 +1,75 @@
+name: Deploy frontend staging
+
+on:
+  push:
+    branches:
+      - staging
+
+concurrency:
+  group: frontend-staging
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Configure SSH
+        env:
+          SSH_KEY: ${{ secrets.STAGING_SSH_KEY }}
+          SSH_HOST: ${{ secrets.STAGING_HOST }}
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/staging_key
+          chmod 600 ~/.ssh/staging_key
+          ssh-keyscan -H "$SSH_HOST" >> ~/.ssh/known_hosts
+
+      - name: Deploy to staging
+        env:
+          SSH_HOST: ${{ secrets.STAGING_HOST }}
+          SSH_USER: ${{ secrets.STAGING_USER }}
+        run: |
+          ssh -i ~/.ssh/staging_key -o IdentitiesOnly=yes "$SSH_USER@$SSH_HOST" 'bash -s' <<'REMOTE'
+          set -euo pipefail
+
+          export NVM_DIR="/root/.nvm"
+          [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+
+          cd /var/www/staging/truck-import
+
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "ERROR: staging working tree has uncommitted changes"
+            git status --short
+            exit 1
+          fi
+
+          git fetch alex staging
+          git checkout staging
+          git reset --hard alex/staging
+
+          npm ci --no-audit --no-fund
+          npm run build
+
+          test -f .next/BUILD_ID
+
+          pm2 restart truck-import-stage
+
+          for i in $(seq 1 15); do
+            if curl -fsS 'http://127.0.0.1:3001/' >/dev/null; then
+              echo "Local health check OK"
+              break
+            fi
+
+            if [ "$i" -eq 15 ]; then
+              pm2 logs truck-import-stage --lines 80 --nostream
+              exit 1
+            fi
+
+            sleep 1
+          done
+
+          curl -fsS 'https://stage.truck-import.ru/' >/dev/null
+          echo "DEPLOY_OK"
+          REMOTE
