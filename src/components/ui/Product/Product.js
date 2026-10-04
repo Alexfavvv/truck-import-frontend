@@ -193,7 +193,7 @@ export default function Product({ product = {}, cartAuthenticated = false, relat
                         </div>
                         
                         {/* Сроки доставки */}
-                        <div className={styles.infoRow}>
+                        <div className={`${styles.infoRow} ${styles.infoRowDivider}`}>
                             <span className={styles.infoLabel}>Сроки доставки:</span>
                             <span className={styles.infoValue}>{deliveryLabel}</span>
                         </div>
