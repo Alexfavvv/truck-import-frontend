@@ -6,7 +6,7 @@ import Image from "next/image";
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Analytics } from "@vercel/analytics/react"
 // import MediaQuery from 'react-responsive';
-import { gilroy } from '@/app/fonts'
+import { gilroy, inter } from '@/app/fonts'
 
 export const metadata = {
   title: "Грузовые запчасти оптом в Москве | truck-import.ru",
@@ -17,7 +17,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
 
   return (
-    <html lang="ru" className={`${gilroy.className}`}>
+    <html lang="ru" className={`${gilroy.className} ${inter.variable}`}>
       <body>
         {/* <MediaQuery minWidth={768}> */}
           <Header />

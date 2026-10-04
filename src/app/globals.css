@@ -12,6 +12,16 @@ body, button, input, select, textarea {
   overflow-x: hidden
 }
 
+@media screen and (max-width: 767px) {
+  html {
+    --font-gilroy: var(--font-inter);
+  }
+
+  body, button, input, select, textarea {
+    font-family: var(--font-inter), sans-serif;
+  }
+}
+
 html {
   font-size: calc(1vw/14.4*10);
   overflow-y: scroll;
