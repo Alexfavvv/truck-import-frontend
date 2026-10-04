@@ -977,6 +977,8 @@
         width: 100%;
         max-width: 100%;
         min-width: 0;
+        height: 54px;
+        min-height: 54px;
         box-sizing: border-box;
     }
 
@@ -984,7 +986,60 @@
         width: 100%;
         max-width: 100%;
         min-width: 0;
+        height: 54px;
+        min-height: 54px;
         box-sizing: border-box;
+    }
+
+    .productBuyCard > .availabilityRow {
+        order: 1;
+    }
+
+    .productBuyCard > .infoRowDivider {
+        order: 2;
+    }
+
+    .productBuyCard > .priceInfoRow {
+        order: 3;
+    }
+
+    .productBuyCard > .actionsContainer {
+        order: 4;
+    }
+
+    .productBuyCard > .deliveryMethodsSection {
+        order: 5;
+    }
+
+    .actionsContainer > .cartBtnWrapper {
+        order: 1;
+    }
+
+    .actionsContainer > .helpButton {
+        order: 2;
+    }
+
+    .actionsContainer {
+        gap: 1rem;
+    }
+
+    .actionsContainer .helpButton {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        height: 54px;
+        min-height: 54px;
+        box-sizing: border-box;
+        background: #F4F4F3;
+        border: none;
+        border-radius: 12px;
+        color: #141313;
+        transition: background-color 0.2s ease;
+    }
+
+    .actionsContainer .helpButton:hover,
+    .actionsContainer .helpButton:active {
+        background: #EBEBEB;
     }
 
     .heroGrid {
