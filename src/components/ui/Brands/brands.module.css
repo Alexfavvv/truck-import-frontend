@@ -83,6 +83,8 @@
     .brands_marquee .brands__track {
         display: flex;
         width: max-content;
+        flex: 0 0 max-content;
+        gap: 0;
         animation: brands-marquee 3.3s linear infinite;
     }
 
@@ -113,6 +115,7 @@
 }
 
 @keyframes brands-marquee {
+    from { transform: translateX(0); }
     to { transform: translateX(-50%); }
 }
 
