@@ -871,8 +871,7 @@
 }
 
 @media screen and (max-width: 767px) {
-    .heroTitle,
-    .wholesaleSeoTitle {
+    .heroTitle {
         font-size: 18px;
         font-weight: 700;
     }
@@ -896,11 +895,16 @@
     }
 
     .featuresSectionTitle,
-    .controlTitle,
     .assortmentTitle,
     .newsTitle {
         font-size: 24px;
         font-weight: 600;
+    }
+
+    .controlTitle {
+        font-size: 24px;
+        font-weight: 600;
+        margin-bottom: 4rem;
     }
 
     .featureIcon {
@@ -913,6 +917,17 @@
     }
 
     .featureText {
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.4;
+    }
+
+    .wholesaleSeoTitle {
+        font-size: 24px;
+        font-weight: 600;
+    }
+
+    .wholesaleSeoText {
         font-size: 14px;
         font-weight: 400;
         line-height: 1.4;

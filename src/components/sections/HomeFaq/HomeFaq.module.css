@@ -84,6 +84,10 @@
 }
 
 @media screen and (max-width: 767px) {
+  .faqGrid {
+    gap: 1.05rem;
+  }
+
   .faqTitle {
     font-size: 24px;
     font-weight: 600;
@@ -91,13 +95,18 @@
 
   .faqTrigger {
     height: auto;
-    min-height: 50px;
-    padding: 10px 16px;
+    min-height: 56px;
+    padding: 12px 16px;
   }
 
-  .faqQuestion,
-  .faqAnswerText {
+  .faqQuestion {
     font-size: 14px;
     font-weight: 600;
+  }
+
+  .faqAnswerText {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.4;
   }
 }
