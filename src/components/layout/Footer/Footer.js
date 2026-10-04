@@ -3,6 +3,8 @@ import MadeBy from "@/components/ui/MadeBy/MadeBy";
 import styles from "./footer.module.css";
 import Image from "next/image";
 import Link from 'next/link'
+import headerStyles from "@/components/layout/Header/header.module.css";
+import { COMPANY_PHONE, COMPANY_SOCIALS } from "@/lib/company-contacts";
 
 export default function Footer() {
 
@@ -23,8 +25,22 @@ export default function Footer() {
         </Link>
         <div className={`${styles.footer__item} ${styles.footer__item_top}`}>
             <div className={styles.phones}>
-                <Link className={styles.phones__item} href="tel:+79099131186">+7 (909) 913-11-86</Link>
-                <Link className={styles.phones__item} href="tel:+74957403306">+7 (495) 740-33-06</Link>
+                <Link className={styles.phones__item} href={COMPANY_PHONE.href}>{COMPANY_PHONE.label}</Link>
+                <div className={styles.footer__messengers}>
+                    {COMPANY_SOCIALS.map((social) => (
+                        <a
+                            key={social.key}
+                            className={`${headerStyles.messengerLink} ${headerStyles.mobileMessengerLink}`}
+                            href={social.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            title={social.contact ? `${social.label}: ${social.contact}` : social.label}
+                            aria-label={social.contact ? `${social.label}: ${social.contact}` : social.label}
+                        >
+                            <img className={`${headerStyles.messengerIcon} ${headerStyles.mobileMessengerIcon}`} src={social.icon} alt="" />
+                        </a>
+                    ))}
+                </div>
             </div>
             <div className={styles.footer__nav}>
                 <ul className={styles.footer__menu}>
@@ -117,39 +133,6 @@ export default function Footer() {
                         111625, Москва, Каскадная улица, 20к2, пом.1
                     </Link>
                 </div>
-                <div className={styles.footer__socials}>
-                    <p className={styles.footer__socials_title}>
-                        Мы в соцсетях
-                    </p>
-                    <div className={styles.footer__socials_inner}>
-                        <Link className={styles.footer__social} href="#">
-                          <Image
-                            src="/whatsapp.svg"
-                            alt="whatsapp"
-                            width={500} // дефолтное значение (для SSR)
-                            height={300}
-                            style={{
-                              width: 'calc(32vw/14.4)',
-                              height: 'calc(32vw/14.4)',
-                            }}
-                          />
-                            {/* <img src="/img/whatsapp.svg" alt="whatsapp"> */}
-                        </Link>
-                        <Link className={styles.footer__social} href="#">
-                            {/* <img src="/img/telegram.svg" alt="telegram"> */}
-                            <Image
-                              src="/telegram.svg"
-                              alt="telegram"
-                              width={500} // дефолтное значение (для SSR)
-                              height={300}
-                              style={{
-                                width: 'calc(32vw/14.4)',
-                                height: 'calc(32vw/14.4)',
-                              }}
-                            />
-                        </Link>
-                    </div>
-                </div>
             </div>
             {/* {process.env.SITE_URL === 'https://truck-import.ru' && ( */}
               {/* <MadeBy/> */}
@@ -160,4 +143,3 @@ export default function Footer() {
     </footer>
   )
 }
-

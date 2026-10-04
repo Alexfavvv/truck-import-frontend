@@ -46,6 +46,12 @@
    text-decoration: none;
  }
 
+ .footer__messengers {
+   display: flex;
+   align-items: center;
+   gap: 1.2rem;
+ }
+
  .footer__inner {
    display: flex;
    flex-direction: row;
@@ -82,31 +88,6 @@
  }
 
  .footer__contact img {
-   width: calc(32vw/14.4);
-   height: calc(32vw/14.4);
- }
-
- .footer__socials {
-   display: flex;
-   flex-direction: column;
-   gap: calc(20vw/14.4);
-   margin-left: calc(-3vw/14.4);
- }
-
- .footer__socials_title {
-
-   font-weight: 500;
-   font-size: calc(18vw/14.4);
-   color: #FFFFFF;
- }
-
- .footer__socials_inner {
-   display: flex;
-   flex-direction: row;
-   gap: calc(20vw/14.4);
- }
-
- .footer__social img {
    width: calc(32vw/14.4);
    height: calc(32vw/14.4);
  }
@@ -215,6 +196,10 @@
     text-decoration: none;
   }
 
+  .footer__messengers {
+    gap: 0.5rem;
+  }
+
   .footer__inner {
     width: 100%;
     display: flex;
@@ -256,31 +241,6 @@
   .footer__contact img {
     width: calc(25vw/3.9)!important;
     height: calc(25vw/3.9)!important;
-  }
-
-  .footer__socials {
-    display: flex;
-    flex-direction: column;
-    gap: calc(10vw/3.9);
-    margin-left: 0;
-  }
-
-  .footer__socials_title {
-
-    font-weight: 500;
-    font-size: calc(14vw/3.9);
-    color: #FFFFFF;
-  }
-
-  .footer__socials_inner {
-    display: flex;
-    flex-direction: row;
-    gap: calc(20vw/3.9);
-  }
-
-  .footer__social img {
-    width: calc(20vw/3.9)!important;
-    height: calc(20vw/3.9)!important;
   }
 
   .footer__menu {

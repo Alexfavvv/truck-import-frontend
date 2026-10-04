@@ -1,6 +1,7 @@
 import Link from "next/link";
 import styles from "./page.module.css";
-import Image from "next/image";
+import headerStyles from "@/components/layout/Header/header.module.css";
+import { COMPANY_PHONE, COMPANY_SOCIALS } from "@/lib/company-contacts";
 
 export async function generateMetadata() {
     return {
@@ -9,11 +10,6 @@ export async function generateMetadata() {
             "Свяжитесь с нами любым удобным способом. Контактная информация магазина truck-import: телефон, email, адрес и время работы. Мы всегда на связи!",
     };
 }
-
-const phoneNumbers = [
-    { number: "+7 (495) 740-33-06", href: "tel:+74957403306" },
-    { number: "+7 (909) 913-11-86", href: "tel:+79099131186" },
-];
 
 export default async function Page() {
     return (
@@ -25,17 +21,26 @@ export default async function Page() {
                         <p className={styles.contact__method_name}>Телефон:</p>
                         <div className={styles.contact__method_phones}>
                             <Link
-                                href={phoneNumbers[0].href}
+                                href={COMPANY_PHONE.href}
                                 className={styles.contact__method_phone}
                             >
-                                {phoneNumbers[0].number}
+                                {COMPANY_PHONE.label}
                             </Link>
-                            <Link
-                                href={phoneNumbers[1].href}
-                                className={styles.contact__method_phone}
-                            >
-                                {phoneNumbers[1].number}
-                            </Link>
+                            <div className={styles.contact__method_socials}>
+                                {COMPANY_SOCIALS.map((social) => (
+                                    <a
+                                        key={social.key}
+                                        className={`${headerStyles.messengerLink} ${headerStyles.mobileMessengerLink}`}
+                                        href={social.href}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        title={social.contact ? `${social.label}: ${social.contact}` : social.label}
+                                        aria-label={social.contact ? `${social.label}: ${social.contact}` : social.label}
+                                    >
+                                        <img className={`${headerStyles.messengerIcon} ${headerStyles.mobileMessengerIcon}`} src={social.icon} alt="" />
+                                    </a>
+                                ))}
+                            </div>
                         </div>
                     </div>
                     <div className={styles.contact__method}>
@@ -71,8 +76,6 @@ export default async function Page() {
                         <span>Почтовый адрес:</span>
                     </p>
                     <p>
-                        Тел/факс:{" "}
-                        <Link href={`tel:89269261359`}>8 (926) 926 13-59</Link>;
                         111625, Москва, Каскадная улица, 20к2, пом.1
                     </p>
                 </div>
@@ -120,29 +123,6 @@ export default async function Page() {
                 </div>
             </section>
 
-            <section className={styles.socials}>
-                <h2 className={styles.socials__title}>
-                    Мы в социальных сетях:
-                </h2>
-                <div className={styles.socials__inner}>
-                    <Link className={styles.social} href="#">
-                        <Image
-                            src="/whatsapp.svg"
-                            alt="whatsapp"
-                            width={500}
-                            height={300}
-                        />
-                    </Link>
-                    <Link className={styles.social} href="#">
-                        <Image
-                            src="/telegram.svg"
-                            alt="telegram"
-                            width={500}
-                            height={300}
-                        />
-                    </Link>
-                </div>
-            </section>
         </main>
     );
 }

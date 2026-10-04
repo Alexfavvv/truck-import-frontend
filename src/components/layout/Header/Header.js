@@ -6,8 +6,8 @@ import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import HeaderSearch from "../../ui/Search/HeaderSearch";
 import Feedback from "@/components/ui/Feedback/Feedback";
-import { fetchPageSettings } from "@/services/pageService";
 import { apiGetCart } from "@/lib/cart-api";
+import { COMPANY_PHONE, COMPANY_SOCIALS } from "@/lib/company-contacts";
 
 const topNavLinks = [
   { title: "Каталог запчастей", href: "/catalog" },
@@ -18,18 +18,11 @@ const topNavLinks = [
   { title: "Контакты", href: "/contacts" },
 ];
 
-const DEFAULT_MESSENGERS = {
-  max_link: 'https://max.mail.ru',
-  whatsapp_link: 'https://wa.me/79006044614',
-  telegram_link: 'https://t.me/truck_import',
-};
-
 export default function Header() {
   const pathname = usePathname();
   const [burgerActive, setBurgerActive] = useState(false);
   const [cartCount, setCartCount] = useState(0);
   const dialogRef = useRef(null);
-  const [messengers, setMessengers] = useState(DEFAULT_MESSENGERS);
 
   const closeModal = () => {
     dialogRef.current?.close();
@@ -53,31 +46,6 @@ export default function Header() {
       closeModal();
     }
   };
-
-  useEffect(() => {
-    async function loadSettings() {
-      try {
-        const res = await fetchPageSettings('site_settings');
-        if (res && res.messengers) {
-          const hasLinks = Object.values(res.messengers).some(val => val && String(val).trim() !== '');
-          if (hasLinks) {
-            setMessengers({
-              max_link: res.messengers.max_link || '',
-              whatsapp_link: res.messengers.whatsapp_link || '',
-              telegram_link: res.messengers.telegram_link || '',
-            });
-          } else {
-            setMessengers(DEFAULT_MESSENGERS);
-          }
-        } else {
-          setMessengers(DEFAULT_MESSENGERS);
-        }
-      } catch (err) {
-        setMessengers(DEFAULT_MESSENGERS);
-      }
-    }
-    loadSettings();
-  }, []);
 
   useEffect(() => {
     let active = true;
@@ -153,33 +121,21 @@ export default function Header() {
 
           <div className={styles.phoneGroup}>
             <div className={styles.phoneItem}>
-              <a href="tel:+74957403306" className={styles.phoneLink}>
-                +7 (495) 740-33-06
+              <a href={COMPANY_PHONE.href} className={styles.phoneLink}>
+                {COMPANY_PHONE.label}
               </a>
               <button className={styles.callbackBtn} onClick={openModal}>
                 Заказать звонок
               </button>
             </div>
 
-            {Object.values(messengers).some(Boolean) && (
-              <div className={styles.messengersRow}>
-                {messengers.max_link && (
-                  <a href={messengers.max_link} target="_blank" rel="noopener noreferrer" className={styles.messengerLink} title="MAX">
-                    <img src="/images/icon-max.png" alt="MAX" className={styles.messengerIcon} />
-                  </a>
-                )}
-                {messengers.whatsapp_link && (
-                  <a href={messengers.whatsapp_link} target="_blank" rel="noopener noreferrer" className={styles.messengerLink} title="WhatsApp">
-                    <img src="/images/icon-wa.png" alt="WhatsApp" className={styles.messengerIcon} />
-                  </a>
-                )}
-                {messengers.telegram_link && (
-                  <a href={messengers.telegram_link} target="_blank" rel="noopener noreferrer" className={styles.messengerLink} title="Telegram">
-                    <img src="/images/icon-tg.png" alt="Telegram" className={styles.messengerIcon} />
-                  </a>
-                )}
-              </div>
-            )}
+            <div className={styles.messengersRow}>
+              {COMPANY_SOCIALS.map((social) => (
+                <a key={social.key} href={social.href} target="_blank" rel="noopener noreferrer" className={styles.messengerLink} title={social.contact ? `${social.label}: ${social.contact}` : social.label} aria-label={social.contact ? `${social.label}: ${social.contact}` : social.label}>
+                  <img src={social.icon} alt="" className={styles.messengerIcon} />
+                </a>
+              ))}
+            </div>
           </div>
 
           <div className={styles.actionsGroup}>
@@ -203,33 +159,21 @@ export default function Header() {
         {/* Mobile Top Row */}
         <div className={styles.mobileTopRow}>
           <div className={styles.mobilePhoneGroup}>
-            <a href="tel:+74957403306" className={styles.mobilePhoneLink}>
-              +7 (495) 740-33-06
+            <a href={COMPANY_PHONE.href} className={styles.mobilePhoneLink}>
+              {COMPANY_PHONE.label}
             </a>
             <div className={styles.mobileOnlineBadge}>
               Сейчас онлайн <span className={styles.mobileOnlineDot}>•</span>
             </div>
           </div>
 
-          {Object.values(messengers).some(Boolean) && (
-            <div className={styles.mobileMessengersRow}>
-              {messengers.max_link && (
-                <a href={messengers.max_link} target="_blank" rel="noopener noreferrer" className={styles.mobileMessengerLink} title="MAX">
-                  <img src="/images/icon-max.png" alt="MAX" className={styles.mobileMessengerIcon} />
-                </a>
-              )}
-              {messengers.whatsapp_link && (
-                <a href={messengers.whatsapp_link} target="_blank" rel="noopener noreferrer" className={styles.mobileMessengerLink} title="WhatsApp">
-                  <img src="/images/icon-wa.png" alt="WhatsApp" className={styles.mobileMessengerIcon} />
-                </a>
-              )}
-              {messengers.telegram_link && (
-                <a href={messengers.telegram_link} target="_blank" rel="noopener noreferrer" className={styles.mobileMessengerLink} title="Telegram">
-                  <img src="/images/icon-tg.png" alt="Telegram" className={styles.mobileMessengerIcon} />
-                </a>
-              )}
-            </div>
-          )}
+          <div className={styles.mobileMessengersRow}>
+            {COMPANY_SOCIALS.map((social) => (
+              <a key={social.key} href={social.href} target="_blank" rel="noopener noreferrer" className={styles.mobileMessengerLink} title={social.contact ? `${social.label}: ${social.contact}` : social.label} aria-label={social.contact ? `${social.label}: ${social.contact}` : social.label}>
+                <img src={social.icon} alt="" className={styles.mobileMessengerIcon} />
+              </a>
+            ))}
+          </div>
         </div>
 
         {/* Mobile Bottom Row */}
@@ -299,7 +243,7 @@ export default function Header() {
             </nav>
             <div className={styles.drawerFooter}>
               <div className={styles.drawerPhoneGroup}>
-                <a href="tel:+74957403306" className={styles.drawerPhone}>+7 (495) 740-33-06</a>
+                <a href={COMPANY_PHONE.href} className={styles.drawerPhone}>{COMPANY_PHONE.label}</a>
                 <p className={styles.drawerHours}>Пн-Пт: 9:00 - 18:00</p>
               </div>
               <button className={styles.drawerCallbackBtn} onClick={() => { setBurgerActive(false); openModal(); }}>
