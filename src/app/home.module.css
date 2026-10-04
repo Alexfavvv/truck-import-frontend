@@ -872,7 +872,6 @@
 
 @media screen and (max-width: 767px) {
     .heroTitle,
-    .featuresSectionTitle,
     .controlTitle,
     .assortmentTitle,
     .newsTitle,
@@ -881,7 +880,6 @@
         font-weight: 700;
     }
 
-    .featureTitle,
     .timelineItemTitle,
     .assortmentSubtitle,
     .newsCardTitle {
@@ -895,11 +893,30 @@
         font-weight: 600;
     }
 
-    .featureText,
     .timelineItemText,
     .assortmentParagraphs,
     .newsCardExcerpt {
         font-size: 14px;
         font-weight: 500;
+    }
+
+    .featuresSectionTitle {
+        font-size: 18px;
+        font-weight: 600;
+    }
+
+    .featureIcon {
+        display: none;
+    }
+
+    .featureTitle {
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+    .featureText {
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.4;
     }
 }
