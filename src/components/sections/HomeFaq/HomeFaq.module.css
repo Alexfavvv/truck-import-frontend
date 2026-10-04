@@ -85,8 +85,8 @@
 
 @media screen and (max-width: 767px) {
   .faqTitle {
-    font-size: 18px;
-    font-weight: 700;
+    font-size: 20px;
+    font-weight: 600;
   }
 
   .faqTrigger {

@@ -872,7 +872,6 @@
 
 @media screen and (max-width: 767px) {
     .heroTitle,
-    .newsTitle,
     .wholesaleSeoTitle {
         font-size: 18px;
         font-weight: 700;
@@ -898,8 +897,9 @@
 
     .featuresSectionTitle,
     .controlTitle,
-    .assortmentTitle {
-        font-size: 18px;
+    .assortmentTitle,
+    .newsTitle {
+        font-size: 20px;
         font-weight: 600;
     }
 
