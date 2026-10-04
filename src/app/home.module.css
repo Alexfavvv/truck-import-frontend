@@ -869,3 +869,36 @@
         margin-bottom: 1.5rem;
     }
 }
+
+@media screen and (max-width: 767px) {
+    .heroTitle,
+    .featuresSectionTitle,
+    .controlTitle,
+    .assortmentTitle,
+    .newsTitle,
+    .wholesaleSeoTitle {
+        font-size: 18px;
+        font-weight: 700;
+    }
+
+    .goldCardTitle,
+    .managerTitle,
+    .featureTitle,
+    .timelineItemTitle,
+    .assortmentSubtitle,
+    .newsCardTitle {
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .goldCardText,
+    .managerList,
+    .featureText,
+    .timelineItemText,
+    .assortmentParagraphs,
+    .newsCardExcerpt,
+    .wholesaleSeoText {
+        font-size: 14px;
+        font-weight: 600;
+    }
+}

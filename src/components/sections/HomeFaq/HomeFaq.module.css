@@ -82,3 +82,16 @@
   margin: 0;
   line-height: 1.6;
 }
+
+@media screen and (max-width: 767px) {
+  .faqTitle {
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  .faqQuestion,
+  .faqAnswerText {
+    font-size: 14px;
+    font-weight: 600;
+  }
+}
