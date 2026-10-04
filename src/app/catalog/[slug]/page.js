@@ -3,8 +3,34 @@ import Product from "@/components/ui/Product/Product";
 import { notFound } from "next/navigation";
 import { Suspense } from 'react';
 import { cookies, headers } from "next/headers";
-import { LK_TOKEN_COOKIE } from '@/lib/lk-auth-cookie';
+import { LK_TOKEN_COOKIE, lkBearerTokenLooksExpired } from '@/lib/lk-auth-cookie';
 import { resolveVitrineAuthState } from '@/lib/lk-client-cart';
+import { fetchLkProductsPage, getJsonProducts, isLkProductsSource } from '@/lib/products-source';
+
+async function getRelatedProducts(currentSku, token) {
+  try {
+    const accessToken = token && !lkBearerTokenLooksExpired(token) ? token : '';
+    const candidates = isLkProductsSource()
+      ? (await fetchLkProductsPage({ page: 1, limit: 12 }, accessToken)).items
+      : getJsonProducts().slice(0, 12);
+    const current = String(currentSku || '').trim().toLowerCase();
+    const products = candidates.filter((item) => {
+      const sku = String(item.sku || '').trim();
+      return sku && sku.toLowerCase() !== current;
+    });
+
+    // Перемешиваем только полученную небольшую страницу, не весь каталог.
+    for (let i = products.length - 1; i > 0; i -= 1) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [products[i], products[j]] = [products[j], products[i]];
+    }
+
+    return products.slice(0, 8);
+  } catch (error) {
+    console.error('Error fetching related products:', error);
+    return [];
+  }
+}
 
 async function getBaseUrl() {
   const headersStore = await headers();
@@ -74,11 +100,12 @@ export default async function Page({ params }) {
   const raw = cookieStore.get(LK_TOKEN_COOKIE)?.value;
   const token = typeof raw === 'string' ? raw.trim() : '';
   const { authenticated: cartAuthenticated } = await resolveVitrineAuthState(token);
+  const relatedProducts = await getRelatedProducts(product.sku || slug, token);
 
   return ( <>
     {product &&
       <Suspense fallback={<p>Loading product...</p>}>
-        <Product product={product} cartAuthenticated={cartAuthenticated} />
+        <Product product={product} cartAuthenticated={cartAuthenticated} relatedProducts={relatedProducts} />
       </Suspense>
     }
   </>

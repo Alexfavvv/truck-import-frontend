@@ -11,13 +11,6 @@ import styles from "./product.module.css";
 
 const BRAND_SLUGS = new Set(brandsData.map((item) => item.slug));
 
-const DEFAULT_RELATED = [
-    { id: 101, sku: 'QEV111AJC39M', name: 'Carrier', brand: 'Kolbenschmidt', count: 999 },
-    { id: 102, sku: 'A9414706842', name: 'Carrier', brand: 'Mercedes Trucks', count: 999 },
-    { id: 103, sku: 'HENGST-7712', name: 'Масляный фильтр', brand: 'Hengst', count: 999 },
-    { id: 104, sku: 'MAN-998123', name: 'Ремкомплект', brand: 'MAN', count: 999 }
-];
-
 export function ProductHelpButton({
     title = 'Помощь в подборе',
     subtitle = 'Оставьте заявку, и мы поможем подобрать нужную запчасть',
@@ -65,7 +58,7 @@ function displayPrice(price) {
     return Number.isFinite(numericPrice) && numericPrice > 0 ? `${price} ₽` : 'Цена по запросу';
 }
 
-export default function Product({ product = {}, cartAuthenticated = false, relatedProducts = DEFAULT_RELATED }) {
+export default function Product({ product = {}, cartAuthenticated = false, relatedProducts = [] }) {
     const specifications = product.specifications || [];
     const brandLabel = product.brand_name || product.brand || product.truck_manufacturers?.[0]?.name || 'Kolbenschmidt';
     const hasBrandLink = Boolean(product.brand) && BRAND_SLUGS.has(product.brand);
@@ -227,25 +220,35 @@ export default function Product({ product = {}, cartAuthenticated = false, relat
                 <section className={styles.relatedSection}>
                     <h2 className={styles.relatedTitle}>Вам так же может быть интересно</h2>
                     <div className={styles.relatedGrid}>
-                        {relatedProducts.slice(0, 4).map((item) => (
-                            <div key={item.id} className={styles.relatedCard}>
-                                <div className={styles.relatedImagePlaceholder}>
-                                    <span className={styles.relatedSkuText}>{item.sku}</span>
-                                </div>
-                                <h3 className={styles.relatedItemTitle}>{item.name}</h3>
+                        {relatedProducts.slice(0, 8).map((item) => (
+                            <div key={item.id || item.sku} className={styles.relatedCard}>
+                                <Link href={`/catalog/${encodeURIComponent(item.sku)}`} className={styles.relatedImagePlaceholder}>
+                                    {item.image_url || item.image_path ? (
+                                        <SafeImage
+                                            src={item.image_url || item.image_path}
+                                            alt={item.name || item.title || item.sku}
+                                            className={styles.relatedProductImage}
+                                        />
+                                    ) : (
+                                        <span className={styles.relatedSkuText}>{item.sku}</span>
+                                    )}
+                                </Link>
+                                <Link href={`/catalog/${encodeURIComponent(item.sku)}`} className={styles.relatedItemLink}>
+                                    <h3 className={styles.relatedItemTitle}>{item.name || item.title || item.sku}</h3>
+                                </Link>
                                 <div className={styles.relatedDetails}>
                                     <div className={styles.relatedDetailRow}>
                                         <span className={styles.relatedLabel}>Бренд</span>
-                                        <span className={styles.relatedValue}>{item.brand}</span>
+                                        <span className={styles.relatedValue}>{item.brand_name || item.brand || '—'}</span>
                                     </div>
                                     <div className={styles.relatedDetailRow}>
                                         <span className={styles.relatedLabel}>Цена:</span>
-                                            <span className={styles.relatedPriceValue}>{displayPrice(item.price)}</span>
+                                        <span className={styles.relatedPriceValue}>{displayPrice(item.price)}</span>
                                     </div>
                                 </div>
                                 <div className={styles.relatedCartWrapper}>
                                     <ProductAddToCart
-                                        props_count={item.count || 999}
+                                        props_count={item.count || item.quantity || 999}
                                         productId={item.id}
                                         productSku={item.sku}
                                         cartAuthenticated={cartAuthenticated}
