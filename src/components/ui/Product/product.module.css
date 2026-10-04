@@ -212,6 +212,15 @@
 .actionsContainer > .helpButton { order: 1; }
 .actionsContainer > .cartBtnWrapper { order: 2; }
 
+/* Preserve the engine page's desktop order while allowing mobile-only reordering. */
+.engineProductBuyCard > .availabilityRow { order: 1; }
+.engineProductBuyCard > .engineDeliveryRow { order: 2; }
+.engineProductBuyCard > .enginePriceRow { order: 3; }
+.engineProductBuyCard > .deliveryMethodsSection { order: 4; }
+.engineProductBuyCard > .engineActionsContainer { order: 5; }
+.engineActionsContainer > .helpButton { order: 1; }
+.engineActionsContainer > :global([class*="cart__button_enabled"]) { order: 2; }
+
 .availabilityRow {
     margin-bottom: 0.2rem;
 }
@@ -977,6 +986,34 @@
 }
 
 @media screen and (max-width: 767px) {
+    .engineProductBuyCard > .availabilityRow {
+        order: 1;
+    }
+
+    .engineProductBuyCard > .engineDeliveryRow {
+        order: 2;
+    }
+
+    .engineProductBuyCard > .enginePriceRow {
+        order: 3;
+    }
+
+    .engineProductBuyCard > .engineActionsContainer {
+        order: 4;
+    }
+
+    .engineProductBuyCard > .deliveryMethodsSection {
+        order: 5;
+    }
+
+    .engineActionsContainer > .helpButton {
+        order: 2;
+    }
+
+    .engineActionsContainer > :global([class*="cart__button_enabled"]) {
+        order: 1;
+    }
+
     .cartBtnWrapper {
         width: 100%;
         min-width: 0;

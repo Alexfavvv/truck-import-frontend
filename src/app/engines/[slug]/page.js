@@ -56,21 +56,13 @@ export default async function EnginePage({ params }) {
               </section>
             </div>
           </div>
-          <aside className={styles.productBuyCard}>
+          <aside className={`${styles.productBuyCard} ${styles.engineProductBuyCard}`}>
             <div className={styles.availabilityRow}>
               <span className={styles.inStockBadge}>Доступно для заказа</span>
             </div>
-            <div className={styles.infoRow}><span className={styles.infoLabel}>Сроки доставки:</span><span className={styles.infoValue}>от 15 дней</span></div>
-            <div className={styles.infoRow}><span className={styles.priceLabel}>Цена:</span><span className={styles.priceValue}>{price}</span></div>
-            <div className={styles.deliveryMethodsSection}>
-              <p className={styles.deliveryMethodsTitle}>Способы получения:</p>
-              <ul className={styles.deliveryMethodsList}>
-                <li><span>• Самовывоз </span><a href="#map" className={styles.addressLink}>г.Люберцы, ул. Каскадная 20к2, пом.1.</a></li>
-                <li><span>• Доставка ТК по всей России</span></li>
-              </ul>
-            </div>
-            <div className={styles.actionsContainer}>
-              <ProductHelpButton />
+            <div className={`${styles.infoRow} ${styles.engineDeliveryRow}`}><span className={styles.infoLabel}>Сроки доставки:</span><span className={styles.infoValue}>от 15 дней</span></div>
+            <div className={`${styles.infoRow} ${styles.enginePriceRow}`}><span className={styles.priceLabel}>Цена:</span><span className={styles.priceValue}>{price}</span></div>
+            <div className={`${styles.actionsContainer} ${styles.engineActionsContainer}`}>
               {hasPrice ? (
                 <button
                   type="button"
@@ -90,6 +82,14 @@ export default async function EnginePage({ params }) {
                   showAvatar={false}
                 />
               )}
+              <ProductHelpButton />
+            </div>
+            <div className={styles.deliveryMethodsSection}>
+              <p className={styles.deliveryMethodsTitle}>Способы получения:</p>
+              <ul className={styles.deliveryMethodsList}>
+                <li><span>• Самовывоз </span><a href="#map" className={styles.addressLink}>г.Люберцы, ул. Каскадная 20к2, п.1.</a></li>
+                <li><span>• Доставка ТК по всей России</span></li>
+              </ul>
             </div>
           </aside>
         </section>
