@@ -45,6 +45,7 @@ export default function ProductInformationSections() {
         <Brands
           brands={["man", "daf", "mercedes", "scania", "kolbenschmidt", "hengst", "volvo"]}
           theme="gray"
+          mobileMarquee
         />
       </section>
     </>
