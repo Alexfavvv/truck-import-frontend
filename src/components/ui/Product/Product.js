@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import SafeImage from "@/components/ui/SafeImage/SafeImage";
 import ProductAddToCart from "@/components/ui/ProductAddToCart/ProductAddToCart";
-import { useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Feedback from "@/components/ui/Feedback/Feedback";
 import ProductInformationSections from "@/components/ui/Product/ProductInformationSections";
 import brandsData from "@/json/brands.json";
@@ -59,6 +59,8 @@ function displayPrice(price) {
 }
 
 export default function Product({ product = {}, cartAuthenticated = false, relatedProducts = [] }) {
+    const relatedScrollRef = useRef(null);
+    const [relatedScrollState, setRelatedScrollState] = useState({ atStart: true, atEnd: true });
     const specifications = product.specifications || [];
     const brandLabel = product.brand_name || product.brand || product.truck_manufacturers?.[0]?.name || 'Kolbenschmidt';
     const hasBrandLink = Boolean(product.brand) && BRAND_SLUGS.has(product.brand);
@@ -73,6 +75,35 @@ export default function Product({ product = {}, cartAuthenticated = false, relat
         ['Длина', product.length],
         ['Замена', product.replacement],
     ].filter(([, value]) => value !== null && value !== undefined && String(value).trim() !== '');
+
+    const syncRelatedScrollState = useCallback(() => {
+        const scroller = relatedScrollRef.current;
+        if (!scroller) return;
+        const maxScroll = Math.max(0, scroller.scrollWidth - scroller.clientWidth);
+        setRelatedScrollState({
+            atStart: scroller.scrollLeft <= 1,
+            atEnd: scroller.scrollLeft >= maxScroll - 1,
+        });
+    }, []);
+
+    useEffect(() => {
+        const scroller = relatedScrollRef.current;
+        if (!scroller) return undefined;
+        syncRelatedScrollState();
+        window.addEventListener('resize', syncRelatedScrollState);
+        return () => {
+            window.removeEventListener('resize', syncRelatedScrollState);
+        };
+    }, [relatedProducts.length, syncRelatedScrollState]);
+
+    const scrollRelated = (direction) => {
+        const scroller = relatedScrollRef.current;
+        if (!scroller) return;
+        const firstCard = scroller.querySelector('[data-related-card]');
+        const cardWidth = firstCard?.getBoundingClientRect().width || scroller.clientWidth / 2;
+        const gap = Number.parseFloat(window.getComputedStyle(scroller).columnGap) || 0;
+        scroller.scrollBy({ left: direction * (cardWidth + gap), behavior: 'smooth' });
+    };
 
     return (
         <main className={styles.productMainContainer}>
@@ -217,10 +248,16 @@ export default function Product({ product = {}, cartAuthenticated = false, relat
 
                 {/* --- ВАМ ТАК ЖЕ МОЖЕТ БЫТЬ ИНТЕРЕСНО --- */}
                 <section className={styles.relatedSection}>
-                    <h2 className={styles.relatedTitle}>Вам так же может быть интересно</h2>
-                    <div className={styles.relatedGrid}>
+                    <div className={styles.relatedHeader}>
+                        <h2 className={styles.relatedTitle}>Вам так же может <span className={styles.sectionHeadingNoWrap}>быть интересно</span></h2>
+                        <div className={styles.relatedControls}>
+                            <button type="button" className={styles.relatedArrow} onClick={() => scrollRelated(-1)} disabled={relatedScrollState.atStart} aria-label="Прокрутить рекомендации влево" aria-controls="related-products-list">←</button>
+                            <button type="button" className={styles.relatedArrow} onClick={() => scrollRelated(1)} disabled={relatedScrollState.atEnd} aria-label="Прокрутить рекомендации вправо" aria-controls="related-products-list">→</button>
+                        </div>
+                    </div>
+                    <div id="related-products-list" ref={relatedScrollRef} onScroll={syncRelatedScrollState} className={styles.relatedGrid}>
                         {relatedProducts.slice(0, 8).map((item) => (
-                            <div key={item.id || item.sku} className={styles.relatedCard}>
+                            <div key={item.id || item.sku} data-related-card className={styles.relatedCard}>
                                 <Link href={`/catalog/${encodeURIComponent(item.sku)}`} className={styles.relatedImagePlaceholder}>
                                     {item.image_url || item.image_path ? (
                                         <SafeImage
