@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
 import { fetchProductByIdOrSku, isLkProductsSource } from '@/lib/products-source';
+import { LK_TOKEN_COOKIE, lkBearerTokenLooksExpired } from '@/lib/lk-auth-cookie';
 
 function decodeLastPathSegment(segment) {
   try {
@@ -15,7 +17,9 @@ export async function GET(request) {
   const segments = pathname.split('/');
   const rawSegment = segments[segments.length - 1];
   const idOrSku = decodeLastPathSegment(rawSegment);
-  const product = await fetchProductByIdOrSku(idOrSku);
+  const rawToken = (await cookies()).get(LK_TOKEN_COOKIE)?.value?.trim() || '';
+  const accessToken = rawToken && !lkBearerTokenLooksExpired(rawToken) ? rawToken : '';
+  const product = await fetchProductByIdOrSku(idOrSku, accessToken);
 
   if (!product) {
     return NextResponse.json(
@@ -51,5 +55,5 @@ export async function GET(request) {
     }
   }
 
-  return NextResponse.json(product);
+  return NextResponse.json(product, { headers: { 'Cache-Control': 'private, no-store' } });
 }

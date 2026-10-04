@@ -16,6 +16,12 @@ export function getLkProductsApiBase() {
   return base.replace(/\/$/, '');
 }
 
+function productRequestHeaders(accessToken) {
+  const headers = { Accept: 'application/json' };
+  if (accessToken) headers.Authorization = `Bearer ${accessToken}`;
+  return headers;
+}
+
 function makeStableIdFromSku(sku) {
   let hash = 5381;
   const input = String(sku || '');
@@ -89,7 +95,7 @@ export function getJsonProducts() {
   return productsData.map((p) => normalizeProduct(p));
 }
 
-export async function fetchLkProductsPage(query = {}) {
+export async function fetchLkProductsPage(query = {}, accessToken = '') {
   const url = new URL(`${getLkProductsApiBase()}/products`);
   Object.entries(query).forEach(([key, value]) => {
     if (value !== undefined && value !== null && value !== '') {
@@ -98,7 +104,7 @@ export async function fetchLkProductsPage(query = {}) {
   });
 
   const res = await fetch(url.toString(), {
-    headers: { Accept: 'application/json' },
+    headers: productRequestHeaders(accessToken),
     cache: 'no-store',
   });
 
@@ -128,8 +134,8 @@ export async function fetchLkProductsPage(query = {}) {
   return { items: normalizedItems, total };
 }
 
-export async function fetchLkProducts(query = {}) {
-  const { items } = await fetchLkProductsPage(query);
+export async function fetchLkProducts(query = {}, accessToken = '') {
+  const { items } = await fetchLkProductsPage(query, accessToken);
   return items;
 }
 
@@ -201,7 +207,7 @@ export async function resolveLkProductIdForCartPost(idOrSku) {
   return null;
 }
 
-export async function fetchProductByIdOrSku(idOrSku) {
+export async function fetchProductByIdOrSku(idOrSku, accessToken = '') {
   if (!isLkProductsSource()) {
     const local = getJsonProducts();
     const asNumber = Number(idOrSku);
@@ -221,7 +227,7 @@ export async function fetchProductByIdOrSku(idOrSku) {
     const seg = String(segment ?? '').trim();
     if (!seg) return null;
     const res = await fetch(`${base}/products/${encodeURIComponent(seg)}`, {
-      headers: { Accept: 'application/json' },
+      headers: productRequestHeaders(accessToken),
       cache: 'no-store',
     });
     if (!res.ok) return null;
@@ -235,7 +241,7 @@ export async function fetchProductByIdOrSku(idOrSku) {
   }
 
   for (const key of catalogProductLookupKeys(s)) {
-    const matches = await fetchLkProducts({ sku: key, limit: 20, page: 1 });
+    const matches = await fetchLkProducts({ sku: key, limit: 20, page: 1 }, accessToken);
     const aliases = new Set(
       catalogProductLookupKeys(s).map((k) => k.toLowerCase()),
     );

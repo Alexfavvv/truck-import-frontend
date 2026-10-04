@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
 import { fetchLkProductsPage } from '@/lib/products-source';
+import { LK_TOKEN_COOKIE, lkBearerTokenLooksExpired } from '@/lib/lk-auth-cookie';
 
 /**
  * GET /api/search?q=...&limit=...&page=...
@@ -29,16 +31,18 @@ export async function GET(request) {
     }
     const limitNum = Math.max(1, parseInt(limitParam, 10) || 20);
     const pageNum = Math.max(1, parseInt(pageParam, 10) || 1);
+    const rawToken = (await cookies()).get(LK_TOKEN_COOKIE)?.value?.trim() || '';
+    const accessToken = rawToken && !lkBearerTokenLooksExpired(rawToken) ? rawToken : '';
     const { items: products, total: totalCount } = await fetchLkProductsPage({
       sku: query,
       limit: limitNum,
       page: pageNum,
-    });
+    }, accessToken);
 
     return NextResponse.json({
       products,
       totalCount,
-    });
+    }, { headers: { 'Cache-Control': 'private, no-store' } });
   } catch (error) {
     return NextResponse.json(
       { message: 'Server error', error: error.message },

@@ -18,7 +18,12 @@ async function getBaseUrl() {
 async function getProduct(sku) {
   try {
     const baseUrl = await getBaseUrl();
-    const res = await fetch(`${baseUrl}/api/products/${sku}`, { cache: 'no-store' });
+    const token = (await cookies()).get(LK_TOKEN_COOKIE)?.value?.trim() || '';
+    const requestHeaders = token ? { Cookie: `${LK_TOKEN_COOKIE}=${encodeURIComponent(token)}` } : undefined;
+    const res = await fetch(`${baseUrl}/api/products/${sku}`, {
+      cache: 'no-store',
+      headers: requestHeaders,
+    });
 
     if (!res.ok) {
       throw new Error(`HTTP error! status: ${res.status}`);
