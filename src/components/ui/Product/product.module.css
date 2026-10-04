@@ -996,11 +996,11 @@
     }
 
     .productBuyCard > .infoRowDivider {
-        order: 2;
+        order: 3;
     }
 
     .productBuyCard > .priceInfoRow {
-        order: 3;
+        order: 2;
     }
 
     .productBuyCard > .actionsContainer {
@@ -1194,6 +1194,10 @@
 
     .productTitle {
         font-size: 18px;
+    }
+
+    .inStockBadge {
+        font-size: 12px;
     }
 
     .specificationsTitle,
