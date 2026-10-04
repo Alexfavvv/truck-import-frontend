@@ -203,6 +203,15 @@
     height: 100%; /* Занимает всю высоту grid-ячейки */
 }
 
+/* Keep the established desktop sequence after the buy-card JSX is arranged for mobile. */
+.productBuyCard > .availabilityRow { order: 1; }
+.productBuyCard > .infoRowDivider { order: 2; }
+.productBuyCard > .priceInfoRow { order: 3; }
+.productBuyCard > .deliveryMethodsSection { order: 4; }
+.productBuyCard > .actionsContainer { order: 5; }
+.actionsContainer > .helpButton { order: 1; }
+.actionsContainer > .cartBtnWrapper { order: 2; }
+
 .availabilityRow {
     margin-bottom: 0.2rem;
 }
@@ -1017,6 +1026,12 @@
 
     .actionsContainer > .helpButton {
         order: 2;
+    }
+
+    .productBuyCard > .priceInfoRow {
+        border-bottom: 1px solid #F0F0F0;
+        padding-bottom: 0.8rem;
+        margin-bottom: -0.6rem;
     }
 
     .actionsContainer {

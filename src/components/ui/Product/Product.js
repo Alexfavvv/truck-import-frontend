@@ -193,16 +193,32 @@ export default function Product({ product = {}, cartAuthenticated = false, relat
                             <span className={styles.inStockBadge}>Доступно для заказа</span>
                         </div>
                         
+                        {/* Цена */}
+                        <div className={`${styles.infoRow} ${styles.priceInfoRow}`}>
+                            <span className={styles.priceLabel}>Цена:</span>
+                            <span className={styles.priceValue}>{priceDisplay}</span>
+                        </div>
+
                         {/* Сроки доставки */}
                         <div className={`${styles.infoRow} ${styles.infoRowDivider}`}>
                             <span className={styles.infoLabel}>Сроки доставки:</span>
                             <span className={styles.infoValue}>{deliveryLabel}</span>
                         </div>
 
-                        {/* Цена */}
-                        <div className={styles.infoRow}>
-                            <span className={styles.priceLabel}>Цена:</span>
-                            <span className={styles.priceValue}>{priceDisplay}</span>
+                        {/* Кнопки действий */}
+                        <div className={styles.actionsContainer}>
+                            {/* Кнопка "Добавить в корзину" */}
+                            <div className={styles.cartBtnWrapper}>
+                                <ProductAddToCart
+                                    props_count={999}
+                                    productId={product.id || 1}
+                                    productSku={productSku}
+                                    cartAuthenticated={cartAuthenticated}
+                                />
+                            </div>
+
+                            {/* Кнопка "Помощь в подборе" с аватаркой менеджера */}
+                            <ProductHelpButton />
                         </div>
 
                         {/* Способы получения */}
@@ -220,22 +236,6 @@ export default function Product({ product = {}, cartAuthenticated = false, relat
                             </ul>
                         </div>
 
-                        {/* Кнопки действий */}
-                        <div className={styles.actionsContainer}>
-                            
-                            {/* Кнопка "Помощь в подборе" с аватаркой менеджера */}
-                            <ProductHelpButton />
-
-                            {/* Кнопка "Добавить в корзину" */}
-                            <div className={styles.cartBtnWrapper}>
-                                <ProductAddToCart
-                                    props_count={999}
-                                    productId={product.id || 1}
-                                    productSku={productSku}
-                                    cartAuthenticated={cartAuthenticated}
-                                />
-                            </div>
-                        </div>
                     </div>
                 </section>
 
