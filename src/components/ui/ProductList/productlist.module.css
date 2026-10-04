@@ -246,19 +246,36 @@
     }
 
     .product__brand {
-        font-weight: 400;
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        width: 100%;
+        font-weight: 500;
         font-size: 14px;
     }
 
     .product__brand_name,
     .product__brand_value {
         font-size: 14px;
+        font-weight: 500;
+    }
+
+    .product__brand_value {
+        text-align: right;
+    }
+
+    .product__price {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        width: 100%;
     }
 
     .product__price_value {
         font-weight: 700;
         font-size: 16px;
         color: #000;
+        text-align: right;
     }
 
     .product__price_name  {
