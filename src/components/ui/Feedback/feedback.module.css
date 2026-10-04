@@ -200,3 +200,71 @@
     .feedback__subtitle { margin-bottom: 0; }
     .methodSelect__trigger, .contactInput, .submitButton { min-height: 42px; }
 }
+
+@media (max-width: 767px) {
+    :global(dialog.feedbackDialog):has(.feedback_modal) {
+        position: fixed;
+        inset: auto 0 0;
+        width: 100%;
+        max-width: none;
+        height: auto;
+        max-height: 92dvh;
+        margin: 0;
+        padding: 0;
+        overflow: visible;
+        border: 0;
+        border-radius: 0;
+        transform: translateY(100%);
+        transition: transform 280ms ease, display 280ms allow-discrete, overlay 280ms allow-discrete;
+    }
+
+    :global(dialog.feedbackDialog):has(.feedback_modal)[open] {
+        transform: translateY(0);
+    }
+
+    @starting-style {
+        :global(dialog.feedbackDialog):has(.feedback_modal)[open] {
+            transform: translateY(100%);
+        }
+    }
+
+    :global(dialog.feedbackDialog):has(.feedback_modal)::backdrop {
+        opacity: 0;
+        transition: opacity 280ms ease, display 280ms allow-discrete, overlay 280ms allow-discrete;
+    }
+
+    :global(dialog.feedbackDialog):has(.feedback_modal)[open]::backdrop {
+        opacity: 1;
+    }
+
+    @starting-style {
+        :global(dialog.feedbackDialog):has(.feedback_modal)[open]::backdrop {
+            opacity: 0;
+        }
+    }
+
+    :global(dialog.feedbackDialog):has(.feedback_modal) > div > button {
+        top: 1rem;
+        right: 1rem;
+        z-index: 4;
+    }
+
+    .feedback_modal {
+        width: 100%;
+        max-width: none;
+        max-height: 92dvh;
+        padding-bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));
+        overflow-y: auto;
+        border-radius: 20px 20px 0 0;
+        box-shadow: 0 -8px 28px rgba(0, 0, 0, 0.16);
+        overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+@media (max-width: 767px) and (prefers-reduced-motion: reduce) {
+    :global(dialog.feedbackDialog):has(.feedback_modal),
+    :global(dialog.feedbackDialog):has(.feedback_modal)::backdrop {
+        transition-duration: 1ms;
+    }
+}

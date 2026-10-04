@@ -35,6 +35,7 @@ export default function Feedback({
   const [submitting, setSubmitting] = useState(false);
   const [status, setStatus] = useState('');
   const methodRef = useRef(null);
+  const feedbackRef = useRef(null);
   const fieldId = useId();
   const activeMethod = CONTACT_METHODS.find((method) => method.value === contactMethod) || CONTACT_METHODS[0];
   const splitAt = formType === 'price' || subtitle === 'Оставьте заявку, и мы свяжемся с Вами в течение 10 минут'
@@ -51,6 +52,14 @@ export default function Feedback({
     document.addEventListener('pointerdown', onPointerDown);
     return () => document.removeEventListener('pointerdown', onPointerDown);
   }, []);
+
+  useEffect(() => {
+    if (!modal) return undefined;
+    const dialog = feedbackRef.current?.closest('dialog');
+    if (!dialog) return undefined;
+    dialog.classList.add('feedbackDialog');
+    return () => dialog.classList.remove('feedbackDialog');
+  }, [modal]);
 
   useEffect(() => {
     if (!status) return undefined;
@@ -90,7 +99,7 @@ export default function Feedback({
   };
 
   return (
-    <section className={`${styles.feedback} ${modal ? styles.feedback_modal : ''}`} aria-label={title}>
+    <section ref={feedbackRef} className={`${styles.feedback} ${modal ? styles.feedback_modal : ''}`} aria-label={title}>
       <h2 className={styles.feedback__title}>{title}</h2>
       <p className={styles.feedback__subtitle}>
         {splitIndex > 0 ? <>{subtitle.slice(0, splitIndex).trim()}<br />{subtitle.slice(splitIndex).trim()}</> : subtitle}
