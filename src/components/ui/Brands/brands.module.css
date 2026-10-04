@@ -75,41 +75,45 @@
     }
 
     .brands_marquee {
-        justify-content: flex-start;
-        height: 56px;
+        display: block;
+        height: auto;
         overflow: hidden;
     }
 
     .brands_marquee .brands__track {
-        display: flex;
-        width: max-content;
-        flex: 0 0 max-content;
-        gap: 0;
-        animation: brands-marquee 3.3s linear infinite;
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        animation: none;
+        transform: none;
     }
 
-    .brands_marquee .brands__group {
-        display: flex;
-        flex: 0 0 max-content;
-        justify-content: flex-start;
-        flex-wrap: nowrap;
-        gap: 1.5rem;
-        padding-right: 1.5rem;
+    .brands_marquee .brands__group:first-child {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-items: center;
+        justify-content: initial;
+        gap: 1rem;
+        width: 100%;
+        padding: 0;
+        box-sizing: border-box;
     }
 
     .brands_marquee .brands__group[aria-hidden="true"] {
-        display: flex;
+        display: none;
     }
 
     .brands_marquee .brands__link {
-        flex: 0 0 calc((100vw - 4rem) / 3);
+        width: 100%;
+        height: 56px;
         min-width: 0;
+        overflow: hidden;
     }
 
     .brands_marquee .brands__item {
         width: 100%;
-        max-width: 100%;
-        height: 48px;
+        max-width: 132px;
+        height: 40px;
         object-fit: contain;
     }
 }
