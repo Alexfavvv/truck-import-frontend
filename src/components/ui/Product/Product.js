@@ -128,6 +128,7 @@ export default function Product({ product = {}, cartAuthenticated = false, relat
                         {/* Отображение номера товара на фоновом изображении */}
                         <div className={styles.productImagePlaceholder}>
                             <span className={styles.imageSkuText}>{productSku}</span>
+                            <span className={styles.imageSkuBadge}>{productSku}</span>
                         </div>
 
                         {/* Правая часть: SKU, Название, Технические характеристики */}
