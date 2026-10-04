@@ -84,3 +84,11 @@
   outline: 2px solid #111111;
   outline-offset: 2px;
 }
+
+@media screen and (max-width: 767px) {
+  .phoneCard {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+}
