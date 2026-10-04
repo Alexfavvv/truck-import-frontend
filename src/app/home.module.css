@@ -881,24 +881,25 @@
         font-weight: 700;
     }
 
-    .goldCardTitle,
-    .managerTitle,
     .featureTitle,
     .timelineItemTitle,
     .assortmentSubtitle,
     .newsCardTitle {
         font-size: 14px;
+        font-weight: 500;
+    }
+
+    .goldCardTitle,
+    .managerTitle {
+        font-size: 14px;
         font-weight: 600;
     }
 
-    .goldCardText,
-    .managerList,
     .featureText,
     .timelineItemText,
     .assortmentParagraphs,
-    .newsCardExcerpt,
-    .wholesaleSeoText {
+    .newsCardExcerpt {
         font-size: 14px;
-        font-weight: 600;
+        font-weight: 500;
     }
 }

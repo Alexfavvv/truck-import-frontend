@@ -89,6 +89,12 @@
     font-weight: 700;
   }
 
+  .faqTrigger {
+    height: auto;
+    min-height: 50px;
+    padding: 10px 16px;
+  }
+
   .faqQuestion,
   .faqAnswerText {
     font-size: 14px;
