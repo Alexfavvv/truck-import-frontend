@@ -82,7 +82,7 @@
 
     .brands_marquee .brands__track {
         display: flex;
-        animation: brands-marquee 10.5s linear infinite;
+        animation: brands-marquee 7.5s linear infinite;
     }
 
     .brands_marquee .brands__group {

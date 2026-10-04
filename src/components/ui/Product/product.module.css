@@ -887,6 +887,10 @@
 }
 
 @media screen and (max-width: 767px) {
+    .mobileMediumText {
+        font-weight: 500;
+    }
+
     .breadcrumbs,
     .imageSkuText,
     .skuBadge,
@@ -919,6 +923,10 @@
     .trustTitle,
     .wholesaleTitle {
         font-size: 16px;
+    }
+
+    .productTitle {
+        font-size: 18px;
     }
 
     .specificationsTitle,

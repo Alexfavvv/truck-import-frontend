@@ -117,7 +117,7 @@ export default function Product({ product = {}, cartAuthenticated = false, relat
                                 </h2>
                                 <div className={styles.specificationsList}>
                                     <div className={styles.specRow}>
-                                        <span className={styles.specName}>Бренд</span>
+                                        <span className={`${styles.specName} ${styles.mobileMediumText}`}>Бренд</span>
                                         <span className={styles.specValue}>
                                             {hasBrandLink ? (
                                                 <Link href={`/brands/${product.brand}`}>
@@ -130,7 +130,7 @@ export default function Product({ product = {}, cartAuthenticated = false, relat
                                     </div>
 
                                     <div className={styles.specRow}>
-                                        <span className={styles.specName}>Категория</span>
+                                        <span className={`${styles.specName} ${styles.mobileMediumText}`}>Категория</span>
                                         <span className={styles.specValue}>
                                             {product.category_id || 'Прочее'}
                                         </span>
@@ -178,13 +178,12 @@ export default function Product({ product = {}, cartAuthenticated = false, relat
                             <p className={styles.deliveryMethodsTitle}>Способы получения:</p>
                             <ul className={styles.deliveryMethodsList}>
                                 <li>
-                                    <span>• Самовывоз </span>
-                                    <a href="#map" className={styles.addressLink}>
-                                        г.Люберцы, ул. Каскадная 20к2, пом.1.
-                                    </a>
+                                    <span className={styles.mobileMediumText}>
+                                        • Самовывоз <a href="#map" className={styles.addressLink}>г.Люберцы, ул. Каскадная 20к2, п.1.</a>
+                                    </span>
                                 </li>
                                 <li>
-                                    <span>• Доставка ТК по всей России</span>
+                                    <span className={styles.mobileMediumText}>• Доставка ТК по всей России</span>
                                 </li>
                             </ul>
                         </div>
