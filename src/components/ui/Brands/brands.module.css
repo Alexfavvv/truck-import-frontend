@@ -82,11 +82,13 @@
 
     .brands_marquee .brands__track {
         display: flex;
-        animation: brands-marquee 5s linear infinite;
+        width: max-content;
+        animation: brands-marquee 3.3s linear infinite;
     }
 
     .brands_marquee .brands__group {
         display: flex;
+        flex: 0 0 max-content;
         justify-content: flex-start;
         flex-wrap: nowrap;
         gap: 1.5rem;
