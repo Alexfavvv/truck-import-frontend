@@ -885,3 +885,46 @@
         border-radius: 16px;
     }
 }
+
+@media screen and (max-width: 767px) {
+    .breadcrumbs,
+    .imageSkuText,
+    .skuBadge,
+    .specRow,
+    .priceLabel,
+    .priceValue,
+    .inStockBadge,
+    .outOfStockBadge,
+    .infoRow,
+    .deliveryMethodsList,
+    .helpButton,
+    .aboutText,
+    .relatedTitle,
+    .relatedSkuText,
+    .relatedDetailRow,
+    .relatedPriceValue,
+    .trustCardText,
+    .wholesaleTextContainer,
+    .cartBtnWrapper :global([class*="cart__button_enabled"]),
+    .cartBtnWrapper :global([class*="cart__button_disabled"]),
+    .relatedCartWrapper :global([class*="cart__button_enabled"]),
+    .relatedCartWrapper :global([class*="cart__button_disabled"]),
+    .cartBtnWrapper :global([class*="cart__button"] input),
+    .relatedCartWrapper :global([class*="cart__button"] input) {
+        font-size: 14px;
+    }
+
+    .productTitle,
+    .aboutTitle,
+    .trustTitle,
+    .wholesaleTitle {
+        font-size: 16px;
+    }
+
+    .specificationsTitle,
+    .deliveryMethodsTitle,
+    .relatedItemTitle,
+    .trustCardTitle {
+        font-size: 14px;
+    }
+}

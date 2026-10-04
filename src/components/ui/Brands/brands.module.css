@@ -76,11 +76,13 @@
 
     .brands_marquee {
         justify-content: flex-start;
+        height: 56px;
+        overflow: hidden;
     }
 
     .brands_marquee .brands__track {
         display: flex;
-        animation: brands-marquee 21s linear infinite;
+        animation: brands-marquee 10.5s linear infinite;
     }
 
     .brands_marquee .brands__group {
@@ -103,7 +105,7 @@
     .brands_marquee .brands__item {
         width: 100%;
         max-width: 100%;
-        height: 2.25rem;
+        height: 48px;
         object-fit: contain;
     }
 }
