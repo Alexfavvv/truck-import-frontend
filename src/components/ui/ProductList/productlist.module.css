@@ -240,25 +240,30 @@
     }
 
     .product__name {
-        font-size: calc(20vw/3.9);
-        font-weight: 400;
+        font-size: 18px;
+        font-weight: 700;
         margin-bottom: calc(12vw/3.9);
     }
 
     .product__brand {
         font-weight: 400;
-        font-size: calc(16vw/3.9);
+        font-size: 14px;
+    }
+
+    .product__brand_name,
+    .product__brand_value {
+        font-size: 14px;
     }
 
     .product__price_value {
-        font-weight: 400;
-        font-size: calc(32vw/3.9);
+        font-weight: 700;
+        font-size: 16px;
         color: #000;
     }
 
     .product__price_name  {
-        font-weight: 400;
-        font-size: calc(16vw/3.9);
+        font-weight: 500;
+        font-size: 14px;
         color: #000;
     }
 
