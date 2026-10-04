@@ -1,0 +1,86 @@
+.strip {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) repeat(3, clamp(48px, 15.5vw, 60px));
+  align-items: stretch;
+  gap: clamp(4px, 1.5vw, 8px);
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.phoneCard,
+.socialButton {
+  height: clamp(48px, 15.5vw, 60px);
+  min-width: 0;
+  box-sizing: border-box;
+  border-radius: 11px;
+}
+
+.phoneCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+  padding: 6px 10px;
+  background: #F2F2F2;
+  color: #111111;
+  text-decoration: none;
+}
+
+.phoneLabel {
+  overflow: hidden;
+  color: #777777;
+  font-size: clamp(8px, 2.5vw, 10px);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.phoneNumber {
+  color: #111111;
+  font-size: clamp(12px, 3.5vw, 15px);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.socialButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1 / 1;
+  padding: 0;
+  background: #FFFFFF;
+}
+
+.socialButton img {
+  display: block;
+  width: 26px;
+  height: 26px;
+  max-width: 62%;
+  max-height: 62%;
+  object-fit: contain;
+}
+
+.max {
+  border: 1px solid #2B83F6;
+}
+
+.whatsapp {
+  border: 1px solid #25B866;
+}
+
+.telegram {
+  border: 1px solid #2AABEE;
+}
+
+.socialButton:focus-visible,
+.phoneCard:focus-visible {
+  outline: 2px solid #111111;
+  outline-offset: 2px;
+}

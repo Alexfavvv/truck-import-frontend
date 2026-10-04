@@ -6,6 +6,7 @@ import ProductAddToCart from "@/components/ui/ProductAddToCart/ProductAddToCart"
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Feedback from "@/components/ui/Feedback/Feedback";
 import ProductInformationSections from "@/components/ui/Product/ProductInformationSections";
+import ProductContactStrip from "@/components/ui/ProductContactStrip/ProductContactStrip";
 import brandsData from "@/json/brands.json";
 import styles from "./product.module.css";
 
@@ -217,8 +218,14 @@ export default function Product({ product = {}, cartAuthenticated = false, relat
                                 />
                             </div>
 
-                            {/* Кнопка "Помощь в подборе" с аватаркой менеджера */}
-                            <ProductHelpButton />
+                            {/* Кнопка помощи сохраняется на desktop/tablet */}
+                            <div className={styles.desktopHelpButton}>
+                                <ProductHelpButton />
+                            </div>
+                        </div>
+
+                        <div className={styles.mobileProductContactStrip}>
+                            <ProductContactStrip />
                         </div>
 
                         {/* Способы получения */}

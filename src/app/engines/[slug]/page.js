@@ -4,6 +4,7 @@ import styles from '@/components/ui/Product/product.module.css';
 import cartStyles from '@/components/ui/ProductAddToCart/productaddtocart.module.css';
 import { ProductHelpButton } from '@/components/ui/Product/Product';
 import ProductInformationSections from '@/components/ui/Product/ProductInformationSections';
+import ProductContactStrip from '@/components/ui/ProductContactStrip/ProductContactStrip';
 import { getEngineBySlug } from '@/features/engines/services/enginesCatalog';
 import { ENGINE_TYPE_LABELS } from '@/features/engines/data/manufacturers';
 
@@ -82,7 +83,12 @@ export default async function EnginePage({ params }) {
                   showAvatar={false}
                 />
               )}
-              <ProductHelpButton />
+              <div className={styles.engineDesktopHelpButton}>
+                <ProductHelpButton />
+              </div>
+            </div>
+            <div className={styles.engineMobileProductContactStrip}>
+              <ProductContactStrip />
             </div>
             <div className={styles.deliveryMethodsSection}>
               <p className={styles.deliveryMethodsTitle}>Способы получения:</p>

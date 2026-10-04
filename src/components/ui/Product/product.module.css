@@ -211,6 +211,9 @@
 .productBuyCard > .actionsContainer { order: 5; }
 .actionsContainer > .helpButton { order: 1; }
 .actionsContainer > .cartBtnWrapper { order: 2; }
+.actionsContainer > .desktopHelpButton { order: 1; }
+.mobileProductContactStrip,
+.engineMobileProductContactStrip { display: none; }
 
 /* Preserve the engine page's desktop order while allowing mobile-only reordering. */
 .engineProductBuyCard > .availabilityRow { order: 1; }
@@ -220,6 +223,7 @@
 .engineProductBuyCard > .engineActionsContainer { order: 5; }
 .engineActionsContainer > .helpButton { order: 1; }
 .engineActionsContainer > :global([class*="cart__button_enabled"]) { order: 2; }
+.engineActionsContainer > .engineDesktopHelpButton { order: 1; }
 
 .availabilityRow {
     margin-bottom: 0.2rem;
@@ -1002,12 +1006,19 @@
         order: 4;
     }
 
-    .engineProductBuyCard > .deliveryMethodsSection {
+    .engineProductBuyCard > .engineMobileProductContactStrip {
+        display: block;
         order: 5;
+        width: 100%;
+        min-width: 0;
     }
 
-    .engineActionsContainer > .helpButton {
-        order: 2;
+    .productBuyCard.engineProductBuyCard > .deliveryMethodsSection {
+        order: 6;
+    }
+
+    .engineActionsContainer > .engineDesktopHelpButton {
+        display: none;
     }
 
     .engineActionsContainer > :global([class*="cart__button_enabled"]) {
@@ -1053,16 +1064,19 @@
         order: 4;
     }
 
-    .productBuyCard > .deliveryMethodsSection {
+    .productBuyCard > .mobileProductContactStrip {
+        display: block;
         order: 5;
+        width: 100%;
+        min-width: 0;
     }
 
-    .actionsContainer > .cartBtnWrapper {
-        order: 1;
+    .productBuyCard > .deliveryMethodsSection {
+        order: 6;
     }
 
-    .actionsContainer > .helpButton {
-        order: 2;
+    .actionsContainer > .desktopHelpButton {
+        display: none;
     }
 
     .productBuyCard > .priceInfoRow {
