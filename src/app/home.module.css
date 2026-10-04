@@ -872,7 +872,6 @@
 
 @media screen and (max-width: 767px) {
     .heroTitle,
-    .controlTitle,
     .assortmentTitle,
     .newsTitle,
     .wholesaleSeoTitle {
@@ -880,7 +879,6 @@
         font-weight: 700;
     }
 
-    .timelineItemTitle,
     .assortmentSubtitle,
     .newsCardTitle {
         font-size: 14px;
@@ -893,7 +891,6 @@
         font-weight: 600;
     }
 
-    .timelineItemText,
     .assortmentParagraphs,
     .newsCardExcerpt {
         font-size: 14px;
@@ -918,5 +915,20 @@
         font-size: 14px;
         font-weight: 400;
         line-height: 1.4;
+    }
+
+    .controlTitle {
+        font-size: 18px;
+        font-weight: 600;
+    }
+
+    .timelineItemTitle {
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+    .timelineItemText {
+        font-size: 14px;
+        font-weight: 400;
     }
 }
