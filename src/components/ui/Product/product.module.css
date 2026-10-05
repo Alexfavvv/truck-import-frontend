@@ -1136,6 +1136,11 @@
         font-size: 20px;
     }
 
+    .productBuyCard > .loginPriceHint .loginPriceHintText {
+        align-items: flex-end;
+        text-align: right;
+    }
+
     .productBuyCard > .actionsContainer {
         order: 5;
     }
