@@ -207,7 +207,7 @@ export default function Product({ product = {}, cartAuthenticated = false, relat
                                 </span>
                                 <div className={styles.loginPriceHintText}>
                                     <div className={styles.loginPriceHintLine1}>
-                                        <Link href="/auth/account">Войдите в личный кабинет,</Link> чтобы
+                                        <Link href="/auth/account" prefetch={false}>Войдите в личный кабинет,</Link> чтобы
                                     </div>
                                     <div className={styles.loginPriceHintLine2}>
                                         получить более выгодные цены

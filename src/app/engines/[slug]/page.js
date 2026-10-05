@@ -72,7 +72,7 @@ export default async function EnginePage({ params }) {
               <div className={styles.loginPriceHint}>
                 <span className={styles.loginPriceHintIcon} aria-hidden="true">%</span>
                 <div className={styles.loginPriceHintText}>
-                  <div className={styles.loginPriceHintLine1}><Link href="/auth/account">Войдите в личный кабинет,</Link> чтобы</div>
+                  <div className={styles.loginPriceHintLine1}><Link href="/auth/account" prefetch={false}>Войдите в личный кабинет,</Link> чтобы</div>
                   <div className={styles.loginPriceHintLine2}>получить более выгодные цены</div>
                 </div>
               </div>

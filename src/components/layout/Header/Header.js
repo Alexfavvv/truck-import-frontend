@@ -139,14 +139,14 @@ export default function Header() {
           </div>
 
           <div className={styles.actionsGroup}>
-            <Link href="/auth/account" className={styles.accountBtn} aria-label="Личный кабинет">
+            <Link href="/auth/account" prefetch={false} className={styles.accountBtn} aria-label="Личный кабинет">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
                 <circle cx="12" cy="7" r="4" />
               </svg>
             </Link>
 
-            <Link href="/cart" className={styles.cartBtn}>
+            <Link href="/cart" prefetch={false} className={styles.cartBtn}>
               <span>Корзина</span>
               {cartCount > 0 && <span className={styles.cartBadge}>{cartCount}</span>}
             </Link>
@@ -202,14 +202,14 @@ export default function Header() {
           </div>
 
           <div className={styles.mobileActionsGroup}>
-            <Link href="/auth/account" className={styles.mobileAccountBtn} aria-label="Личный кабинет">
+            <Link href="/auth/account" prefetch={false} className={styles.mobileAccountBtn} aria-label="Личный кабинет">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#B19448" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
                 <circle cx="12" cy="7" r="4" />
               </svg>
             </Link>
 
-            <Link href="/cart" className={styles.mobileCartBtn} aria-label="Корзина">
+            <Link href="/cart" prefetch={false} className={styles.mobileCartBtn} aria-label="Корзина">
               <span>Корзина</span>
               {cartCount > 0 && <span className={styles.cartBadge}>{cartCount}</span>}
             </Link>
