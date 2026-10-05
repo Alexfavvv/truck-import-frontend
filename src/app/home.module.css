@@ -419,6 +419,10 @@
     display: none;
 }
 
+.mobileControlImageClip {
+    display: none;
+}
+
 .managerFullWrapper {
     pointer-events: none;
     width: 50%;
@@ -939,6 +943,15 @@
         width: 155%;
         max-width: none;
         transform: translateX(-50%);
+        pointer-events: none;
+    }
+
+    .mobileControlImageClip {
+        display: block;
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        border-radius: inherit;
         pointer-events: none;
     }
 

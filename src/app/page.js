@@ -133,12 +133,14 @@ export default async function Home() {
                 className={styles.laptopImg}
               />
 
-              <div className={styles.mobileControlImageWrap}>
-                <SafeImage
-                  src="/images/order-control-mobile.png"
-                  alt="Карточки личного кабинета: поиск запчастей, отслеживание доставки и акт об оплате"
-                  className={styles.mobileControlImage}
-                />
+              <div className={styles.mobileControlImageClip}>
+                <div className={styles.mobileControlImageWrap}>
+                  <SafeImage
+                    src="/images/order-control-mobile.png"
+                    alt="Карточки личного кабинета: поиск запчастей, отслеживание доставки и акт об оплате"
+                    className={styles.mobileControlImage}
+                  />
+                </div>
               </div>
 
               <div className={styles.managerFullWrapper}>
