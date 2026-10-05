@@ -5,8 +5,11 @@ import Image from 'next/image';
 import Link from 'next/link';
 import SafeImage from '@/components/ui/SafeImage/SafeImage';
 import Feedback from '@/components/ui/Feedback/Feedback';
+import { COMPANY_SOCIALS } from '@/lib/company-contacts';
 import styles from '@/app/home.module.css';
 import headerStyles from '@/components/layout/Header/header.module.css';
+
+const managerSocialOrder = ['whatsapp', 'max', 'telegram'];
 
 export default function HomeBanners({ initialData }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -218,7 +221,27 @@ export default function HomeBanners({ initialData }) {
       </div>
 
       <div className={styles.managerBtn}>
-        Написать менеджеру
+        <span className={styles.managerBtnText}>Написать менеджеру</span>
+        <div className={styles.managerSocials}>
+          {managerSocialOrder.map((key) => {
+            const social = COMPANY_SOCIALS.find((item) => item.key === key);
+            if (!social) return null;
+
+            return (
+              <a
+                key={social.key}
+                href={social.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={social.label}
+                title={social.label}
+                className={styles.managerSocialLink}
+              >
+                <img src={social.icon} alt="" />
+              </a>
+            );
+          })}
+        </div>
       </div>
     </>
   );
