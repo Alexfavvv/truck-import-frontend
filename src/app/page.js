@@ -133,6 +133,28 @@ export default async function Home() {
                 className={styles.laptopImg}
               />
 
+              <div className={styles.controlCards} aria-hidden="true">
+                <div className={`${styles.controlPreview} ${styles.controlPreviewLeft}`}>
+                  <span className={styles.controlPreviewTop} />
+                  <span className={styles.controlPreviewRows} />
+                </div>
+                <div className={`${styles.controlPreview} ${styles.controlPreviewMain}`}>
+                  <span className={styles.controlPreviewTop} />
+                  <span className={styles.controlPreviewSummary} />
+                  <span className={styles.controlPreviewRoute}>
+                    <i />
+                    <i />
+                    <i />
+                    <i />
+                  </span>
+                  <span className={styles.controlPreviewRows} />
+                </div>
+                <div className={`${styles.controlPreview} ${styles.controlPreviewRight}`}>
+                  <span className={styles.controlPreviewTop} />
+                  <span className={styles.controlPreviewRows} />
+                </div>
+              </div>
+
               <div className={styles.managerFullWrapper}>
                 <SafeImage
                   src="/images/manager-full.png"
