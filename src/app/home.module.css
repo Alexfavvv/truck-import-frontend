@@ -875,6 +875,10 @@
 }
 
 @media screen and (max-width: 767px) {
+    .controlGrid {
+        gap: 6rem;
+    }
+
     .brandsSection {
         display: none;
     }
@@ -900,8 +904,10 @@
 
     .mobileManagerSocials {
         position: absolute;
-        right: 22px;
-        bottom: 68px;
+        right: 14px;
+        bottom: 14px;
+        width: 128px;
+        height: 36px;
         z-index: 50;
         display: flex;
         align-items: center;
