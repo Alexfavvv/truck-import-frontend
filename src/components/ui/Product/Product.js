@@ -202,15 +202,21 @@ export default function Product({ product = {}, cartAuthenticated = false, relat
 
                         {!cartAuthenticated && (
                             <div className={styles.loginPriceHint}>
-                                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                                    <path d="M3.5 5.5h11l6 6-8 8-9-9v-5Z" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" />
-                                    <circle cx="8" cy="10" r="1.2" fill="currentColor" />
-                                    <path d="m11 15 4-4m-.1 0h.1m-4.1 4h.1" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
-                                </svg>
-                                <p>
-                                    <Link href="/auth/account">Войдите в личный кабинет,</Link>{' '}
-                                    чтобы получить более выгодные цены
-                                </p>
+                                <span className={styles.loginPriceHintIcon} aria-hidden="true">
+                                    <svg viewBox="0 0 24 24" focusable="false">
+                                        <path d="M3.5 5.5h11l6 6-8 8-9-9v-5Z" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" />
+                                        <circle cx="8" cy="10" r="1.2" fill="currentColor" />
+                                        <path d="m11 15 4-4m-.1 0h.1m-4.1 4h.1" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+                                    </svg>
+                                </span>
+                                <div className={styles.loginPriceHintText}>
+                                    <div className={styles.loginPriceHintLine1}>
+                                        <Link href="/auth/account">Войдите в личный кабинет,</Link>
+                                    </div>
+                                    <div className={styles.loginPriceHintLine2}>
+                                        чтобы получить более выгодные цены
+                                    </div>
+                                </div>
                             </div>
                         )}
 
