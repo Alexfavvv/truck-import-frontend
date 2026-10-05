@@ -207,13 +207,50 @@
 .productBuyCard > .availabilityRow { order: 1; }
 .productBuyCard > .infoRowDivider { order: 2; }
 .productBuyCard > .priceInfoRow { order: 3; }
-.productBuyCard > .deliveryMethodsSection { order: 4; }
-.productBuyCard > .actionsContainer { order: 5; }
+.productBuyCard > .loginPriceHint { order: 4; }
+.productBuyCard > .deliveryMethodsSection { order: 5; }
+.productBuyCard > .actionsContainer { order: 6; }
 .actionsContainer > .helpButton { order: 1; }
 .actionsContainer > .cartBtnWrapper { order: 2; }
 .actionsContainer > .desktopHelpButton { order: 1; }
 .mobileProductContactStrip,
 .engineMobileProductContactStrip { display: none; }
+
+.loginPriceHint {
+    display: none;
+}
+
+@media screen and (min-width: 1025px) {
+    .loginPriceHint {
+        display: flex;
+        align-items: center;
+        align-self: flex-end;
+        justify-content: flex-end;
+        gap: 0.6rem;
+        max-width: 100%;
+        color: #777777;
+        font-size: 1.4rem;
+        line-height: 1.35;
+        text-align: right;
+    }
+
+    .loginPriceHint svg {
+        width: 1.8rem;
+        height: 1.8rem;
+        flex: 0 0 auto;
+        color: #B19448;
+    }
+
+    .loginPriceHint p {
+        margin: 0;
+    }
+
+    .loginPriceHint a {
+        color: #141313;
+        text-decoration: underline;
+        text-underline-offset: 0.15em;
+    }
+}
 
 /* Preserve the engine page's desktop order while allowing mobile-only reordering. */
 .engineProductBuyCard > .availabilityRow { order: 1; }
