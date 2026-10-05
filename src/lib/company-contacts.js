@@ -20,7 +20,7 @@ export const COMPANY_SOCIALS = [
   {
     key: 'whatsapp',
     label: 'WhatsApp',
-    href: 'https://wa.me/79006044614',
+    href: 'https://wa.me/79269261359',
     icon: '/images/icon-wa.png',
   },
 ];
