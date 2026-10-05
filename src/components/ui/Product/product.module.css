@@ -1116,10 +1116,11 @@
 
     .productBuyCard > .loginPriceHint {
         display: flex;
-        align-self: stretch;
+        align-self: flex-end;
         justify-content: flex-start;
         order: 4;
-        width: 100%;
+        width: fit-content;
+        margin-left: auto;
         min-width: 0;
         max-width: 100%;
         gap: 0.8rem;
