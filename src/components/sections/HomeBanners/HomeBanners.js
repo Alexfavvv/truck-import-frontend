@@ -74,8 +74,8 @@ export default function HomeBanners({ initialData }) {
 
     const content = hasImage ? (
       <picture className={styles.bannerPicture}>
-        {banner.image_mobile && <source media="(max-width: 480px)" srcSet={banner.image_mobile} />}
-        {banner.image_tablet && <source media="(max-width: 1024px)" srcSet={banner.image_tablet} />}
+        <source media="(max-width: 767px)" srcSet={banner.image_mobile || banner.image_tablet || banner.image_pc} />
+        <source media="(max-width: 1024px)" srcSet={banner.image_tablet || banner.image_pc || banner.image_mobile} />
         <img
           src={banner.image_pc || banner.image_tablet || banner.image_mobile}
           alt={banner.name || "Banner"}
