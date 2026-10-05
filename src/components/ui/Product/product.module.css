@@ -273,8 +273,9 @@
 .engineProductBuyCard > .availabilityRow { order: 1; }
 .engineProductBuyCard > .engineDeliveryRow { order: 2; }
 .engineProductBuyCard > .enginePriceRow { order: 3; }
-.engineProductBuyCard > .deliveryMethodsSection { order: 4; }
-.engineProductBuyCard > .engineActionsContainer { order: 5; }
+.engineProductBuyCard > .loginPriceHint { order: 4; }
+.engineProductBuyCard > .deliveryMethodsSection { order: 5; }
+.engineProductBuyCard > .engineActionsContainer { order: 6; }
 .engineActionsContainer > .helpButton { order: 1; }
 .engineActionsContainer > :global([class*="cart__button_enabled"]) { order: 2; }
 .engineActionsContainer > .engineDesktopHelpButton { order: 1; }
@@ -1057,18 +1058,18 @@
     }
 
     .engineProductBuyCard > .engineActionsContainer {
-        order: 4;
+        order: 5;
     }
 
     .engineProductBuyCard > .engineMobileProductContactStrip {
         display: block;
-        order: 5;
+        order: 6;
         width: 100%;
         min-width: 0;
     }
 
     .productBuyCard.engineProductBuyCard > .deliveryMethodsSection {
-        order: 6;
+        order: 7;
     }
 
     .engineActionsContainer > .engineDesktopHelpButton {

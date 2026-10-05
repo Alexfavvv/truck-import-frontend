@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { cookies } from 'next/headers';
 import styles from '@/components/ui/Product/product.module.css';
 import cartStyles from '@/components/ui/ProductAddToCart/productaddtocart.module.css';
 import { ProductHelpButton } from '@/components/ui/Product/Product';
@@ -7,6 +8,8 @@ import ProductInformationSections from '@/components/ui/Product/ProductInformati
 import ProductContactStrip from '@/components/ui/ProductContactStrip/ProductContactStrip';
 import { getEngineBySlug } from '@/features/engines/services/enginesCatalog';
 import { ENGINE_TYPE_LABELS } from '@/features/engines/data/manufacturers';
+import { LK_TOKEN_COOKIE } from '@/lib/lk-auth-cookie';
+import { resolveVitrineAuthState } from '@/lib/lk-client-cart';
 
 const ENGINE_DESCRIPTION_FALLBACK = 'Двигатель или блок предназначен для профессионального использования и поставляется под заказ. Подходит для ремонта и замены силового агрегата соответствующей серии. Поставка осуществляется со склада партнёров в Европе с доставкой по России.';
 
@@ -20,6 +23,8 @@ export default async function EnginePage({ params }) {
   const { slug } = await params;
   const engine = await getEngineBySlug(slug);
   if (!engine) notFound();
+  const token = (await cookies()).get(LK_TOKEN_COOKIE)?.value?.trim() || '';
+  const { authenticated: cartAuthenticated } = await resolveVitrineAuthState(token);
   const numericPrice = Number(String(engine.price ?? '').trim().replace(',', '.'));
   const hasPrice = Number.isFinite(numericPrice) && numericPrice > 0;
   const price = hasPrice
@@ -63,6 +68,15 @@ export default async function EnginePage({ params }) {
             </div>
             <div className={`${styles.infoRow} ${styles.engineDeliveryRow}`}><span className={styles.infoLabel}>Сроки доставки:</span><span className={styles.infoValue}>от 15 дней</span></div>
             <div className={`${styles.infoRow} ${styles.enginePriceRow}`}><span className={styles.priceLabel}>Цена:</span><span className={styles.priceValue}>{price}</span></div>
+            {!cartAuthenticated && (
+              <div className={styles.loginPriceHint}>
+                <span className={styles.loginPriceHintIcon} aria-hidden="true">%</span>
+                <div className={styles.loginPriceHintText}>
+                  <div className={styles.loginPriceHintLine1}><Link href="/auth/account">Войдите в личный кабинет,</Link> чтобы</div>
+                  <div className={styles.loginPriceHintLine2}>получить более выгодные цены</div>
+                </div>
+              </div>
+            )}
             <div className={`${styles.actionsContainer} ${styles.engineActionsContainer}`}>
               {hasPrice ? (
                 <button

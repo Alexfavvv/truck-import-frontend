@@ -89,6 +89,7 @@
   .phoneCard {
     align-items: center;
     justify-content: center;
+    gap: 7px;
     text-align: center;
   }
 }
