@@ -70,12 +70,12 @@ export default function HomeBanners({ initialData }) {
   const banners = initialData?.banners || [];
   const b1 = banners.find(b => b.id === 1) || { id: 1, link_type: 'callback' };
   const b2 = banners.find(b => b.id === 2) || { id: 2, link_type: 'link', link_url: '/catalog' };
-  const b3 = banners.find(b => b.id === 3) || { id: 3, link_type: 'link', link_url: '/contacts' };
+  const b3 = banners.find(b => Number(b.id) === 3) || { id: 3, link_type: 'link', link_url: '/contacts' };
 
   const renderBanner = (banner, fallbackContent, className) => {
     const hasImage = !!(banner.image_pc || banner.image_tablet || banner.image_mobile);
 
-    const content = hasImage ? (
+    const bannerContent = hasImage ? (
       <picture className={styles.bannerPicture}>
         <source media="(max-width: 767px)" srcSet={banner.image_mobile || banner.image_tablet || banner.image_pc} />
         <source media="(max-width: 1024px)" srcSet={banner.image_tablet || banner.image_pc || banner.image_mobile} />
@@ -88,7 +88,6 @@ export default function HomeBanners({ initialData }) {
     ) : (
       fallbackContent
     );
-
     const cardStyle = hasImage ? { padding: 0, cursor: 'pointer', backgroundImage: 'none' } : {};
 
     if (banner.link_type === 'callback') {
@@ -98,7 +97,7 @@ export default function HomeBanners({ initialData }) {
           style={cardStyle} 
           onClick={(e) => openModal(e)}
         >
-          {content}
+          {bannerContent}
         </div>
       );
     }
@@ -110,7 +109,7 @@ export default function HomeBanners({ initialData }) {
           className={className} 
           style={cardStyle}
         >
-          {content}
+          {bannerContent}
         </Link>
       );
     }
@@ -120,7 +119,7 @@ export default function HomeBanners({ initialData }) {
         className={className} 
         style={cardStyle}
       >
-        {content}
+        {bannerContent}
       </div>
     );
   };
@@ -222,29 +221,52 @@ export default function HomeBanners({ initialData }) {
 
       <div className={styles.managerBtn}>
         <span className={styles.managerBtnText}>Написать менеджеру</span>
-        <div className={styles.managerSocials}>
-          {managerSocialOrder.map((key) => {
-            const social = COMPANY_SOCIALS.find((item) => item.key === key);
-            if (!social) return null;
-
-            return (
-              <a
-                key={social.key}
-                href={social.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={social.label}
-                title={social.label}
-                className={styles.managerSocialLink}
-              >
-                <img src={social.icon} alt="" />
-              </a>
-            );
-          })}
-        </div>
       </div>
     </>
   );
+
+  const b3HasImage = !!(b3.image_pc || b3.image_tablet || b3.image_mobile);
+  const b3ImageContent = b3HasImage ? (
+    <picture className={styles.bannerPicture}>
+      <source media="(max-width: 767px)" srcSet={b3.image_mobile || b3.image_tablet || b3.image_pc} />
+      <source media="(max-width: 1024px)" srcSet={b3.image_tablet || b3.image_pc || b3.image_mobile} />
+      <img
+        src={b3.image_pc || b3.image_tablet || b3.image_mobile}
+        alt={b3.name || 'Banner'}
+        className={styles.bannerImage}
+      />
+    </picture>
+  ) : b3Fallback;
+
+  const b3Content = (
+    <>
+      {b3ImageContent}
+      <div className={styles.mobileManagerSocials}>
+        {managerSocialOrder.map((key) => {
+          const social = COMPANY_SOCIALS.find((item) => item.key === key);
+          if (!social) return null;
+
+          return (
+            <button
+              key={social.key}
+              type="button"
+              aria-label={social.label}
+              title={social.label}
+              className={styles.managerSocialLink}
+              onClick={(event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                window.open(social.href, '_blank', 'noopener,noreferrer');
+              }}
+            >
+              <img src={social.icon} alt="" />
+            </button>
+          );
+        })}
+      </div>
+    </>
+  );
+  const b3CardStyle = b3HasImage ? { padding: 0, cursor: 'pointer', backgroundImage: 'none' } : {};
 
   return (
     <>
@@ -258,7 +280,23 @@ export default function HomeBanners({ initialData }) {
           
           <div className={styles.heroRight}>
             {renderBanner(b2, b2Fallback, styles.goldCard)}
-            {renderBanner(b3, b3Fallback, styles.darkManagerCard)}
+            {b3.link_type === 'callback' ? (
+              <div
+                className={styles.darkManagerCard}
+                style={b3CardStyle}
+                onClick={(event) => openModal(event)}
+              >
+                {b3Content}
+              </div>
+            ) : b3.link_url ? (
+              <Link href={b3.link_url} className={styles.darkManagerCard} style={b3CardStyle}>
+                {b3Content}
+              </Link>
+            ) : (
+              <div className={styles.darkManagerCard} style={b3CardStyle}>
+                {b3Content}
+              </div>
+            )}
           </div>
         </section>
 

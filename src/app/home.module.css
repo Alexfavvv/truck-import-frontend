@@ -266,7 +266,7 @@
     background-color: #FFFFFF;
 }
 
-.managerSocials {
+.mobileManagerSocials {
     display: none;
 }
 
@@ -875,22 +875,38 @@
 }
 
 @media screen and (max-width: 767px) {
+    .brandsSection {
+        display: none;
+    }
+
+    .laptopImg {
+        position: relative;
+        left: 50%;
+        width: 140%;
+        max-width: none;
+        transform: translateX(-50%);
+    }
+
     .managerBtn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 12px 18px;
+        display: block;
+        width: 156px;
+        height: 64px;
+        padding: 0;
     }
 
     .managerBtnText {
         display: none;
     }
 
-    .managerSocials {
+    .mobileManagerSocials {
+        position: absolute;
+        right: 22px;
+        bottom: 68px;
+        z-index: 50;
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 12px;
+        gap: 10px;
     }
 
     .managerSocialLink {
@@ -900,6 +916,12 @@
         width: 36px;
         height: 36px;
         flex: 0 0 36px;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        color: inherit;
+        cursor: pointer;
+        line-height: 0;
     }
 
     .managerSocialLink img {
