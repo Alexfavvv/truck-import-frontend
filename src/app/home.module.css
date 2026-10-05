@@ -876,7 +876,7 @@
 
 @media screen and (max-width: 767px) {
     .controlGrid {
-        gap: 6rem;
+        gap: 3rem;
     }
 
     .brandsSection {
