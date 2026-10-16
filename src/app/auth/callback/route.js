@@ -4,6 +4,7 @@ import {
   LK_TOKEN_COOKIE,
   SSO_STATE_COOKIE,
   exchangeSsoCode,
+  getLkApiBase,
   lkTokenCookieOptions,
   postLoginPathFromValidatedSsoState,
 } from '@/lib/lk-sso';
@@ -47,6 +48,11 @@ export async function GET(request) {
   try {
     const data = await exchangeSsoCode(code);
     const dest = request.nextUrl.clone();
+    if (!afterLoginPath && data.user?.role === 'manager_truck') {
+      const res = NextResponse.redirect(`${getLkApiBase().replace(/\/$/, '')}/manager`);
+      res.cookies.set(LK_TOKEN_COOKIE, data.token, lkTokenCookieOptions());
+      return res;
+    }
     if (afterLoginPath) {
       dest.pathname = afterLoginPath;
       dest.search = '';
