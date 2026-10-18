@@ -16,9 +16,15 @@ export async function GET(request) {
       const status = parseLkAuthStatusResponse(await fetchLkAuthStatus(token));
       if (status.authenticated) {
         const base = getLkApiBase().replace(/\/$/, '');
-        const path = status.user?.role === 'manager_truck'
-          ? '/manager'
-          : status.user?.role === 'admin_truck' ? '/admin' : '/cabinet';
+        let path = '/cabinet';
+        switch (status.user?.role) {
+          case 'admin_truck':
+            path = '/admin';
+            break;
+          case 'manager_truck':
+            path = '/manager';
+            break;
+        }
         return NextResponse.redirect(`${base}${path}`);
       }
     } catch {

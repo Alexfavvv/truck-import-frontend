@@ -48,19 +48,20 @@ export async function GET(request) {
   try {
     const data = await exchangeSsoCode(code);
     const dest = request.nextUrl.clone();
-    if (!afterLoginPath && data.user?.role === 'manager_truck') {
-      const res = NextResponse.redirect(`${getLkApiBase().replace(/\/$/, '')}/manager`);
-      res.cookies.set(LK_TOKEN_COOKIE, data.token, lkTokenCookieOptions());
-      return res;
-    }
     if (afterLoginPath) {
       dest.pathname = afterLoginPath;
       dest.search = '';
-    } else {
-      dest.pathname = '/';
-      dest.search = '';
+      const res = NextResponse.redirect(dest);
+      res.cookies.set(LK_TOKEN_COOKIE, data.token, lkTokenCookieOptions());
+      return res;
     }
-    const res = NextResponse.redirect(dest);
+
+    const rolePaths = {
+      admin_truck: '/admin',
+      manager_truck: '/manager',
+    };
+    const path = rolePaths[data.user?.role] ?? '/cabinet';
+    const res = NextResponse.redirect(`${getLkApiBase().replace(/\/$/, '')}${path}`);
     res.cookies.set(LK_TOKEN_COOKIE, data.token, lkTokenCookieOptions());
     return res;
   } catch {
