@@ -671,7 +671,9 @@
     }
 
     .newsCardTitle {
-        margin-bottom: 0.7rem;
+        font-size: 1.8rem;
+        min-height: calc(1.8rem * 1.15 * 4);
+        margin-bottom: 1.4rem;
         line-height: 1.15;
     }
 
