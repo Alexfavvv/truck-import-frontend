@@ -18,4 +18,25 @@
   .cover {
     height: 560px;
   }
+
+  .page :global(.blog-content p),
+  .page :global(.blog-content ul),
+  .page :global(.blog-content ol),
+  .page :global(.blog-content li) {
+    font-size: 15px !important;
+    line-height: 1.2 !important;
+  }
+
+  .page :global(.blog-content p) {
+    margin-bottom: 14px !important;
+  }
+
+  .page :global(.blog-content ul),
+  .page :global(.blog-content ol) {
+    margin-bottom: 14px !important;
+  }
+
+  .page :global(.blog-content li) {
+    margin-bottom: 6px !important;
+  }
 }
