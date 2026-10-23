@@ -165,15 +165,15 @@ export default async function Home() {
             <div className={styles.assortmentPhotos}>
               <div className={styles.assortmentPhotoCard}>
                 <SafeImage
-                  src="/images/warehouse-1.jpg"
+                  src="/images/assortment-warehouse.jpg"
                   alt="Склад запчастей"
                   className={styles.assortmentImg}
                 />
               </div>
               <div className={styles.assortmentPhotoCard}>
                 <SafeImage
-                  src="/images/warehouse-2.jpg"
-                  alt="Стеллажи с деталями"
+                  src="/images/assortment-technician.jpg"
+                  alt="Специалист по ремонту двигателя"
                   className={styles.assortmentImg}
                 />
               </div>
@@ -182,10 +182,10 @@ export default async function Home() {
             {/* Текст справа */}
             <div className={styles.assortmentText}>
               <h2 className={styles.assortmentTitle}>
-                Самый широкий ассортимент
+                Самый широкий ассортимент.
               </h2>
               <h3 className={styles.assortmentSubtitle}>
-                Более 4 000 000 деталей
+                Более 3 000 000 запчастей
               </h3>
 
               <div className={styles.assortmentParagraphs}>
