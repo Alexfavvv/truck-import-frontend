@@ -652,6 +652,34 @@
     display: none;
 }
 
+@media (min-width: 1025px) {
+    .newsCard {
+        padding: 0.9rem;
+    }
+
+    .newsImageWrapper {
+        height: auto;
+        aspect-ratio: 16 / 9;
+    }
+
+    .newsImg {
+        object-fit: contain;
+    }
+
+    .newsCardBody {
+        padding: 0.9rem 0.8rem 0.5rem;
+    }
+
+    .newsCardTitle {
+        margin-bottom: 0.7rem;
+        line-height: 1.15;
+    }
+
+    .newsCardExcerpt {
+        line-height: 1.32;
+    }
+}
+
 .bannerPicture {
     position: relative;
     width: 100%;

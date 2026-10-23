@@ -134,6 +134,34 @@ a[aria-current="page"] {
   color: #fff
 }
 
+/* Desktop typography: keep the existing mobile font treatment intact. */
+@media (min-width: 1025px) {
+  body {
+    --font-gilroy: var(--font-manrope);
+    --font-heronew: var(--font-manrope);
+    font-family: var(--font-manrope), sans-serif;
+    font-weight: 400;
+  }
+
+  body,
+  body button,
+  body input,
+  body select,
+  body textarea {
+    font-family: var(--font-manrope), sans-serif;
+  }
+
+  body h1,
+  body h2,
+  body h3,
+  body h4,
+  body h5,
+  body h6 {
+    font-family: var(--font-manrope), sans-serif !important;
+    font-weight: 700 !important;
+  }
+}
+
 .menu .menu {
   position: absolute;
   gap: 0 1rem;

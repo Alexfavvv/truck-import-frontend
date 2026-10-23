@@ -5,6 +5,12 @@
     /* margin-bottom: 20px; */
   }
 
+  @media (min-width: 1025px) {
+    .sortWrapper {
+      font-family: var(--font-manrope), sans-serif;
+    }
+  }
+
   .label {
     font-size: calc(16vw/14.4);
     margin-bottom: calc(6vw/14.4);
