@@ -1,0 +1,21 @@
+.page {
+  background-color: #e3e3e3;
+}
+
+.cover {
+  height: 420px;
+}
+
+.coverImage {
+  object-fit: cover;
+}
+
+@media (min-width: 1025px) {
+  .page {
+    background-color: #f0f0f0;
+  }
+
+  .cover {
+    height: 560px;
+  }
+}

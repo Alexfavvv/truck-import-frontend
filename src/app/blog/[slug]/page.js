@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { fetchPostBySlug } from '@/services/postService';
+import styles from './page.module.css';
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
@@ -36,7 +37,7 @@ export default async function BlogPostPage({ params }) {
     : '';
 
   return (
-    <main style={{ backgroundColor: '#E3E3E3', color: '#1A1A1A', minHeight: '80vh', padding: '4rem 1.5rem 8rem 1.5rem' }}>
+    <main className={styles.page} style={{ color: '#1A1A1A', minHeight: '80vh', padding: '4rem 1.5rem 8rem 1.5rem' }}>
       <div style={{ maxWidth: '1140px', margin: '0 auto' }}>
         
         {/* Хлебные крошки */}
@@ -65,12 +66,12 @@ export default async function BlogPostPage({ params }) {
 
             {/* Обложка статьи */}
             {post.cover_image && (
-              <div style={{ position: 'relative', width: '100%', height: '420px', borderRadius: '1.2rem', overflow: 'hidden', marginBottom: '3.5rem', backgroundColor: '#F0F0F0' }}>
+              <div className={styles.cover} style={{ position: 'relative', width: '100%', borderRadius: '1.2rem', overflow: 'hidden', marginBottom: '3.5rem', backgroundColor: '#F0F0F0' }}>
                 <Image
                   src={post.cover_image}
                   alt={post.title}
                   fill
-                  style={{ objectFit: 'cover' }}
+                  className={styles.coverImage}
                   priority
                   unoptimized={post.cover_image.startsWith('http')}
                   referrerPolicy="no-referrer"
