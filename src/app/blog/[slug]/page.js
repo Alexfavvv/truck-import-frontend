@@ -32,11 +32,11 @@ export default async function BlogPostPage({ params }) {
 
   const { post, recent = [] } = data;
   const relatedProduct = post.related_product;
-  const relatedPrice = relatedProduct?.price_text || (() => {
-    const amount = Number(String(relatedProduct?.price ?? '').replace(/\s/g, '').replace(',', '.'));
-    if (!Number.isFinite(amount) || amount <= 0) return 'По запросу';
-    return `${amount.toLocaleString('ru-RU')} ${relatedProduct?.currency === 'RUB' ? '₽' : (relatedProduct?.currency || '')}`.trim();
-  })();
+  const relatedAmount = Number(String(relatedProduct?.price ?? '').replace(/\s/g, '').replace(',', '.'));
+  const hasRelatedPrice = Number.isFinite(relatedAmount) && relatedAmount > 0;
+  const relatedPrice = hasRelatedPrice
+    ? relatedProduct?.price_text || `${relatedAmount.toLocaleString('ru-RU')} ${relatedProduct?.currency === 'RUB' ? '₽' : (relatedProduct?.currency || '')}`.trim()
+    : null;
   const relatedProductType = relatedProduct?.product_type || ({
     engine: 'Двигатель',
     engine_block: 'Блок двигателя',
@@ -70,6 +70,7 @@ export default async function BlogPostPage({ params }) {
                       product={relatedProduct}
                       productType={relatedProductType}
                       price={relatedPrice}
+                      hasPrice={hasRelatedPrice}
                     />
                   </Link>
                 ) : (
@@ -78,11 +79,12 @@ export default async function BlogPostPage({ params }) {
                       product={relatedProduct}
                       productType={relatedProductType}
                       price={relatedPrice}
+                      hasPrice={hasRelatedPrice}
                     />
                   </div>
                 )}
-                <div className={styles.productCta}>
-                  <span className={styles.productCtaLabel}>Уточнить цену</span>
+                <div className={`${styles.productCta} ${hasRelatedPrice ? styles.productCtaWithPrice : styles.productCtaWithoutPrice}`}>
+                  {hasRelatedPrice && <span className={styles.productCtaLabel}>Уточнить цену</span>}
                   <Link href={relatedProduct.path || '/contacts'} className={styles.productCtaButton}>
                     Узнать цену
                   </Link>
@@ -241,7 +243,7 @@ export default async function BlogPostPage({ params }) {
   );
 }
 
-function ProductDetails({ product, productType, price }) {
+function ProductDetails({ product, productType, price, hasPrice }) {
   return (
     <>
       <img
@@ -249,14 +251,16 @@ function ProductDetails({ product, productType, price }) {
         alt={product.title || 'Товар'}
         className={styles.productImage}
       />
-      <h2 className={styles.productTitle}>{product.title}</h2>
-      <dl className={styles.productSpecs}>
-        {product.manufacturer && <div><dt>Производитель</dt><dd>{product.manufacturer}</dd></div>}
-        {product.model && <div><dt>Модель</dt><dd>{product.model}</dd></div>}
-        {productType && <div><dt>Тип</dt><dd>{productType}</dd></div>}
-        {product.sku && <div><dt>SKU / OEM</dt><dd>{product.sku}</dd></div>}
-      </dl>
-      <div className={styles.productPrice}>{price}</div>
+      <div className={styles.productInfo}>
+        <h2 className={styles.productTitle}>{product.title}</h2>
+        <dl className={styles.productSpecs}>
+          {product.manufacturer && <div><dt>Производитель</dt><dd>{product.manufacturer}</dd></div>}
+          {product.model && <div><dt>Модель</dt><dd>{product.model}</dd></div>}
+          {productType && <div><dt>Тип</dt><dd>{productType}</dd></div>}
+          {product.sku && <div><dt>SKU / OEM</dt><dd>{product.sku}</dd></div>}
+        </dl>
+        {hasPrice && <div className={styles.productPrice}>{price}</div>}
+      </div>
     </>
   );
 }

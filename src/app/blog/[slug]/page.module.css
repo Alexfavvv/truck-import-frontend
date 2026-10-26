@@ -38,6 +38,10 @@
   text-decoration: none;
 }
 
+.productInfo {
+  padding-inline: 8px;
+}
+
 .productImage {
   display: block;
   width: 100%;
@@ -89,8 +93,16 @@
   display: grid;
   gap: 10px;
   margin-top: 16px;
+  margin-inline: 8px;
   padding-top: 14px;
   border-top: 1px solid #eee;
+}
+
+.productCtaWithoutPrice {
+  gap: 0;
+  margin-top: 8px;
+  padding-top: 0;
+  border-top: 0;
 }
 
 .productCtaLabel {
@@ -101,6 +113,8 @@
 
 .productCtaButton {
   display: inline-flex;
+  width: 100%;
+  box-sizing: border-box;
   min-height: 44px;
   align-items: center;
   justify-content: center;
