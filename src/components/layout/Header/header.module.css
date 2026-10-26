@@ -4,8 +4,21 @@
     background-color: #19191B;
     color: #FFFFFF;
     position: relative;
-    z-index: 100;
+    z-index: 1000;
     font-family: inherit;
+}
+
+.mainHeaderSticky {
+    width: 100%;
+    background-color: #19191B;
+}
+
+.mainHeaderStickyFixed {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1000;
 }
 
 /* Top Navigation Bar */

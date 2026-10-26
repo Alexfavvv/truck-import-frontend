@@ -26,6 +26,10 @@ export default function Header() {
   const pathname = usePathname();
   const [burgerActive, setBurgerActive] = useState(false);
   const dialogRef = useRef(null);
+  const topBarRef = useRef(null);
+  const mainHeaderRef = useRef(null);
+  const [mainHeaderFixed, setMainHeaderFixed] = useState(false);
+  const [mainHeaderHeight, setMainHeaderHeight] = useState(0);
   const [messengers, setMessengers] = useState(DEFAULT_MESSENGERS);
 
   const closeModal = () => {
@@ -81,12 +85,49 @@ export default function Header() {
     setBurgerActive(false);
   }, [pathname]);
 
+  useEffect(() => {
+    const desktop = window.matchMedia('(min-width: 1025px)');
+    const updateHeader = () => {
+      if (!desktop.matches) {
+        setMainHeaderFixed(false);
+        document.documentElement.style.setProperty('--sticky-header-height', '0px');
+        return;
+      }
+
+      const topBarBottom = topBarRef.current?.getBoundingClientRect().bottom ?? 0;
+      const height = mainHeaderRef.current?.offsetHeight ?? 0;
+      const fixed = topBarBottom <= 0;
+      setMainHeaderFixed(fixed);
+      setMainHeaderHeight(height);
+      const stickyHeight = fixed ? `${height}px` : '0px';
+      if (document.documentElement.style.getPropertyValue('--sticky-header-height') !== stickyHeight) {
+        document.documentElement.style.setProperty('--sticky-header-height', stickyHeight);
+      }
+    };
+
+    updateHeader();
+    window.addEventListener('scroll', updateHeader, { passive: true });
+    window.addEventListener('resize', updateHeader);
+
+    const resizeObserver = mainHeaderRef.current && typeof ResizeObserver !== 'undefined'
+      ? new ResizeObserver(updateHeader)
+      : null;
+    if (mainHeaderRef.current) resizeObserver?.observe(mainHeaderRef.current);
+
+    return () => {
+      window.removeEventListener('scroll', updateHeader);
+      window.removeEventListener('resize', updateHeader);
+      resizeObserver?.disconnect();
+      document.documentElement.style.removeProperty('--sticky-header-height');
+    };
+  }, []);
+
   return (
     <header className={styles.headerContainer}>
       {/* --- DESKTOP ONLY HEADER (Visible for screens > 768px) --- */}
       <div className={styles.desktopHeader}>
         {/* Top Navigation Bar */}
-        <div className={styles.topBar}>
+        <div ref={topBarRef} className={styles.topBar}>
           <nav className={styles.topNav}>
             {topNavLinks.map((link, idx) => (
               <Link key={idx} href={link.href} className={styles.topNavLink}>
@@ -105,8 +146,11 @@ export default function Header() {
           </div>
         </div>
 
+        {mainHeaderFixed && <div aria-hidden="true" style={{ height: mainHeaderHeight }} />}
+
         {/* Main Header Row */}
-        <div className={styles.mainHeader}>
+        <div className={`${styles.mainHeaderSticky} ${mainHeaderFixed ? styles.mainHeaderStickyFixed : ''}`}>
+        <div ref={mainHeaderRef} className={styles.mainHeader}>
           <Link href="/" className={styles.logoLink}>
             <Image
               src="/logo.svg"
@@ -170,6 +214,7 @@ export default function Header() {
               <span>Корзина</span>
             </Link>
           </div>
+        </div>
         </div>
       </div>
 

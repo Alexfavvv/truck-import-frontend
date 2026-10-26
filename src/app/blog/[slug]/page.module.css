@@ -157,6 +157,7 @@
   .articleLayoutWithProduct {
     grid-template-columns: 300px minmax(0, 1fr);
     gap: 28px;
+    align-items: start;
   }
 
   .articleColumn > article {
@@ -165,8 +166,9 @@
 
   .productSidebar {
     position: sticky;
-    top: 150px;
+    top: calc(var(--sticky-header-height, 0px) + 20px);
     align-self: start;
+    z-index: 10;
   }
 
   .productCard {
