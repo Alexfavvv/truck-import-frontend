@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { fetchPostBySlug } from '@/services/postService';
+import styles from './page.module.css';
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
@@ -30,6 +31,17 @@ export default async function BlogPostPage({ params }) {
   }
 
   const { post, recent = [] } = data;
+  const relatedProduct = post.related_product;
+  const relatedPrice = relatedProduct?.price_text || (() => {
+    const amount = Number(String(relatedProduct?.price ?? '').replace(/\s/g, '').replace(',', '.'));
+    if (!Number.isFinite(amount) || amount <= 0) return 'По запросу';
+    return `${amount.toLocaleString('ru-RU')} ${relatedProduct?.currency === 'RUB' ? '₽' : (relatedProduct?.currency || '')}`.trim();
+  })();
+  const relatedProductType = relatedProduct?.product_type || ({
+    engine: 'Двигатель',
+    engine_block: 'Блок двигателя',
+    gearbox: 'Коробка передач',
+  }[relatedProduct?.type] || relatedProduct?.type);
 
   const formattedDate = post.published_at
     ? new Date(post.published_at).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })
@@ -48,7 +60,38 @@ export default async function BlogPostPage({ params }) {
           <span style={{ color: '#1A1A1A', fontWeight: 600 }}>{post.title}</span>
         </nav>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '4rem' }}>
+        <div className={`${styles.articleLayout} ${relatedProduct ? styles.articleLayoutWithProduct : ''}`}>
+          {relatedProduct && (
+            <aside className={styles.productSidebar}>
+              <section className={styles.productCard} aria-label="Связанная запчасть">
+                {relatedProduct.path ? (
+                  <Link href={relatedProduct.path} className={styles.productDetailsLink}>
+                    <ProductDetails
+                      product={relatedProduct}
+                      productType={relatedProductType}
+                      price={relatedPrice}
+                    />
+                  </Link>
+                ) : (
+                  <div className={styles.productDetailsLink}>
+                    <ProductDetails
+                      product={relatedProduct}
+                      productType={relatedProductType}
+                      price={relatedPrice}
+                    />
+                  </div>
+                )}
+                <div className={styles.productCta}>
+                  <span className={styles.productCtaLabel}>Уточнить цену</span>
+                  <Link href={relatedProduct.path || '/contacts'} className={styles.productCtaButton}>
+                    Узнать цену
+                  </Link>
+                </div>
+              </section>
+            </aside>
+          )}
+
+          <div className={styles.articleColumn}>
           {/* Контент статьи */}
           <article style={{ backgroundColor: '#FFFFFF', padding: '3.5rem', borderRadius: '1.6rem', boxShadow: '0 4px 16px rgba(0,0,0,0.06)' }}>
             {/* Заголовок */}
@@ -147,6 +190,7 @@ export default async function BlogPostPage({ params }) {
             </section>
           )}
 
+          </div>
         </div>
       </div>
 
@@ -194,5 +238,25 @@ export default async function BlogPostPage({ params }) {
         }
       `}</style>
     </main>
+  );
+}
+
+function ProductDetails({ product, productType, price }) {
+  return (
+    <>
+      <img
+        src={product.image || '/images/product-image.jpg'}
+        alt={product.title || 'Товар'}
+        className={styles.productImage}
+      />
+      <h2 className={styles.productTitle}>{product.title}</h2>
+      <dl className={styles.productSpecs}>
+        {product.manufacturer && <div><dt>Производитель</dt><dd>{product.manufacturer}</dd></div>}
+        {product.model && <div><dt>Модель</dt><dd>{product.model}</dd></div>}
+        {productType && <div><dt>Тип</dt><dd>{productType}</dd></div>}
+        {product.sku && <div><dt>SKU / OEM</dt><dd>{product.sku}</dd></div>}
+      </dl>
+      <div className={styles.productPrice}>{price}</div>
+    </>
   );
 }
