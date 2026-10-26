@@ -90,7 +90,7 @@ export default function Header() {
     const updateHeader = () => {
       if (!desktop.matches) {
         setMainHeaderFixed(false);
-        document.documentElement.style.setProperty('--sticky-header-height', '0px');
+        document.documentElement.style.removeProperty('--sticky-header-height');
         return;
       }
 
@@ -99,7 +99,7 @@ export default function Header() {
       const fixed = topBarBottom <= 0;
       setMainHeaderFixed(fixed);
       setMainHeaderHeight(height);
-      const stickyHeight = fixed ? `${height}px` : '0px';
+      const stickyHeight = `${height}px`;
       if (document.documentElement.style.getPropertyValue('--sticky-header-height') !== stickyHeight) {
         document.documentElement.style.setProperty('--sticky-header-height', stickyHeight);
       }

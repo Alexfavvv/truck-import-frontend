@@ -166,7 +166,7 @@
 
   .productSidebar {
     position: sticky;
-    top: calc(var(--sticky-header-height, 0px) + 20px);
+    top: calc(var(--sticky-header-height, 95px) + 20px);
     align-self: start;
     z-index: 10;
   }
