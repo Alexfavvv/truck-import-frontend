@@ -48,8 +48,8 @@ export default async function BlogPostPage({ params }) {
     : '';
 
   return (
-    <main style={{ backgroundColor: '#E3E3E3', color: '#1A1A1A', minHeight: '80vh', padding: '4rem 1.5rem 8rem 1.5rem' }}>
-      <div style={{ maxWidth: '1140px', margin: '0 auto' }}>
+    <main className={styles.articlePage} style={{ color: '#1A1A1A', minHeight: '80vh', padding: '4rem 1.5rem 8rem 1.5rem' }}>
+      <div className={styles.articleContainer}>
         
         {/* Хлебные крошки */}
         <nav style={{ marginBottom: '3rem', fontSize: '1.4rem', color: '#666666' }}>
