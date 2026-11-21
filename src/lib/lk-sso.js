@@ -80,7 +80,7 @@ export function createSsoState() {
 
 export function buildSsoAuthorizeUrl(redirectUri, state) {
   const base = getLkApiBase();
-  const url = new URL(`${base}/sso/authorize`);
+  const url = new URL('/sso/authorize', 'https://bigauto24.ru');
   url.searchParams.set('redirect_uri', redirectUri);
   url.searchParams.set('state', state);
   return url.toString();

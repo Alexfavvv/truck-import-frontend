@@ -46,6 +46,20 @@ archive_*.zip
 src.zip
 public/images.zip
 
+# Recovery-machine and server runtime artifacts.
+/backups/
+*.log
+*.key
+*.dump
+*.sql
+*.tar
+*.tar.gz
+
+# Operator-provided PDF exports are not application source. Existing tracked
+# assets remain tracked; new local exports require an explicit force-add.
+/public/images/pdf/*.pdf
+/public/images/pdf/png/*.png
+
 # Production/local artifacts
 archive_*.zip
 src.zip

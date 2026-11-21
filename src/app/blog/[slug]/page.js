@@ -31,14 +31,25 @@ export default async function BlogPostPage({ params }) {
   }
 
   const { post, recent = [] } = data;
+  const relatedProduct = post.related_product;
+  const relatedAmount = Number(String(relatedProduct?.price ?? '').replace(/\s/g, '').replace(',', '.'));
+  const hasRelatedPrice = Number.isFinite(relatedAmount) && relatedAmount > 0;
+  const relatedPrice = hasRelatedPrice
+    ? relatedProduct?.price_text || `${relatedAmount.toLocaleString('ru-RU')} ${relatedProduct?.currency === 'RUB' ? '₽' : (relatedProduct?.currency || '')}`.trim()
+    : null;
+  const relatedProductType = relatedProduct?.product_type || ({
+    engine: 'Двигатель',
+    engine_block: 'Блок двигателя',
+    gearbox: 'Коробка передач',
+  }[relatedProduct?.type] || relatedProduct?.type);
 
   const formattedDate = post.published_at
     ? new Date(post.published_at).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })
     : '';
 
   return (
-    <main className={styles.page} style={{ color: '#1A1A1A', minHeight: '80vh', padding: '4rem 1.5rem 8rem 1.5rem' }}>
-      <div style={{ maxWidth: '1140px', margin: '0 auto' }}>
+    <main className={styles.articlePage} style={{ color: '#1A1A1A', minHeight: '80vh', padding: '4rem 1.5rem 8rem 1.5rem' }}>
+      <div className={styles.articleContainer}>
         
         {/* Хлебные крошки */}
         <nav style={{ marginBottom: '3rem', fontSize: '1.4rem', color: '#666666' }}>
@@ -49,7 +60,40 @@ export default async function BlogPostPage({ params }) {
           <span style={{ color: '#1A1A1A', fontWeight: 600 }}>{post.title}</span>
         </nav>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '4rem' }}>
+        <div className={`${styles.articleLayout} ${relatedProduct ? styles.articleLayoutWithProduct : ''}`}>
+          {relatedProduct && (
+            <aside className={styles.productSidebar}>
+              <section className={styles.productCard} aria-label="Связанная запчасть">
+                {relatedProduct.path ? (
+                  <Link href={relatedProduct.path} className={styles.productDetailsLink}>
+                    <ProductDetails
+                      product={relatedProduct}
+                      productType={relatedProductType}
+                      price={relatedPrice}
+                      hasPrice={hasRelatedPrice}
+                    />
+                  </Link>
+                ) : (
+                  <div className={styles.productDetailsLink}>
+                    <ProductDetails
+                      product={relatedProduct}
+                      productType={relatedProductType}
+                      price={relatedPrice}
+                      hasPrice={hasRelatedPrice}
+                    />
+                  </div>
+                )}
+                <div className={`${styles.productCta} ${hasRelatedPrice ? styles.productCtaWithPrice : styles.productCtaWithoutPrice}`}>
+                  {hasRelatedPrice && <span className={styles.productCtaLabel}>Уточнить цену</span>}
+                  <Link href={relatedProduct.path || '/contacts'} className={styles.productCtaButton}>
+                    Узнать цену
+                  </Link>
+                </div>
+              </section>
+            </aside>
+          )}
+
+          <div className={styles.articleColumn}>
           {/* Контент статьи */}
           <article style={{ backgroundColor: '#FFFFFF', padding: '3.5rem', borderRadius: '1.6rem', boxShadow: '0 4px 16px rgba(0,0,0,0.06)' }}>
             {/* Заголовок */}
@@ -148,6 +192,7 @@ export default async function BlogPostPage({ params }) {
             </section>
           )}
 
+          </div>
         </div>
       </div>
 
@@ -195,5 +240,27 @@ export default async function BlogPostPage({ params }) {
         }
       `}</style>
     </main>
+  );
+}
+
+function ProductDetails({ product, productType, price, hasPrice }) {
+  return (
+    <>
+      <img
+        src={product.image || '/images/product-image.jpg'}
+        alt={product.title || 'Товар'}
+        className={styles.productImage}
+      />
+      <div className={styles.productInfo}>
+        <h2 className={styles.productTitle}>{product.title}</h2>
+        <dl className={styles.productSpecs}>
+          {product.manufacturer && <div><dt>Производитель</dt><dd>{product.manufacturer}</dd></div>}
+          {product.model && <div><dt>Модель</dt><dd>{product.model}</dd></div>}
+          {productType && <div><dt>Тип</dt><dd>{productType}</dd></div>}
+          {product.sku && <div><dt>SKU / OEM</dt><dd>{product.sku}</dd></div>}
+        </dl>
+        {hasPrice && <div className={styles.productPrice}>{price}</div>}
+      </div>
+    </>
   );
 }
